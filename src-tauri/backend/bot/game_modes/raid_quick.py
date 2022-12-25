@@ -164,7 +164,10 @@ class Raid:
             if Game.find_and_click_button("enter_id"):
                 Raid._join_raid()
         else:
-            raise RaidException("Failed to reach the Backup Requests screen.")
+            MessageLog.print_message("\n[WARNING] Failed to reach the Backup Requests screen.")
+            MessageLog.print_message("\n[RAID] Now navigate to the raid again...")
+            Raid._navigate()
+            #raise RaidException("Failed to reach the Backup Requests screen.")
 
     @staticmethod
     def start(first_run: bool):

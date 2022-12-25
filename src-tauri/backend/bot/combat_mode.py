@@ -1021,7 +1021,9 @@ class CombatMode:
                 elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None and \
                         CombatMode._check_for_battle_end() == "Nothing":
                     Game.wait(1.0)
-
+                    # 强制reload
+                    MessageLog.print_message("[WARN] ############## Force RELOAD ##############")
+                    Game.find_and_click_button("reload")
                     CombatMode._reload_for_attack(override = True)
                     CombatMode._wait_for_attack()
 
