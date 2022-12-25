@@ -3,7 +3,7 @@ from utils.message_log import MessageLog
 from utils.image_utils import ImageUtils
 from utils.mouse_utils import MouseUtils
 from bot.combat_mode import CombatMode
-from utils.twitter_room_finder import TwitterRoomFinder
+from utils.eriri_room_finder import EririRoomFinder
 
 
 class RaidException(Exception):
@@ -82,8 +82,8 @@ class Raid:
             room_code_tries = 30
             while room_code_tries > 0:
                 # Attempt to find a room code.
-                room_code = TwitterRoomFinder.get_room_code()
-
+                room_code = EririRoomFinder.get_room_code()
+                MessageLog.print_message(f"[INFO] Joining {room_code} ........")
                 if room_code != "":
                     # Select the "Room Code" textbox and then clear all text from it.
                     MouseUtils.move_and_click_point(room_code_textbox[0], room_code_textbox[1], "template_room_code_textbox", mouse_clicks = 2)
@@ -153,6 +153,7 @@ class Raid:
         if Game.check_for_pending():
             Game.find_and_click_button("quest")
 
+        Game.wait(3.0)
         # Now navigate to the Raid screen.
         Game.find_and_click_button("raid")
 

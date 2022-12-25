@@ -287,7 +287,8 @@ class Event:
                         MouseUtils.move_and_click_point(round_play_button_locations[2][0], round_play_button_locations[2][1], "play_round_button")
                 except:
                     if len(round_play_button_locations) >= 1:
-                        MessageLog.print_message(f"没有找到多个开始按钮，应该是前面步骤没点好，打开默认第一个")
+                        # 没有找到多个开始按钮，应该是前面步骤没点好，打开默认第一个
+                        MessageLog.print_message("Select first one instead of interrupt")
                         MouseUtils.move_and_click_point(round_play_button_locations[0][0], round_play_button_locations[0][1], "play_round_button")
                     else:
                         raise EventException("Failed to arrive at the Special Quest screen.")
