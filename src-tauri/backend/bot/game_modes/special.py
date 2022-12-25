@@ -115,6 +115,7 @@ class Special:
                     # Scroll the screen down if its any of the Special Quests that are more towards the bottom of the page to alleviate problems for smaller screens.
                     if Settings.map_name != "Campaign-Exclusive Quest" and Settings.map_name != "Uncap Treasure Quests" and Settings.map_name != "Shiny Slime Search!":
                         MouseUtils.scroll_screen_from_home_button(-500)
+                        Game.wait(3)
 
                     mission_select_button = ImageUtils.find_button(Settings.map_name.lower().replace(" ", "_").replace("-", "_"))
                     if mission_select_button is not None:
