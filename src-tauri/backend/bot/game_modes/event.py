@@ -278,14 +278,28 @@ class Event:
                     difficulty = "Extreme"
 
                 # Now select the chosen difficulty.
-                if difficulty == "Very Hard":
-                    MouseUtils.move_and_click_point(round_play_button_locations[0][0], round_play_button_locations[0][1], "play_round_button")
-                elif difficulty == "Extreme":
-                    MouseUtils.move_and_click_point(round_play_button_locations[1][0], round_play_button_locations[1][1], "play_round_button")
-                elif difficulty == "Extreme+":
-                    MouseUtils.move_and_click_point(round_play_button_locations[2][0], round_play_button_locations[2][1], "play_round_button")
+                try:
+                    if difficulty == "Very Hard":
+                        MouseUtils.move_and_click_point(round_play_button_locations[0][0], round_play_button_locations[0][1], "play_round_button")
+                    elif difficulty == "Extreme":
+                        MouseUtils.move_and_click_point(round_play_button_locations[1][0], round_play_button_locations[1][1], "play_round_button")
+                    elif difficulty == "Extreme+":
+                        MouseUtils.move_and_click_point(round_play_button_locations[2][0], round_play_button_locations[2][1], "play_round_button")
+                except:
+                    if len(round_play_button_locations) >= 1:
+                        MessageLog.print_message(f"没有找到多个开始按钮，应该是前面步骤没点好，打开默认第一个")
+                        MouseUtils.move_and_click_point(round_play_button_locations[0][0], round_play_button_locations[0][1], "play_round_button")
+                    else:
+                        raise EventException("Failed to arrive at the Special Quest screen.")
             else:
-                raise EventException("Failed to arrive at the Special Quest screen.")
+                # 可能在resume game界面，需要重新进战斗
+                if ImageUtils.confirm_location("resume_quests"):
+                    MessageLog.print_message(f"RELOAD combat")
+                    Game.find_and_click_button("resume")
+                else:
+                    MessageLog.print_message(f"NOT FOUND RELOAD BTN,TRY RELOAD")
+                    Game.find_and_click_button("reload")
+                    #raise EventException("Failed to arrive at the Special Quest screen.")
 
         return None
 
@@ -318,14 +332,16 @@ class Event:
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
             summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
-
+            MessageLog.print_message("~~~~~~~~~~~~~~where1~~~~~~~~~~~~~~~~~")
             if summon_check:
                 # Select the Party.
                 Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
-
+                MessageLog.print_message("~~~~~~~~~~~~~~where2~~~~~~~~~~~~~~~~~")
                 # Now start Combat Mode and detect any item drops.
                 if CombatMode.start_combat_mode():
+                    MessageLog.print_message("~~~~~~~~~~~~~~where3~~~~~~~~~~~~~~~~~")
                     Game.collect_loot(is_completed = True)
+                    MessageLog.print_message("~~~~~~~~~~~~~~到哪了4~~~~~~~~~~~~~~~~~")
         else:
             raise EventException("Failed to arrive at the Summon Selection screen.")
 
