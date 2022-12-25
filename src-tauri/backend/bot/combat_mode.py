@@ -993,7 +993,7 @@ class CombatMode:
     ######################################################################
 
     @staticmethod
-    def _loop_auto():
+    def _loop_auto(quick_raid,act_times):
         """Main workflow loop for both Semi Auto and Full Auto. The bot will progress the Quest/Raid until it ends or the Party wipes.
 
         Returns:
@@ -1001,7 +1001,13 @@ class CombatMode:
         """
         from bot.game import Game
 
+        count = 0 
         while not CombatMode._retreat_check and (CombatMode._full_auto or CombatMode._semi_auto):
+            count += 1
+
+            if quick_raid and count > act_times:
+                # 只打ACT_TIMES回合就退到HOME
+                return None
             # Check for exit conditions.
             CombatMode._check_for_battle_end()
 
@@ -1078,7 +1084,7 @@ class CombatMode:
     ######################################################################
 
     @staticmethod
-    def start_combat_mode(script_commands: List[str] = None, is_nightmare: bool = False, is_defender: bool = False, is_quickraid: bool = False):
+    def start_combat_mode(script_commands: List[str] = None, is_nightmare: bool = False, is_defender: bool = False, is_quickraid: bool = False,acts=5):
         """Start Combat Mode with the given script file path. Start reading through the text file line by line and have the bot proceed with the commands accordingly.
 
         Args:
@@ -1262,7 +1268,7 @@ class CombatMode:
                     CombatMode._check_for_battle_end()
 
                 # Main workflow loop for both Semi Auto and Full Auto. The bot will progress the Quest/Raid until it ends or the Party wipes.
-                CombatMode._loop_auto()
+                CombatMode._loop_auto(quick_raid = is_quickraid,act_times=acts)
             else:
                 # Main workflow loop for manually pressing the Attack button and reloading until combat ends.
                 CombatMode._loop_manual()
