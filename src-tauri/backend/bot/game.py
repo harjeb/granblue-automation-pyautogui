@@ -22,7 +22,8 @@ from bot.game_modes.event import Event
 from bot.game_modes.guild_wars import GuildWars
 from bot.game_modes.proving_grounds import ProvingGrounds
 from bot.game_modes.quest import Quest
-from bot.game_modes.raid import Raid
+#from bot.game_modes.raid import Raid
+from bot.game_modes.raid_quick import Raid
 from bot.game_modes.rotb import RiseOfTheBeasts
 from bot.game_modes.special import Special
 from bot.game_modes.xeno_clash import XenoClash
@@ -140,8 +141,7 @@ class Game:
         return None
 
     @staticmethod
-    def find_and_click_button(button_name: str, clicks: int = 1, tries: int = 0, x_offset: int = 0, y_offset: int = 0, custom_confidence: float = 0.80, suppress_error: bool = False,
-                              bypass_general_adjustment: bool = True):
+    def find_and_click_button(button_name: str, clicks: int = 1, tries: int = 0, x_offset: int = 0, y_offset: int = 0, suppress_error: bool = False, bypass_general_adjustment: bool = True):
         """Find the center point of a button image and click it.
 
         Args:
@@ -150,7 +150,6 @@ class Game:
             tries (int, optional): Number of tries to attempt to find the specified button image. Defaults to 0 which will use ImageUtil's default.
             x_offset (int, optional): Offset the x-coordinate of the click location. Defaults to 0.
             y_offset (int, optional): Offset the y-coordinate of the click location. Defaults to 0.
-            custom_confidence (float, optional): Use a custom confidence for the template matching. Defaults to 0.80.
             suppress_error (bool, optional): Suppresses template matching error depending on boolean. Defaults to False.
             bypass_general_adjustment (bool, optional): Bypass using the general adjustment for the number of tries if ImageUtil's default is not being used. Defaults to True.
 
@@ -162,82 +161,81 @@ class Game:
 
         if tries == 0:
             if button_name.lower() == "quest":
-                temp_location = ImageUtils.find_button("quest_blue", custom_confidence = custom_confidence)
+                temp_location = ImageUtils.find_button("quest_blue")
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("quest_red", custom_confidence = custom_confidence)
+                    temp_location = ImageUtils.find_button("quest_red")
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "quest_blue", mouse_clicks = clicks)
                     return True
             elif button_name.lower() == "raid":
-                temp_location = ImageUtils.find_button("raid_flat", custom_confidence = custom_confidence)
+                temp_location = ImageUtils.find_button("raid_flat")
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("raid_bouncing", custom_confidence = custom_confidence)
+                    temp_location = ImageUtils.find_button("raid_bouncing")
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "raid_flat", mouse_clicks = clicks)
                     return True
             elif button_name.lower() == "coop_start":
-                temp_location = ImageUtils.find_button("coop_start_flat", custom_confidence = custom_confidence)
+                temp_location = ImageUtils.find_button("coop_start_flat")
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("coop_start_faded", custom_confidence = custom_confidence)
+                    temp_location = ImageUtils.find_button("coop_start_faded")
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "coop_start_flat", mouse_clicks = clicks)
                     return True
             elif button_name.lower() == "event_special_quest":
-                temp_location = ImageUtils.find_button("event_special_quest", custom_confidence = custom_confidence)
+                temp_location = ImageUtils.find_button("event_special_quest")
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("event_special_quest_flat", custom_confidence = custom_confidence)
+                    temp_location = ImageUtils.find_button("event_special_quest_flat")
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("event_special_quest_bouncing", custom_confidence = custom_confidence)
+                    temp_location = ImageUtils.find_button("event_special_quest_bouncing")
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "event_special_quest", mouse_clicks = clicks)
                     return True
             else:
-                temp_location = ImageUtils.find_button(button_name.lower(), custom_confidence = custom_confidence)
+                temp_location = ImageUtils.find_button(button_name.lower())
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, button_name, mouse_clicks = clicks)
                     return True
         else:
             if button_name.lower() == "quest":
-                temp_location = ImageUtils.find_button("quest_blue", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                temp_location = ImageUtils.find_button("quest_blue", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("quest_red", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                    temp_location = ImageUtils.find_button("quest_red", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "quest_blue", mouse_clicks = clicks)
                     return True
             elif button_name.lower() == "raid":
-                temp_location = ImageUtils.find_button("raid_flat", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                temp_location = ImageUtils.find_button("raid_flat", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("raid_bouncing", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                    temp_location = ImageUtils.find_button("raid_bouncing", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "raid_flat", mouse_clicks = clicks)
                     return True
             elif button_name.lower() == "coop_start":
-                temp_location = ImageUtils.find_button("coop_start_flat", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                temp_location = ImageUtils.find_button("coop_start_flat", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("coop_start_faded", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                    temp_location = ImageUtils.find_button("coop_start_faded", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "coop_start_flat", mouse_clicks = clicks)
                     return True
             elif button_name.lower() == "event_special_quest":
-                temp_location = ImageUtils.find_button("event_special_quest", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                temp_location = ImageUtils.find_button("event_special_quest", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("event_special_quest_flat", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                    temp_location = ImageUtils.find_button("event_special_quest_flat", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
                 if temp_location is None:
-                    temp_location = ImageUtils.find_button("event_special_quest_bouncing", tries = tries, custom_confidence = custom_confidence, bypass_general_adjustment = bypass_general_adjustment)
+                    temp_location = ImageUtils.find_button("event_special_quest_bouncing", tries = tries, bypass_general_adjustment = bypass_general_adjustment)
 
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, "event_special_quest", mouse_clicks = clicks)
                     return True
             else:
-                temp_location = ImageUtils.find_button(button_name.lower(), tries = tries, suppress_error = suppress_error, custom_confidence = custom_confidence,
-                                                       bypass_general_adjustment = bypass_general_adjustment)
+                temp_location = ImageUtils.find_button(button_name.lower(), tries = tries, suppress_error = suppress_error, bypass_general_adjustment = bypass_general_adjustment)
                 if temp_location is not None:
                     MouseUtils.move_and_click_point(temp_location[0] + x_offset, temp_location[1] + y_offset, button_name, mouse_clicks = clicks)
                     return True
@@ -270,6 +268,7 @@ class Game:
         Returns:
             None
         """
+        MessageLog.print_message("\n~~~~~~~~~~~~~~~~~~~~~~~~~start sleep~~~~~~~~~~~~~~~~~~~~~~~~~~.")
         if Settings.enable_delay_between_runs:
             # Check if the provided delay is valid.
             if int(Settings.delay_in_seconds) < 0:
@@ -327,6 +326,22 @@ class Game:
             Game.wait(new_seconds)
             MessageLog.print_message("[INFO] Waiting complete. Now resuming bot operations...")
         return None
+
+    @staticmethod
+    def select_default_summon():
+        """
+        Always choose first summon
+        """
+        MessageLog.print_message("\n[INFO] Starting Choose First Summon...")
+        try:
+            # Now select the first Summon.
+            choose_a_summon_location = ImageUtils.find_button("choose_a_summon")
+            MouseUtils.move_and_click_point(choose_a_summon_location[0], choose_a_summon_location[1] + 187, "choose_a_summon")
+            return True        
+        except:
+            MessageLog.print_message("\n[ERROR] Seems Choose First Summon failed...")
+            return False
+
 
     @staticmethod
     def select_summon(summon_list: List[str], summon_element_list: List[str]):
@@ -419,6 +434,23 @@ class Game:
         return None
 
     @staticmethod
+    def quick_start_mission():
+        """Skip Group and Party selection
+        """
+        # Find and click the "OK" button to start the mission.
+        Game.find_and_click_button("ok")
+
+        # If a popup appears and says "This raid battle has already ended. The Home screen will now appear.", return False.
+        if Settings.farming_mode.lower() == "raid" and ImageUtils.confirm_location("raids"):
+            MessageLog.print_message("\n[WARNING] Raid unfortunately just ended. Backing out now...")
+            Game.find_and_click_button("ok")
+            Game.wait(3.0)
+            return False
+
+        Game.wait(3.0)
+        return True
+
+    @staticmethod
     def find_party_and_start_mission(group_number: int, party_number: int, tries: int = 30, bypass_first_run: bool = False):
         """Select the specified Group and Party. It will then start the mission.
 
@@ -450,40 +482,40 @@ class Game:
                     MessageLog.print_message(f"[INFO] Skipping Set Selection due to Raid only allowing parties from the Extra category.")
                 elif group_number < 8:
                     while set_location is None:
-                        set_location = ImageUtils.find_button("party_set_a", custom_confidence = 0.90)
+                        set_location = ImageUtils.find_button("party_set_a", tries = 10)
                         if set_location is None:
                             tries -= 1
                             if tries <= 0:
                                 raise RuntimeError("Could not find Set A.")
 
                             # See if the user had Set B active instead of Set A if matching failed.
-                            Game.find_and_click_button("party_set_b", custom_confidence = 0.90)
+                            set_location = ImageUtils.find_button("party_set_b", tries = 10)
                 else:
                     while set_location is None:
-                        set_location = ImageUtils.find_button("party_set_b", custom_confidence = 0.90)
+                        set_location = ImageUtils.find_button("party_set_b", tries = 10)
                         if set_location is None:
                             tries -= 1
                             if tries <= 0:
                                 raise RuntimeError("Could not find Set B.")
 
                             # See if the user had Set A active instead of Set B if matching failed.
-                            Game.find_and_click_button("party_set_a", custom_confidence = 0.90)
+                            set_location = ImageUtils.find_button("party_set_a", tries = 10)
 
             # Center the mouse on the "Set A" / "Set B" button and then click the correct Group tab.
             if Settings.debug_mode:
                 MessageLog.print_message(f"[DEBUG] Successfully selected the correct Set. Now selecting Group {group_number}...")
 
-            if group_number == 1 or group_number == 8:
+            if group_number == 1:
                 x = set_location[0] - 350
-            elif group_number == 2 or group_number == 9:
+            elif group_number == 2:
                 x = set_location[0] - 290
-            elif group_number == 3 or group_number == 10:
+            elif group_number == 3:
                 x = set_location[0] - 230
-            elif group_number == 4 or group_number == 11:
+            elif group_number == 4:
                 x = set_location[0] - 170
-            elif group_number == 5 or group_number == 12:
+            elif group_number == 5:
                 x = set_location[0] - 110
-            elif group_number == 6 or group_number == 13:
+            elif group_number == 6:
                 x = set_location[0] - 50
             else:
                 x = set_location[0] + 10
@@ -565,7 +597,7 @@ class Game:
     @staticmethod
     def collect_loot(is_completed: bool, is_pending_battle: bool = False, is_event_nightmare: bool = False, skip_info: bool = False, skip_popup_check: bool = False, is_defender: bool = False):
         """Collects the loot from the Results screen while clicking away any dialog popups while updating the internal item count.
-
+        
         Args:
             is_completed (bool): Allows incrementing of number of runs completed. This is for Farming Modes who have multi-part sections to them to prevent unnecessary incrementing of runs when it wasn't finished with 1 yet.
             is_pending_battle (bool, optional): Skip the incrementation of runs attempted if this was a Pending Battle. Defaults to False.
@@ -939,40 +971,42 @@ class Game:
                 MessageLog.print_message("######################################################################")
                 MessageLog.print_message("######################################################################\n")
 
-            if Settings.farming_mode == "Raid":
-                TwitterRoomFinder.connect()
+            # use eriri instead
+            # if Settings.farming_mode == "Raid":
+            #     TwitterRoomFinder.connect()
 
             first_run = True
             while Settings.item_amount_farmed < Settings.item_amount_to_farm:
-                if Settings.farming_mode == "Quest":
+                if Settings.farming_mode == "Quest":  # 任务
                     Quest.start(first_run)
-                elif Settings.farming_mode == "Special":
+                elif Settings.farming_mode == "Special":   # 特殊本（碎片）
                     Special.start(first_run)
-                elif Settings.farming_mode == "Coop":
+                elif Settings.farming_mode == "Coop":     # 共斗
                     Coop.start(first_run)
-                elif Settings.farming_mode == "Raid":
+                elif Settings.farming_mode == "Raid":    # 舔/多人
                     Raid.start(first_run)
-                elif Settings.farming_mode == "Event" or Settings.farming_mode == "Event (Token Drawboxes)":
+                elif Settings.farming_mode == "Event" or Settings.farming_mode == "Event (Token Drawboxes)":   # SS 活动
                     Event.start(first_run)
-                elif Settings.farming_mode == "Rise of the Beasts":
+                elif Settings.farming_mode == "Rise of the Beasts":      # 四象
                     RiseOfTheBeasts.start(first_run)
-                elif Settings.farming_mode == "Guild Wars":
+                elif Settings.farming_mode == "Guild Wars":          # 古战场
                     GuildWars.start(first_run)
-                elif Settings.farming_mode == "Dread Barrage":
+                elif Settings.farming_mode == "Dread Barrage":       # 公会战
                     DreadBarrage.start(first_run)
-                elif Settings.farming_mode == "Proving Grounds":
+                elif Settings.farming_mode == "Proving Grounds":     #连战
                     ProvingGrounds.start(first_run)
-                elif Settings.farming_mode == "Xeno Clash":
+                elif Settings.farming_mode == "Xeno Clash":          # 六道
                     XenoClash.start(first_run)
-                elif Settings.farming_mode == "Arcarum":
+                elif Settings.farming_mode == "Arcarum":              # 转世
                     Arcarum.start()
-                elif Settings.farming_mode == "Arcarum Sandbox":
+                elif Settings.farming_mode == "Arcarum Sandbox":      # 转世沙盒
                     ArcarumSandbox.start()
                 elif Settings.farming_mode == "Generic":
                     Generic.start()
 
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                     # Generate a resting period if the user enabled it.
+                    MessageLog.print_message("~~~~~~check whether sleep~~~~~~~~")
                     Game._delay_between_runs()
                     Game._move_mouse_security_check()
                     first_run = False
