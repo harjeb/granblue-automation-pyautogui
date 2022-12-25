@@ -156,26 +156,32 @@ class EririRoomFinder:
             boss_id_list = ",".join(EririRoomFinder._list_of_id)
             data = {"q":boss_id_list}
             api_url = "https://gbs.eriri.net/hold/"
-            MessageLog.print_message("......")
-            r = requests.get(api_url, params=data)
-            result = r.json()
-            _id_list = []
-            _time_list = []
-            for v in result.values():
-                lastone = v[-1]
-                _id = lastone['id']
-                _time = lastone['t']
-                _id_list.append(_id)
-                _time_list.append(_time)
+            try:
+                r = requests.get(api_url, params=data)
+                result = r.json()
+            except:
+                result = {}
 
-            latest = _id_list[_time_list.index(max(_time_list))]
-            MessageLog.print_message("...")
-            if latest not in EririRoomFinder._already_visited_codes:
-                EririRoomFinder._already_visited_codes.append(latest)
-                MessageLog.print_message(latest)
-                return latest
+            if len(result.keys()) >= 1:
+                _id_list = []
+                _time_list = []
+                for v in result.values():
+                    lastone = v[-1]
+                    _id = lastone['id']
+                    _time = lastone['t']
+                    _id_list.append(_id)
+                    _time_list.append(_time)
+
+                latest = _id_list[_time_list.index(max(_time_list))]
+                if latest not in EririRoomFinder._already_visited_codes:
+                    EririRoomFinder._already_visited_codes.append(latest)
+                    MessageLog.print_message(latest)
+                    return latest
+                else:
+                    MessageLog.print_message("[WARNING] RAID HAS JOINED.")
+                    EririRoomFinder.get_room_code()
             else:
-                MessageLog.print_message("[WARNING] RAID HAS JOINED.")
+                MessageLog.print_message("[WARNING] request error pops.")
                 EririRoomFinder.get_room_code()
         else:
             return ''

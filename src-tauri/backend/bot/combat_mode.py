@@ -1023,7 +1023,7 @@ class CombatMode:
                     Game.wait(1.0)
                     # 强制reload
                     MessageLog.print_message("[WARN] ############## Force RELOAD ##############")
-                    Game.find_and_click_button("reload")
+                    #Game.find_and_click_button("reload")
                     CombatMode._reload_for_attack(override = True)
                     CombatMode._wait_for_attack()
 
