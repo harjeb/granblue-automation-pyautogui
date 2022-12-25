@@ -1076,7 +1076,7 @@ class CombatMode:
     ######################################################################
 
     @staticmethod
-    def start_combat_mode(script_commands: List[str] = None, is_nightmare: bool = False, is_defender: bool = False):
+    def start_combat_mode(script_commands: List[str] = None, is_nightmare: bool = False, is_defender: bool = False, is_quickraid: bool = False):
         """Start Combat Mode with the given script file path. Start reading through the text file line by line and have the bot proceed with the commands accordingly.
 
         Args:
@@ -1136,6 +1136,8 @@ class CombatMode:
         ######################################################################
         # This is where the main workflow of Combat Mode is located.
         try:
+            if is_quickraid:
+                CombatMode._reload()
             while len(command_list) > 0 and CombatMode._retreat_check is False:
                 # All the logic that follows assumes that the command string is lowercase to allow case-insensitive commands.
                 command = command_list.pop(0).strip().lower()
