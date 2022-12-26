@@ -3,6 +3,8 @@ import re
 from typing import Union
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 
 from utils.message_log import MessageLog
 from utils.settings import Settings
@@ -148,7 +150,7 @@ class EririRoomFinder:
             (str): A single room code that has not been visited.
         """
         # TODO 读取settings中的boss名
-        boss_list = ["Lvl 150 Proto Bahamut","Lvl 150 Ultimate Bahamut","Lvl 150 Lucilius","The Four Primarchs","Lvl 200 Akasha"]
+        boss_list = ["Lvl 200 Akasha"]
         for i in boss_list:
             if i in EririRoomFinder._list_of_raids.keys():
                 EririRoomFinder._list_of_id.append(EririRoomFinder._list_of_raids[i])
@@ -157,8 +159,11 @@ class EririRoomFinder:
             data = {"q":boss_id_list}
             api_url = "https://gbs.eriri.net/hold/"
             try:
-                r = requests.get(api_url, params=data)
-                result = r.json()
+                s = requests.Session()
+                s.mount('https://', HTTPAdapter(max_retries=Retry(total=5)))
+                resp_get = s.get(url=api_url, params=data)
+                #r = requests.get(api_url, params=data)
+                result = resp_get.json()
             except:
                 result = {}
 
@@ -184,4 +189,5 @@ class EririRoomFinder:
                 MessageLog.print_message("[WARNING] request error pops.")
                 EririRoomFinder.get_room_code()
         else:
+            MessageLog.print_message("[WARNING] return empty.")
             return ''

@@ -84,7 +84,7 @@ class Raid:
                 # Attempt to find a room code.
                 room_code = EririRoomFinder.get_room_code()
                 MessageLog.print_message(f"[INFO] Joining {room_code} ........")
-                if room_code != "":
+                if room_code != "" and room_code is not None:
                     # Select the "Room Code" textbox and then clear all text from it.
                     MouseUtils.move_and_click_point(room_code_textbox[0], room_code_textbox[1], "template_room_code_textbox", mouse_clicks = 2)
                     MouseUtils.clear_textbox()
@@ -202,7 +202,7 @@ class Raid:
                     # Handle the rare case where joining the Raid after selecting the Summon and Party led the bot to the Quest Results screen with no loot to collect.
                     if ImageUtils.confirm_location("no_loot", disable_adjustment = True):
                         MessageLog.print_message("\n[RAID] Seems that the Raid just ended. Moving back to the Home screen and joining another Raid...")
-                    elif CombatMode.start_combat_mode(is_quickraid = True):
+                    elif CombatMode.start_combat_mode():
                         # go back to the Home screen.
                         Game.find_and_click_button("home")
                         # Close the Skyscope mission popup.
