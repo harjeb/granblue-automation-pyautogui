@@ -337,7 +337,7 @@ class Game:
             # Now select the first Summon.
             choose_a_summon_location = ImageUtils.find_button("choose_a_summon")
             MouseUtils.move_and_click_point(choose_a_summon_location[0], choose_a_summon_location[1] + 187, "choose_a_summon")
-            return True        
+            return True
         except:
             MessageLog.print_message("\n[ERROR] Seems Choose First Summon failed...")
             return False
