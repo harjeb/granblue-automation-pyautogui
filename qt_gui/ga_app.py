@@ -1,5 +1,7 @@
 from ga_ui import *
 import sys
+import os
+import json
 from PyQt5.QtWidgets import (QApplication,
                             QWidget,
                             QTableWidgetItem,
@@ -13,20 +15,15 @@ class GBF_AutoTool(QWidget, Ui_Form):
         super(GBF_AutoTool, self).__init__(parent)
         self.setupUi(self)
         # UI初始化
-        self.gamemode_dict= {'任务':["Scattered Cargo","Lucky Charm Hunt"],
-                        '特殊':["火之试炼 N","火之试炼 H","火之试炼 VH"],
-                        '团本':["Lvl 50 风妈 H","Lvl 100 风妈 EX","Lvl 70 火高达 H","火高达 EX"],
-                        "兑换活动":[],
-                        "战货活动":[],
-                        "四象降临":[],
-                        "古战场":[],
-                        "工会战":[],
-                        "勇气之地":[],
-                        "六道击灭战":[],
-                        "转世":[],
-                        "转世沙盒":[],
-                        "通常":[],
-                        "暂停等待":[]}
+        try:
+            _file = open(f"{os.getcwd()}/data/data_zhcn.json")
+        except FileNotFoundError:
+            print("[ERROR] Failed to find settings.json. Exiting now...")
+            sys.exit(1)
+
+        self.gamemode_dict = json.load(_file)
+
+
         self.comboBox.addItems(list(self.gamemode_dict.keys()))
         self.comboBox.activated[str].connect(self.onActivatedText)
         self.comboBox_2.addItems(self.gamemode_dict['任务'])
