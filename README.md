@@ -42,6 +42,24 @@ exit
 
 ```
 
+## ！！！本项目仅供学习使用！！！
+
+
+## Custom Ver Goal
+- 用舔表网API替代twitter API降低工具使用难度
+- 优化部分代码逻辑，增加执行效率
+- 增加随机时间等待功能，降低认证码识别
+- 增加队列执行功能，可以多选任务按顺序执行
+- 增加日课任务等
+
+
+## TODO
+- [ ] 功能汉化
+- [ ] 新qt界面
+- [ ] raid功能优化
+- [ ] 修复游戏更新导致的阻塞问题等
+
+
 ## Disclaimer
 
 By downloading this program, you consent to your account potentially getting flagged for excessive amounts of farming for multiple hours straight and banned in the next banwave by KMR. I hold no responsibility for how much or how long you use this program for. I trust you have the self-control necessary to only farm in reasonable bursts of time with breaks in between and to always be alert for when the bot encounters the CAPTCHA.

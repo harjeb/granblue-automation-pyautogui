@@ -31,6 +31,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.comboBox.activated[str].connect(self.onActivatedText)
         self.comboBox_2.addItems(self.gamemode_dict['任务'])
 
+        self.comboBox_4.addItems(["召唤石多选"])
+        self.comboBox_5.addItems(["召唤石多选"])
 
     @QtCore.pyqtSlot(str)
     def onActivatedText(self, text):
