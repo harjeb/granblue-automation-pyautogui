@@ -33,6 +33,8 @@ class Settings:
     item_amount_to_farm: int = dictor(_data, "game.itemAmount", 1)
     item_amount_farmed: int = 0
     amount_of_runs_finished: int = 0
+    # TODO  quick raid 中增加是否选默认第一个召唤石的设置
+    summon_default: bool = dictor(_data, "game.summonDefault", True)
     summon_element_list: List[str] = dictor(_data, "game.summonElements", [])
     summon_list: List[str] = dictor(_data, "game.summons", [])
     group_number: int = dictor(_data, "game.groupNumber", 1)
