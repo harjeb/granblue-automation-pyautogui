@@ -16,7 +16,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.setupUi(self)
         # UI初始化
         try:
-            _file = open(f"{os.getcwd()}/data/data_zhcn.json")
+            ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+            _file = open(f"{ROOT_PATH}/data/data_zhcn.json",encoding='utf-8')
         except FileNotFoundError:
             print("[ERROR] Failed to find settings.json. Exiting now...")
             sys.exit(1)
