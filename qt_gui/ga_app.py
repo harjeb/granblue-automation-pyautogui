@@ -32,10 +32,35 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.comboBox_4.addItems(["召唤石多选"])
         self.comboBox_5.addItems(["召唤石多选"])
 
+        # 默认勾选项
+        # configuration.enableBezierCurveMouseMovement
+        self.checkBox_2.setChecked(True)
+        self.checkBox_2.clicked.connect(self.onStateChanged)
+        # configuration.enableRandomizedDelayBetweenRuns
+        self.checkBox_4.setChecked(True)
+        self.checkBox_4.clicked.connect(self.onStateChanged)
+        #configuration.delayBetweenRunsLowerBound
+        self.spinBox_6.setValue(5)
+        #configuration.delayBetweenRunsUpperBound
+        self.spinBox_7.setValue(20)   
+
     @QtCore.pyqtSlot(str)
     def onActivatedText(self, text):
         self.comboBox_2.clear()
         self.comboBox_2.addItems(self.gamemode_dict[text])
+
+    def onStateChanged(self):
+        if self.checkBox_2.isChecked():
+            self.doubleSpinBox.setEnabled(True)
+        else:
+            self.doubleSpinBox.setEnabled(False)
+        if self.checkBox_4.isChecked():
+            self.spinBox_6.setEnabled(True)
+            self.spinBox_7.setEnabled(True)
+        else:
+            self.spinBox_6.setEnabled(False)
+            self.spinBox_7.setEnabled(False)        
+            
 
 
 if __name__ == "__main__":

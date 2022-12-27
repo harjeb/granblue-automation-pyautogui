@@ -783,7 +783,8 @@ class CombatMode:
                         MouseUtils.move_and_click_point(CombatMode._attack_button_location[0] + 63, CombatMode._attack_button_location[1] + 138, "template_summon")
 
                     tries -= 1
-
+                    if tries < 0:
+                        break
                 # Check if it is able to be summoned.
                 if ImageUtils.confirm_location("summon_details", bypass_general_adjustment = True):
                     if Game.find_and_click_button("ok") is False:
@@ -944,6 +945,14 @@ class CombatMode:
         else:
             MessageLog.print_message("[WARNING] Failed to find and tap the Back button.")
 
+        return None
+
+    @staticmethod
+    def _force_reload():
+        from bot.game import Game
+        MessageLog.print_message("[COMBAT] Bot will now attempt to force reload...")
+        Game.find_and_click_button("reload")
+        Game.wait(3.0)
         return None
 
     @staticmethod
@@ -1201,7 +1210,7 @@ class CombatMode:
                     elif "back" in command:
                         CombatMode._back()
                     elif "reload" in command:
-                        CombatMode._reload()
+                        CombatMode._force_reload()
                     elif command == "repeatmanualattackandreload":
                         MessageLog.print_message("[COMBAT] Enabling manually pressing the Attack button and reloading (if the mission supports it) until battle ends.")
                         manual_attack_and_reload = True

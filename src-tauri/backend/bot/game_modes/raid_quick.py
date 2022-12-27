@@ -212,6 +212,7 @@ class Raid:
                 else:
                     MessageLog.print_message("\n[RAID] Seems that the Raid ended before the bot was able to join. Now looking for another Raid to join...")
         else:
-            raise RaidException("Failed to arrive at the Summon Selection screen.")
+            # DO NOT EXIT
+            MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
 
         return None

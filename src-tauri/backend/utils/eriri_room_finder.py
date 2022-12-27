@@ -154,40 +154,39 @@ class EririRoomFinder:
         for i in boss_list:
             if i in EririRoomFinder._list_of_raids.keys():
                 EririRoomFinder._list_of_id.append(EririRoomFinder._list_of_raids[i])
-        if len(EririRoomFinder._list_of_id) >= 1:
-            boss_id_list = ",".join(EririRoomFinder._list_of_id)
-            data = {"q":boss_id_list}
-            api_url = "https://gbs.eriri.net/hold/"
-            try:
-                s = requests.Session()
-                s.mount('https://', HTTPAdapter(max_retries=Retry(total=5)))
-                resp_get = s.get(url=api_url, params=data)
-                #r = requests.get(api_url, params=data)
-                result = resp_get.json()
-            except:
-                result = {}
+        while True:
+            if len(EririRoomFinder._list_of_id) >= 1:
+                boss_id_list = ",".join(EririRoomFinder._list_of_id)
+                data = {"q":boss_id_list}
+                api_url = "https://gbs.eriri.net/hold/"
+                try:
+                    s = requests.Session()
+                    s.mount('https://', HTTPAdapter(max_retries=Retry(total=5)))
+                    resp_get = s.get(url=api_url, params=data)
+                    #r = requests.get(api_url, params=data)
+                    result = resp_get.json()
+                except:
+                    result = {}
 
-            if len(result.keys()) >= 1:
-                _id_list = []
-                _time_list = []
-                for v in result.values():
-                    lastone = v[-1]
-                    _id = lastone['id']
-                    _time = lastone['t']
-                    _id_list.append(_id)
-                    _time_list.append(_time)
+                if len(result.keys()) >= 1:
+                    _id_list = []
+                    _time_list = []
+                    for v in result.values():
+                        lastone = v[-1]
+                        _id = lastone['id']
+                        _time = lastone['t']
+                        _id_list.append(_id)
+                        _time_list.append(_time)
 
-                latest = _id_list[_time_list.index(max(_time_list))]
-                if latest not in EririRoomFinder._already_visited_codes:
-                    EririRoomFinder._already_visited_codes.append(latest)
-                    MessageLog.print_message(latest)
-                    return latest
+                    latest = _id_list[_time_list.index(max(_time_list))]
+                    if latest not in EririRoomFinder._already_visited_codes:
+                        EririRoomFinder._already_visited_codes.append(latest)
+                        MessageLog.print_message(latest)
+                        return latest
+                    else:
+                        MessageLog.print_message("[WARNING] RAID HAS JOINED.")
                 else:
-                    MessageLog.print_message("[WARNING] RAID HAS JOINED.")
-                    EririRoomFinder.get_room_code()
+                    MessageLog.print_message("[WARNING] request error pops.")
             else:
-                MessageLog.print_message("[WARNING] request error pops.")
-                EririRoomFinder.get_room_code()
-        else:
-            MessageLog.print_message("[WARNING] return empty.")
-            return ''
+                MessageLog.print_message("[WARNING] return empty.")
+                return ''
