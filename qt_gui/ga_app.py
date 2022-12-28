@@ -151,6 +151,10 @@ class GBF_AutoTool(QWidget, Ui_Form):
         os.mkdir(dirs)
         self.saveSettings(dirs)
 
+    def getElement(self, summons_list):
+        # 返回召唤石属性列表
+
+        return 0
     def saveSettings(self,save_path):
         # 保存运行配置
         setting_dict = {}
@@ -161,12 +165,12 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["game"]["mission"] = self.translate(self.comboBox_2.currentText())
         setting_dict["game"]["map"] = self.translate(self.comboBox_3.currentText())
         setting_dict["game"]["itemAmount"] = self.spinBox.value()
-        setting_dict["game"]["summons"] = self.comboBox_4.currentData()
-        setting_dict["game"]["summonDefault"]
-        setting_dict["game"]["summonElements"]
-        setting_dict["game"]["groupNumber"]
-        setting_dict["game"]["partyNumber"]
-        setting_dict["game"]["debugMode"]
+        setting_dict["game"]["summons"] = self.translate(self.comboBox_4.currentData())
+        setting_dict["game"]["summonDefault"] = self.checkBox_12.isChecked()
+        setting_dict["game"]["summonElements"] = self.getElement(self.comboBox_4.currentData())
+        setting_dict["game"]["groupNumber"] = self.spinBox_3.value()
+        setting_dict["game"]["partyNumber"] = self.spinBox_2.value()
+        setting_dict["game"]["debugMode"] = self.checkBox_13.isChecked()
         setting_dict["twitter"]["twitterUseVersion2"] = False
         setting_dict["twitter"]["twitterAPIKey"] = ''
         setting_dict["twitter"]["twitterAPIKeySecret"] = ''
@@ -179,18 +183,18 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["api"]["enableOptInAPI"] = False
         setting_dict["api"]["username"] = ''
         setting_dict["api"]["password"] = ''
-        setting_dict["configuration"]["enableAutoRestore"]
-        setting_dict["configuration"]["enableFullElixir"]
-        setting_dict["configuration"]["enableSoulBalm"]
-        setting_dict["configuration"]["enableBezierCurveMouseMovement"]
-        setting_dict["configuration"]["mouseSpeed"]
-        setting_dict["configuration"]["enableDelayBetweenRuns"]
-        setting_dict["configuration"]["delayBetweenRuns"]
-        setting_dict["configuration"]["enableRandomizedDelayBetweenRuns"]
-        setting_dict["configuration"]["delayBetweenRunsLowerBound"]
-        setting_dict["configuration"]["delayBetweenRunsUpperBound"]
-        setting_dict["configuration"]["enableRefreshDuringCombat"]
-        setting_dict["configuration"]["enableAutoQuickSummon"]
+        setting_dict["configuration"]["enableAutoRestore"] = True
+        setting_dict["configuration"]["enableFullElixir"] = False
+        setting_dict["configuration"]["enableSoulBalm"] = False
+        setting_dict["configuration"]["enableBezierCurveMouseMovement"] = self.checkBox_2.isChecked()
+        setting_dict["configuration"]["mouseSpeed"] = self.doubleSpinBox.value()
+        setting_dict["configuration"]["enableDelayBetweenRuns"] = self.checkBox_3.isChecked()
+        setting_dict["configuration"]["delayBetweenRuns"] = self.spinBox_4.value()
+        setting_dict["configuration"]["enableRandomizedDelayBetweenRuns"] = self.checkBox_4.isChecked()
+        setting_dict["configuration"]["delayBetweenRunsLowerBound"] =  self.spinBox_6.value()
+        setting_dict["configuration"]["delayBetweenRunsUpperBound"] =  self.spinBox_7.value()
+        setting_dict["configuration"]["enableRefreshDuringCombat"] = self.checkBox_7.isChecked()
+        setting_dict["configuration"]["enableAutoQuickSummon"] = self.checkBox_8.isChecked()
         setting_dict["configuration"]["enableBypassResetSummon"]
         setting_dict["configuration"]["staticWindow"]
         setting_dict["configuration"]["enableMouseSecurityAttemptBypass"]
