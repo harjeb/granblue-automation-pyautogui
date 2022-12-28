@@ -46,10 +46,29 @@
               <widget class="QComboBox" name="comboBox"/>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_2"/>
+              <widget class="QComboBox" name="comboBox_2">
+               <property name="minimumSize">
+                <size>
+                 <width>150</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_3"/>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_6"/>
              </item>
              <item>
               <widget class="QLineEdit" name="lineEdit_3">
+               <property name="maximumSize">
+                <size>
+                 <width>90</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="placeholderText">
                 <string>选择战斗脚本</string>
                </property>
@@ -57,6 +76,12 @@
              </item>
              <item>
               <widget class="QCheckBox" name="checkBox_12">
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="text">
                 <string>团本默认召唤石</string>
                </property>
@@ -312,7 +337,7 @@
           <rect>
            <x>10</x>
            <y>0</y>
-           <width>912</width>
+           <width>1011</width>
            <height>421</height>
           </rect>
          </property>
@@ -361,7 +386,20 @@
             <item>
              <widget class="QCheckBox" name="checkBox_3">
               <property name="text">
-               <string>开启运行间隔</string>
+               <string>开启运行间隔(秒)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinBox_4">
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="value">
+               <number>15</number>
               </property>
              </widget>
             </item>
@@ -545,7 +583,21 @@
             <item>
              <widget class="QLabel" name="label_14">
               <property name="text">
-               <string>开启战斗刷新后才有效，会在auto/FA模式下自动施放快速召唤石</string>
+               <string>开启战斗刷新后生效，auto/FA下施放快速召唤</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="text">
+               <string>开启忽略重置召唤石</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>开启后若找不到召唤石会默认选第一个</string>
               </property>
              </widget>
             </item>

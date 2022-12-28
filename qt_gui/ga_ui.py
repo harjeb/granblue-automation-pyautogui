@@ -7,6 +7,18 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from check_combo import CheckableComboBox
+from PyQt5.QtWidgets import QLineEdit,QDesktopWidget
+from PyQt5.QtCore import pyqtSignal,QEvent
+
+# Add clicked function for QLineEdit
+# https://stackoverflow.com/questions/35047349/pyqt-5-how-to-make-qlineedit-clickable
+class cQLineEdit(QLineEdit):
+    clicked= pyqtSignal()
+    def __init__(self,widget):
+        super().__init__(widget)
+    def mousePressEvent(self,QMouseEvent):
+        self.clicked.emit()
 
 
 class Ui_Form(object):
@@ -39,8 +51,16 @@ class Ui_Form(object):
         self.comboBox_2 = QtWidgets.QComboBox(self.tab)
         self.comboBox_2.setObjectName("comboBox_2")
         self.horizontalLayout_2.addWidget(self.comboBox_2)
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.tab)
-        self.lineEdit_3.setObjectName("lineEdit_3")
+
+        self.comboBox_3 = QtWidgets.QComboBox(self.tab)
+        self.comboBox_3.setObjectName("comboBox_3")
+        self.horizontalLayout_2.addWidget(self.comboBox_3)
+        self.comboBox_6 = QtWidgets.QComboBox(self.tab)
+        self.comboBox_6.setObjectName("comboBox_6")
+        self.horizontalLayout_2.addWidget(self.comboBox_6)
+
+        self.lineEdit_3 = cQLineEdit(self.tab)
+        self.lineEdit_3.setObjectName("main_script")
         self.horizontalLayout_2.addWidget(self.lineEdit_3)
         self.checkBox_12 = QtWidgets.QCheckBox(self.tab)
         self.checkBox_12.setObjectName("checkBox_12")
@@ -81,8 +101,9 @@ class Ui_Form(object):
         self.spinBox_2.setMaximum(6)
         self.spinBox_2.setObjectName("spinBox_2")
         self.horizontalLayout_4.addWidget(self.spinBox_2)
-        self.comboBox_4 = QtWidgets.QComboBox(self.tab)
+        self.comboBox_4 = CheckableComboBox(self.tab)
         self.comboBox_4.setObjectName("comboBox_4")
+        self.comboBox_4.setMinimumWidth(90)
         self.horizontalLayout_4.addWidget(self.comboBox_4)
         self.checkBox_13 = QtWidgets.QCheckBox(self.tab)
         self.checkBox_13.setObjectName("checkBox_13")
@@ -90,8 +111,8 @@ class Ui_Form(object):
         self.checkBox_14 = QtWidgets.QCheckBox(self.tab)
         self.checkBox_14.setObjectName("checkBox_14")
         self.horizontalLayout_4.addWidget(self.checkBox_14)
-        self.lineEdit_4 = QtWidgets.QLineEdit(self.tab)
-        self.lineEdit_4.setObjectName("lineEdit_4")
+        self.lineEdit_4 = cQLineEdit(self.tab)
+        self.lineEdit_4.setObjectName("nightmare_script")
         self.horizontalLayout_4.addWidget(self.lineEdit_4)
         self.label_19 = QtWidgets.QLabel(self.tab)
         self.label_19.setObjectName("label_19")
@@ -111,8 +132,9 @@ class Ui_Form(object):
         self.spinBox_10.setMaximum(6)
         self.spinBox_10.setObjectName("spinBox_10")
         self.horizontalLayout_4.addWidget(self.spinBox_10)
-        self.comboBox_5 = QtWidgets.QComboBox(self.tab)
+        self.comboBox_5 = CheckableComboBox(self.tab)
         self.comboBox_5.setObjectName("comboBox_5")
+        self.comboBox_5.setMinimumWidth(90)
         self.horizontalLayout_4.addWidget(self.comboBox_5)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem1)
@@ -161,6 +183,11 @@ class Ui_Form(object):
         self.checkBox_3 = QtWidgets.QCheckBox(self.verticalLayoutWidget)
         self.checkBox_3.setObjectName("checkBox_3")
         self.horizontalLayout_6.addWidget(self.checkBox_3)
+        self.spinBox_4 = QtWidgets.QSpinBox(self.verticalLayoutWidget)
+        self.spinBox_4.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.spinBox_4.setProperty("value", 15)
+        self.spinBox_4.setObjectName("spinBox_4")
+        self.horizontalLayout_6.addWidget(self.spinBox_4)
         self.checkBox_4 = QtWidgets.QCheckBox(self.verticalLayoutWidget)
         self.checkBox_4.setObjectName("checkBox_4")
         self.horizontalLayout_6.addWidget(self.checkBox_4)
@@ -227,6 +254,12 @@ class Ui_Form(object):
         self.label_14 = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.label_14.setObjectName("label_14")
         self.horizontalLayout_9.addWidget(self.label_14)
+        self.checkBox = QtWidgets.QCheckBox(self.verticalLayoutWidget)
+        self.checkBox.setObjectName("checkBox")
+        self.horizontalLayout_9.addWidget(self.checkBox)
+        self.label_4 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_9.addWidget(self.label_4)
         spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_9.addItem(spacerItem7)
         self.verticalLayout_3.addLayout(self.horizontalLayout_9)
@@ -285,7 +318,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "钢铁侠再再生"))
         self.lineEdit_3.setPlaceholderText(_translate("Form", "选择战斗脚本"))
-        self.checkBox_12.setText(_translate("Form", "团本默认召唤石"))
+        self.checkBox_12.setText(_translate("Form", "Raid默认召唤石"))
         self.label.setText(_translate("Form", "次数"))
         self.pushButton_2.setText(_translate("Form", "添加到队列"))
         self.label_2.setText(_translate("Form", "选择编成"))
@@ -297,8 +330,8 @@ class Ui_Form(object):
         self.label_20.setText(_translate("Form", "队伍"))
         self.lineEdit.setPlaceholderText(_translate("Form", "任务队列"))
         self.pushButton.setText(_translate("Form", "开始"))
-        initialMessage = """****************************************\nWelcome to Granblue Automation!\n****************************************\nInstructions\n----------------\nNote: The START button is disabled until the following steps are followed through.\n
-    1. Have your game window and the Bottom Menu visible. Set the game window size set to the second "notch". 
+        initialMessage = """****************************************\nWelcome to Granblue Automation EXReborn!\n****************************************\nInstructions\n----------------\n
+    1. Have your game window and the Bottom Menu visible. Set the game window size set to the second "notch".
     2. Go to the Settings Page of the bot and fill out the sections until the status at the top says "Ready".
     3. You can now head back to the Home Page of the bot and click START.
     \nWarning: Do not refresh/F5 the program's "page" while the bot process is running. Otherwise in order to stop it, you will need to kill it by completely exiting the program.\n****************************************\n"""
@@ -319,6 +352,8 @@ class Ui_Form(object):
         self.label_13.setText(_translate("Form", "在auto/FA模式时攻击后刷新，不影响战斗脚本"))
         self.checkBox_8.setText(_translate("Form", "开启自动施放快速召唤石"))
         self.label_14.setText(_translate("Form", "开启战斗刷新后才有效，会在auto/FA模式下自动施放快速召唤石"))
+        self.checkBox.setText(_translate("Form", "开启忽略重置召唤石"))
+        self.label_4.setText(_translate("Form", "开启后若找不到召唤石会默认选第一个"))
         self.checkBox_9.setText(_translate("Form", "开启静态窗口校准"))
         self.label_15.setText(_translate("Form", "开启后不能移动游戏窗口，禁用时会把整个计算机屏幕视做游戏窗口，可以在运行时自由移动鼠标"))
         self.checkBox_10.setText(_translate("Form", "开启防机器人检测"))
