@@ -153,8 +153,14 @@ class GBF_AutoTool(QWidget, Ui_Form):
 
     def getElement(self, summons_list):
         # 返回召唤石属性列表
+        elements = []
+        for s in summons_list:
+            for k,v in self.summons_dict.items():
+                if s in v["summons"]:
+                    elements.append(k)
+                    break
+        return elements
 
-        return 0
     def saveSettings(self,save_path):
         # 保存运行配置
         setting_dict = {}
@@ -195,26 +201,27 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["configuration"]["delayBetweenRunsUpperBound"] =  self.spinBox_7.value()
         setting_dict["configuration"]["enableRefreshDuringCombat"] = self.checkBox_7.isChecked()
         setting_dict["configuration"]["enableAutoQuickSummon"] = self.checkBox_8.isChecked()
-        setting_dict["configuration"]["enableBypassResetSummon"]
-        setting_dict["configuration"]["staticWindow"]
-        setting_dict["configuration"]["enableMouseSecurityAttemptBypass"]
-        setting_dict["misc"]["guiLowPerformanceMode"]
-        setting_dict["misc"]["alternativeCombatScriptSelector"]
-        setting_dict["nightmare"]["enableNightmare"]
-        setting_dict["nightmare"]["enableCustomNightmareSettings"]
-        setting_dict["nightmare"]["nightmareCombatScriptName"]
-        setting_dict["nightmare"]["nightmareCombatScript"]
-        setting_dict["nightmare"]["nightmareSummons"]
-        setting_dict["nightmare"]["nightmareSummonElements"]
-        setting_dict["nightmare"]["nightmareGroupNumber"]
-        setting_dict["event"]["enableLocationIncrementByOne"]
-        setting_dict["event"]["selectBottomCategory"]
-        setting_dict["raid"]["enableAutoExitRaid"]
-        setting_dict["raid"]["timeAllowedUntilAutoExitRaid"]
-        setting_dict["raid"]["enableNoTimeout"]
-        setting_dict["arcarum"]["enableStopOnArcarumBoss"]
-        setting_dict["generic"]["enableForceReload"]
-        setting_dict["xenoClash"]["selectTopOption"]
+        setting_dict["configuration"]["enableBypassResetSummon"] = self.checkBox.isChecked()
+        setting_dict["configuration"]["staticWindow"] = self.checkBox_9.isChecked()
+        setting_dict["configuration"]["enableMouseSecurityAttemptBypass"] = self.checkBox_10.isChecked()
+        setting_dict["misc"]["guiLowPerformanceMode"] = True
+        setting_dict["misc"]["alternativeCombatScriptSelector"] = self.checkBox_11.isChecked()
+        setting_dict["nightmare"]["enableNightmare"] = self.checkBox_14.isChecked()
+        setting_dict["nightmare"]["enableCustomNightmareSettings"] = True
+        setting_dict["nightmare"]["nightmareCombatScriptName"] = self.nmscript_name
+        setting_dict["nightmare"]["nightmareCombatScript"] = self.nmscript
+        setting_dict["nightmare"]["nightmareSummons"] = self.translate(self.comboBox_5.currentData())
+        setting_dict["nightmare"]["nightmareSummonElements"] = self.getElement(self.comboBox_5.currentData())
+        setting_dict["nightmare"]["nightmareGroupNumber"] = self.spinBox_9.value()
+        setting_dict["nightmare"]["nightmarePartyNumber"] = self.spinBox_10.value()
+        setting_dict["event"]["enableLocationIncrementByOne"] = False
+        setting_dict["event"]["selectBottomCategory"] = False
+        setting_dict["raid"]["enableAutoExitRaid"] = self.checkBox_5.isChecked()
+        setting_dict["raid"]["timeAllowedUntilAutoExitRaid"] = self.spinBox_8.value()
+        setting_dict["raid"]["enableNoTimeout"] = self.checkBox_6.isChecked()
+        setting_dict["arcarum"]["enableStopOnArcarumBoss"] = True
+        setting_dict["generic"]["enableForceReload"] = False
+        setting_dict["xenoClash"]["selectTopOption"] = True
         setting_dict["adjustment"]["enableCalibrationAdjustment"] = False
         setting_dict["adjustment"]["adjustCalibration"] = 5
         setting_dict["adjustment"]["enableGeneralAdjustment"] = False

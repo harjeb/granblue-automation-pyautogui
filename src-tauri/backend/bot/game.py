@@ -111,7 +111,8 @@ class Game:
         if not ImageUtils.confirm_location("home"):
             MessageLog.print_message("\n[INFO] Moving back to the Home screen...")
             if Game.find_and_click_button("home") is False:
-                raise RuntimeError("Failed to find and click the Home button. Maybe the Home button located on the bottom bar is not visible?")
+                MessageLog.print_message("[WARN] Failed to find and click the Home button.")
+                #raise RuntimeError("Failed to find and click the Home button. Maybe the Home button located on the bottom bar is not visible?")
         else:
             MessageLog.print_message("[INFO] Bot is at the Home screen.")
 
