@@ -17,6 +17,7 @@ import socket
 import shutil
 import re
 
+
 def excepthook(excType, excValue, tracebackobj):
     """
     Global function to catch unhandled exceptions.
@@ -52,6 +53,18 @@ def excepthook(excType, excValue, tracebackobj):
     errorbox.exec_()
 
 sys.excepthook = excepthook
+
+
+class Sleep_Thread(QThread):
+    status = QtCore.pyqtSignal()
+
+    def __init__(self, _time):
+        super(Sleep_Thread,self).__init__()
+        self.sleep_time = _time
+
+    def run(self):
+        time.sleep(self.sleep_time)
+        self.status.emit()
 
 
 class GBF_AutoTool(QWidget, Ui_Form):
@@ -152,9 +165,18 @@ class GBF_AutoTool(QWidget, Ui_Form):
 
         self.pushButton.clicked.connect(self.start)
 
-        dirs = self.ROOT_PATH+'/farm_queue'
+        dirs = self.ROOT_PATH+'/backend/farm_queue'
         if os.path.exists(dirs):
             shutil.rmtree(dirs)
+
+        # 游戏状态
+        self.running = False
+
+        self.process = QtCore.QProcess()
+        self.process.readyReadStandardError.connect(self.onReadyReadStandardError)
+        self.process.readyReadStandardOutput.connect(self.onReadyReadStandardOutput)
+        self.process.finished.connect(self.onFinished)
+
 
     def saveFarmList(self):
         # 判断设置是否正确
@@ -162,7 +184,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         latest = self.action_queue[-1]
         self.action_queue.append(1+latest)
         # 保存战斗队列
-        dirs = self.ROOT_PATH+'/farm_queue'
+        dirs = self.ROOT_PATH+'/backend/farm_queue'
         if not os.path.exists(dirs):
             os.mkdir(dirs)
         filenum = str(self.action_queue[-1])
@@ -175,31 +197,62 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.lineEdit.setText(tmp)
 
     def start(self):
-        queue = self.lineEdit.text()
-        _list = re.split('，|,', queue)
-        
-        for i in _list:
-            if '任务' not in i:
-                print("未找到可执行任务")
-                break
-            else:
-                num = i.split("任务")[0]
-                if not num.isnumeric():
-                    print("任务名异常")
+        if not self.running:
+            self.pushButton.setText("停止")
+            self.running = True
+            queue = self.lineEdit.text()
+            _list = re.split('，|,', queue)
+            
+            for i in _list:
+                if '任务' not in i:
+                    print("未找到可执行任务")
                     break
                 else:
-                    # TODO 把任务setting改成settings.json
-                    # Qthread start_bot
-                    print('ok')
-            self.check_sleep()
-    
+                    num = i.split("任务")[0]
+                    if not num.isnumeric():
+                        print("任务名异常")
+                        break
+                    else:
+                        # 把任务setting改成settings.json
+                        dir = self.ROOT_PATH+'/backend/farm_queue/'
+                        _file = dir + 'settings' + str(num) + '.json'
+                        try:
+                            os.rename(_file, dir+'settings.json')
+                        except:
+                            print('没找到正确任务配置')
+                            break
+                        _settings = open(f"{self.ROOT_PATH}/backend/farm_queue/settings.json",encoding='utf-8')
+                        if not self.check_sleep(json.load(_settings)):
+                            # Qthread start_bot
+                            self.process.start("python backend/main.py")
+                        else:
+                            while True:
+                                if self.sleep_over:
+                                    break
+            else:
+                # 停止游戏
+                self.process.close()
+                self.sleep_thread.terminate()
+                self.pushButton.setText("开始")
+                self.running = False
 
-    def check_sleep(self):
-        #["game"]["farmingMode"] = "Take a break"
-        #setting_dict["game"]["itemAmount"]
-        print('sleep')
-    
+    def check_sleep(self, _settings_dict):
+        if _settings_dict["game"]["farmingMode"] == "Take a break":
+            print('sleep')
+            self.pushButton.setText("休息")
+            self.running = True
+            mins = _settings_dict["game"]["itemAmount"]
+            self.sleep_over = False
+            self.sleep_thread = Sleep_Thread(60*mins)
+            self.sleep_thread.status.connect(self._update_sleep_status)
+            self.sleep_thread.start()
+            return True
+        else:
+            return False
 
+    def _update_sleep_status(self):
+        self.sleep_over = True
+    
     def getElement(self, summons_list):
         # 返回召唤石属性列表
         elements = []
@@ -346,7 +399,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 return True
         return False
 
-
     def openFileNameDialog(self):
         lineedit = self.sender()
         options = QFileDialog.Options()
@@ -421,6 +473,22 @@ class GBF_AutoTool(QWidget, Ui_Form):
             self.spinBox_9.setEnabled(False)
             self.spinBox_10.setEnabled(False)
             self.comboBox_5.setEnabled(False)
+
+    def onReadyReadStandardError(self):
+        error = self.process.readAllStandardError().data().decode()
+        self.textBrowser.appendPlainText(error.strip())
+
+    def onReadyReadStandardOutput(self):
+        result = self.process.readAllStandardOutput().data().decode()
+        self.textBrowser.appendPlainText(result.strip())
+
+    def onFinished(self, exitCode, exitStatus):
+        if exitStatus == 0:
+            self.textBrowser.appendPlainText("---------")
+            self.textBrowser.appendPlainText("========Farm 结束========")
+
+            self.running = False
+            self.pushButton.setText('开始')
 
 
 if __name__ == "__main__":
