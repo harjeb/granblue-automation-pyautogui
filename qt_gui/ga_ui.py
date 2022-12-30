@@ -151,7 +151,7 @@ class Ui_Form(object):
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
-        self.textBrowser = QtWidgets.QTextBrowser(self.tab)
+        self.textBrowser = QtWidgets.QPlainTextEdit(self.tab)
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayout_2.addWidget(self.textBrowser)
         self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
@@ -335,7 +335,7 @@ class Ui_Form(object):
     2. Go to the Settings Page of the bot and fill out the sections until the status at the top says "Ready".
     3. You can now head back to the Home Page of the bot and click START.
     \nWarning: Do not refresh/F5 the program's "page" while the bot process is running. Otherwise in order to stop it, you will need to kill it by completely exiting the program.\n****************************************\n"""
-        self.textBrowser.setText(_translate("Form", initialMessage))
+        self.textBrowser.appendPlainText(_translate("Form", initialMessage))
         self.TabWidget.setTabText(self.TabWidget.indexOf(self.tab), _translate("Form", "主页"))
         self.checkBox_2.setText(_translate("Form", "模拟人类鼠标移动"))
         self.label_7.setText(_translate("Form", "鼠标移动速度(秒)"))

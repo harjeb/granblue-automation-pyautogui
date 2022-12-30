@@ -16,7 +16,8 @@ import traceback
 import socket
 import shutil
 import re
-
+import ctypes
+CP_console = f"cp{ctypes.cdll.kernel32.GetConsoleOutputCP()}"
 
 def excepthook(excType, excValue, tracebackobj):
     """
@@ -73,12 +74,20 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.setupUi(self)
         # UI初始化
         try:
-            self.ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+            if getattr(sys, 'frozen', False):
+                application_path = os.path.dirname(sys.executable)
+            elif __file__:
+                application_path = os.path.dirname(__file__)
+            self.ROOT_PATH = application_path
+            print(self.ROOT_PATH)
             _file = open(f"{self.ROOT_PATH}/data/data_zhcn.json",encoding='utf-8')
             _summon = open(f"{self.ROOT_PATH}/data/summons_zhcn.json",encoding='utf-8')
             _translate = open(f"{self.ROOT_PATH}/data/translate.json",encoding='utf-8')
         except FileNotFoundError:
-            print("[ERROR] Failed to find settings.json. Exiting now...")
+            QMessageBox.warning(self,
+                                "错误",
+                                "没找到资源文件",
+                                QMessageBox.Yes)
             sys.exit(1)
 
         self.gamemode_dict = json.load(_file)
@@ -202,39 +211,60 @@ class GBF_AutoTool(QWidget, Ui_Form):
             self.running = True
             queue = self.lineEdit.text()
             _list = re.split('，|,', queue)
-            
             for i in _list:
-                if '任务' not in i:
-                    print("未找到可执行任务")
-                    break
-                else:
-                    num = i.split("任务")[0]
-                    if not num.isnumeric():
-                        print("任务名异常")
+                if i != '':
+                    if '任务' not in i:
+                        QMessageBox.warning(self,
+                                        "错误",
+                                        "未找到可执行任务",
+                                        QMessageBox.Yes)
+                        self.stop()
                         break
                     else:
-                        # 把任务setting改成settings.json
-                        dir = self.ROOT_PATH+'/backend/farm_queue/'
-                        _file = dir + 'settings' + str(num) + '.json'
-                        try:
-                            os.rename(_file, dir+'settings.json')
-                        except:
-                            print('没找到正确任务配置')
+                        num = i.split("任务")[-1]
+                        if not num.isnumeric():
+                            QMessageBox.warning(self,
+                                        "错误",
+                                        "任务名异常",
+                                        QMessageBox.Yes)
+                            self.stop()
                             break
-                        _settings = open(f"{self.ROOT_PATH}/backend/farm_queue/settings.json",encoding='utf-8')
-                        if not self.check_sleep(json.load(_settings)):
-                            # Qthread start_bot
-                            self.process.start("python backend/main.py")
                         else:
-                            while True:
-                                if self.sleep_over:
-                                    break
+                            # 把任务setting改成settings.json
+                            dir = self.ROOT_PATH+'/backend/farm_queue/'
+                            _file = dir + 'settings' + str(num) + '.json'
+                            try:
+                                # if os.path.exists(dir+'settings.json'):
+                                #     os.remove(dir+'settings.json')
+                                os.rename(_file, dir+'settings.json')
+                            except:
+                                QMessageBox.warning(self,
+                                        "错误",
+                                        "没找到正确任务配置",
+                                        QMessageBox.Yes)
+                                self.stop()
+                                break
+                            _settings = open(f"{self.ROOT_PATH}/backend/farm_queue/settings.json",encoding='utf-8')
+                            if not self.check_sleep(json.load(_settings)):
+                                # Qthread start_bot
+                                self.process.start('python backend/main.py')
+                                self.process.waitForFinished()
+                            else:
+                                while True:
+                                    if self.sleep_over:
+                                        break
             else:
                 # 停止游戏
-                self.process.close()
-                self.sleep_thread.terminate()
-                self.pushButton.setText("开始")
-                self.running = False
+                self.stop()
+
+    def stop(self):
+        self.process.close()
+        try:
+            self.sleep_thread.terminate()
+        except:
+            pass
+        self.pushButton.setText("开始")
+        self.running = False        
 
     def check_sleep(self, _settings_dict):
         if _settings_dict["game"]["farmingMode"] == "Take a break":
@@ -408,10 +438,16 @@ class GBF_AutoTool(QWidget, Ui_Form):
             lineedit.setText(fileName)
             self.txtFile = lineedit.text()
             if 'main_script' == lineedit.objectName():
-                self.mainscript = open(self.txtFile,encoding='utf-8').readlines()
+                lines = open(self.txtFile,encoding='utf-8').readlines()
+                self.mainscript = []
+                for line in lines:
+                    self.mainscript.append(line.strip())
                 self.mainscript_name = os.path.split(fileName)[1]
             else:
-                self.nmscript = open(self.txtFile,encoding='utf-8').readlines()
+                lines2 = open(self.txtFile,encoding='utf-8').readlines()
+                self.nmscript = []
+                for line in lines2:
+                    self.nmscript.append(line.strip())
                 self.nmscript_name = os.path.split(fileName)[1]
 
     @QtCore.pyqtSlot(str)
