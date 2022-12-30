@@ -98,10 +98,17 @@ class Event:
         if len(banner_locations) == 0:
             banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
             if len(banner_locations) == 0:
-                raise EventException("Failed to find the Event banner.")
+                Game.go_back_home()
+                MessageLog.print_message("\n[ERROR]Failed to find the Event banner.Go back Home...")
+                return None
+                #raise EventException("Failed to find the Event banner.")
         MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
 
         Game.wait(3.0)
+        # 可能在resume game界面，需要重新进战斗
+        if ImageUtils.confirm_location("resume_quests"):
+            MessageLog.print_message(f"RELOAD combat")
+            Game.find_and_click_button("resume")
 
         # Check and click away the "Daily Missions" popup.
         if ImageUtils.confirm_location("event_daily_missions", tries = 3):
@@ -333,17 +340,14 @@ class Event:
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
             summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
-            MessageLog.print_message("~~~~~~~~~~~~~~where1~~~~~~~~~~~~~~~~~")
             if summon_check:
                 # Select the Party.
                 Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
-                MessageLog.print_message("~~~~~~~~~~~~~~where2~~~~~~~~~~~~~~~~~")
                 # Now start Combat Mode and detect any item drops.
                 if CombatMode.start_combat_mode():
-                    MessageLog.print_message("~~~~~~~~~~~~~~where3~~~~~~~~~~~~~~~~~")
                     Game.collect_loot(is_completed = True)
-                    MessageLog.print_message("~~~~~~~~~~~~~~到哪了4~~~~~~~~~~~~~~~~~")
         else:
-            raise EventException("Failed to arrive at the Summon Selection screen.")
+            # DO NOT EXIT
+            MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
 
         return None

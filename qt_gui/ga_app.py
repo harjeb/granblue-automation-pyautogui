@@ -14,6 +14,8 @@ from PyQt5.QtCore import QThread, pyqtSignal,QProcess
 from io import StringIO
 import traceback
 import socket
+import shutil
+import re
 
 def excepthook(excType, excValue, tracebackobj):
     """
@@ -61,12 +63,14 @@ class GBF_AutoTool(QWidget, Ui_Form):
             self.ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
             _file = open(f"{self.ROOT_PATH}/data/data_zhcn.json",encoding='utf-8')
             _summon = open(f"{self.ROOT_PATH}/data/summons_zhcn.json",encoding='utf-8')
+            _translate = open(f"{self.ROOT_PATH}/data/translate.json",encoding='utf-8')
         except FileNotFoundError:
             print("[ERROR] Failed to find settings.json. Exiting now...")
             sys.exit(1)
 
         self.gamemode_dict = json.load(_file)
         self.summons_dict = json.load(_summon)
+        self.translate_dict = json.load(_translate)
 
         self.summons_list = []
         for v in self.summons_dict.values():
@@ -143,13 +147,58 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.nmscript = []
         self.nmscript_name = ''
 
+        # 任务队列
+        self.action_queue = [0]
+
+        self.pushButton.clicked.connect(self.start)
+
+        dirs = self.ROOT_PATH+'/farm_queue'
+        if os.path.exists(dirs):
+            shutil.rmtree(dirs)
+
     def saveFarmList(self):
+        # 判断设置是否正确
+
+        latest = self.action_queue[-1]
+        self.action_queue.append(1+latest)
         # 保存战斗队列
         dirs = self.ROOT_PATH+'/farm_queue'
-        import shutil
-        shutil.rmtree(dirs)
-        os.mkdir(dirs)
-        self.saveSettings(dirs)
+        if not os.path.exists(dirs):
+            os.mkdir(dirs)
+        filenum = str(self.action_queue[-1])
+        self.saveSettings(dirs, 'settings'+filenum)
+
+        self.update_queue("任务"+str(filenum)+",")
+
+    def update_queue(self,quest):
+        tmp = self.lineEdit.text() + quest
+        self.lineEdit.setText(tmp)
+
+    def start(self):
+        queue = self.lineEdit.text()
+        _list = re.split('，|,', queue)
+        
+        for i in _list:
+            if '任务' not in i:
+                print("未找到可执行任务")
+                break
+            else:
+                num = i.split("任务")[0]
+                if not num.isnumeric():
+                    print("任务名异常")
+                    break
+                else:
+                    # TODO 把任务setting改成settings.json
+                    # Qthread start_bot
+                    print('ok')
+            self.check_sleep()
+    
+
+    def check_sleep(self):
+        #["game"]["farmingMode"] = "Take a break"
+        #setting_dict["game"]["itemAmount"]
+        print('sleep')
+    
 
     def getElement(self, summons_list):
         # 返回召唤石属性列表
@@ -161,9 +210,22 @@ class GBF_AutoTool(QWidget, Ui_Form):
                     break
         return elements
 
-    def saveSettings(self,save_path):
+    def saveSettings(self,save_path,setname):
         # 保存运行配置
-        setting_dict = {}
+        setting_dict = {"game":{},
+                        "twitter":{},
+                        "discord":{},
+                        "api":{},
+                        "configuration":{},
+                        "misc":{},
+                        "nightmare":{},
+                        "event":{},
+                        "raid":{},
+                        "arcarum":{},
+                        "generic":{},
+                        "xenoClash":{},
+                        "adjustment":{},
+                        "sandbox":{}}
         setting_dict["game"]["combatScriptName"] = self.mainscript_name
         setting_dict["game"]["combatScript"] = self.mainscript
         setting_dict["game"]["farmingMode"] = self.translate(self.comboBox.currentText())
@@ -189,9 +251,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["api"]["enableOptInAPI"] = False
         setting_dict["api"]["username"] = ''
         setting_dict["api"]["password"] = ''
-        setting_dict["configuration"]["enableAutoRestore"] = True
-        setting_dict["configuration"]["enableFullElixir"] = False
-        setting_dict["configuration"]["enableSoulBalm"] = False
         setting_dict["configuration"]["enableBezierCurveMouseMovement"] = self.checkBox_2.isChecked()
         setting_dict["configuration"]["mouseSpeed"] = self.doubleSpinBox.value()
         setting_dict["configuration"]["enableDelayBetweenRuns"] = self.checkBox_3.isChecked()
@@ -257,9 +316,36 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["sandbox"]["defenderGroupNumber"] = 1
         setting_dict["sandbox"]["defenderPartyNumber"] = 1
 
+        json_str = json.dumps(setting_dict, indent=4)
+        with open(save_path+'/%s.json' % setname, 'w') as json_file:
+            json_file.write(json_str)
 
-    def translate(self,cn_str):
-        return en_Str
+    def translate(self, obj):
+        tmp = []
+        if type(obj) is str:
+            if self.is_contain_chinese(obj):
+                return self.translate_dict[obj]
+            else:
+                return obj
+        else:
+            for o in obj:
+                if self.is_contain_chinese(o):
+                    tmp.append(self.translate_dict[o])
+                else:
+                    tmp.append(o)
+            return tmp
+
+    def is_contain_chinese(self,check_str):
+        """
+        判断字符串中是否包含中文
+        :param check_str: {str} 需要检测的字符串
+        :return: {bool} 包含返回True， 不包含返回False
+        """
+        for ch in check_str:
+            if u'\u4e00' <= ch <= u'\u9fff':
+                return True
+        return False
+
 
     def openFileNameDialog(self):
         lineedit = self.sender()
@@ -275,8 +361,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
             else:
                 self.nmscript = open(self.txtFile,encoding='utf-8').readlines()
                 self.nmscript_name = os.path.split(fileName)[1]
-
-
 
     @QtCore.pyqtSlot(str)
     def onActivatedText(self, text):

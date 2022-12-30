@@ -624,7 +624,10 @@ class Game:
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
                 loot_collection_tries -= 1
                 if loot_collection_tries <= 0:
-                    raise RuntimeError("Unable to progress in the Loot Collection process.")
+                    MessageLog.print_message("\n[WARN] Unable to progress in the Loot Collection process,return to Home")
+                    Game.go_back_home()
+                    break
+                    #raise RuntimeError("Unable to progress in the Loot Collection process.")
 
                 Game.find_and_click_button("ok", tries = 1, suppress_error = True)
                 Game.find_and_click_button("close", tries = 1, suppress_error = True)
@@ -754,7 +757,10 @@ class Game:
         while ImageUtils.confirm_location("select_a_summon", tries = 1, suppress_error = True) is False:
             check_popup_tries -= 1
             if check_popup_tries <= 0:
-                raise RuntimeError("Failed to progress in the Check for Popups process...")
+                MessageLog.print_message("\n[WARN] Failed to progress in the Check for Popups process...,return to Home")
+                Game.go_back_home()
+                break     
+                #raise RuntimeError("Failed to progress in the Check for Popups process...")
 
             if Settings.farming_mode == "Rise of the Beasts" and ImageUtils.confirm_location("proud_solo_quest", tries = 1):
                 # Scroll down the screen a little bit because the popup itself is too long for screen sizes around 1080p.

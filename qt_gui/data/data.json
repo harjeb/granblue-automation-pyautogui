@@ -1250,5 +1250,11 @@
             "map": "None",
             "items": ["Repeated Runs"]
         }
+    },
+    "Take a break":{
+        "Any": {
+            "map": "None",
+            "items": ["Sleep Mins"]
+        }        
     }
 }
