@@ -233,10 +233,11 @@ class GBF_AutoTool(QWidget, Ui_Form):
                             # 把任务setting改成settings.json
                             dir = self.ROOT_PATH+'/backend/farm_queue/'
                             _file = dir + 'settings' + str(num) + '.json'
+                            newdir = self.ROOT_PATH+'/backend/'
                             try:
-                                # if os.path.exists(dir+'settings.json'):
-                                #     os.remove(dir+'settings.json')
-                                os.rename(_file, dir+'settings.json')
+                                if os.path.exists(newdir+'settings.json'):
+                                    os.remove(newdir+'settings.json')
+                                os.rename(_file,newdir+'settings.json')
                             except:
                                 QMessageBox.warning(self,
                                         "错误",
