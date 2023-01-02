@@ -245,7 +245,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
                                         QMessageBox.Yes)
                                 self.stop()
                                 break
-                            _settings = open(f"{self.ROOT_PATH}/backend/farm_queue/settings.json",encoding='utf-8')
+                            _settings = open(f"{self.ROOT_PATH}/backend/settings.json",encoding='utf-8')
                             if not self.check_sleep(json.load(_settings)):
                                 # Qthread start_bot
                                 self.process.start('python backend/main.py')
