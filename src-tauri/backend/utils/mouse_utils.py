@@ -81,15 +81,28 @@ class MouseUtils:
 
             pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
 
-        if image_name != "attack":
+        # if image_name != "attack":
+        #     pyautogui.click(clicks = mouse_clicks)
+        # else:
+        p = 20
+        R = random.randint(1,100)
+        if R <= p:
             pyautogui.click(clicks = mouse_clicks)
+            try:
+                post = pyautogui.position()
+                with open('mouse.log','a') as f:
+                    f.write(str(post)+'\n')
+            except:
+                pass
         else:
-            p = 20
-            R = random.randint(1,100)
-            if R <= p:
-                pyautogui.click(clicks = mouse_clicks)
-            else:
-                pyautogui.click(clicks = 2)
+            pyautogui.click(clicks = 2)
+            try:
+                post = pyautogui.position()
+                with open('mouse.log','a') as f:
+                    f.write(str(post)+'\n')
+                    f.write(str(post)+'\n')
+            except:
+                pass
 
         # This delay is necessary as ImageUtils will take the screenshot too fast and the bot will use the last frame before clicking to navigate.
         from bot.game import Game
