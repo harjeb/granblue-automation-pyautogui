@@ -275,7 +275,6 @@ class Game:
         Returns:
             None
         """
-        MessageLog.print_message("\n~~~~~~~~~~~~~~~~~~~~~~~~~start sleep~~~~~~~~~~~~~~~~~~~~~~~~~~.")
         if Settings.enable_delay_between_runs:
             # Check if the provided delay is valid.
             if int(Settings.delay_in_seconds) < 0:
@@ -1019,7 +1018,6 @@ class Game:
 
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                     # Generate a resting period if the user enabled it.
-                    MessageLog.print_message("~~~~~~check whether sleep~~~~~~~~")
                     Game._delay_between_runs()
                     Game._move_mouse_security_check()
                     first_run = False

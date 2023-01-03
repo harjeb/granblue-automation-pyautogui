@@ -91,7 +91,7 @@ class MouseUtils:
             pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
 
         if image_name == "attack":
-            obfuscate_click(maxclick=5)
+            #obfuscate_click(maxclick=5)
             pyautogui.click(clicks = mouse_clicks)
             try:
                 post = pyautogui.position()
@@ -102,7 +102,7 @@ class MouseUtils:
         else:
             p = 15
             R = random.randint(1,100)
-            if R <= p:
+            if R >= p:
                 pyautogui.click(clicks = mouse_clicks)
                 try:
                     post = pyautogui.position()
