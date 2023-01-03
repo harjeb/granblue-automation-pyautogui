@@ -46,6 +46,15 @@ class MouseUtils:
 
         return None
 
+
+    @staticmethod
+    def obfuscate_click(maxclick=3):
+        Settings.window_left
+        Settings.window_top
+        Settings.window_width
+        Settings.window_height
+
+
     @staticmethod
     def move_and_click_point(x: int, y: int, image_name: str, custom_mouse_speed: float = 0.0, mouse_clicks: int = 1):
         """Move the cursor to the specified point on the screen and clicks it.
@@ -81,12 +90,8 @@ class MouseUtils:
 
             pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
 
-        # if image_name != "attack":
-        #     pyautogui.click(clicks = mouse_clicks)
-        # else:
-        p = 20
-        R = random.randint(1,100)
-        if R <= p:
+        if image_name == "attack":
+            obfuscate_click(maxclick=5)
             pyautogui.click(clicks = mouse_clicks)
             try:
                 post = pyautogui.position()
@@ -95,14 +100,25 @@ class MouseUtils:
             except:
                 pass
         else:
-            pyautogui.click(clicks = 2)
-            try:
-                post = pyautogui.position()
-                with open('mouse.log','a') as f:
-                    f.write(str(post)+'\n')
-                    f.write(str(post)+'\n')
-            except:
-                pass
+            p = 15
+            R = random.randint(1,100)
+            if R <= p:
+                pyautogui.click(clicks = mouse_clicks)
+                try:
+                    post = pyautogui.position()
+                    with open('mouse.log','a') as f:
+                        f.write(str(post)+'\n')
+                except:
+                    pass
+            else:
+                pyautogui.click(clicks = 2)
+                try:
+                    post = pyautogui.position()
+                    with open('mouse.log','a') as f:
+                        f.write(str(post)+'\n')
+                        f.write(str(post)+'\n')
+                except:
+                    pass
 
         # This delay is necessary as ImageUtils will take the screenshot too fast and the bot will use the last frame before clicking to navigate.
         from bot.game import Game
