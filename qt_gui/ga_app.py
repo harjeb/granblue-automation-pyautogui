@@ -79,7 +79,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
             elif __file__:
                 application_path = os.path.dirname(__file__)
             self.ROOT_PATH = application_path
-            print(self.ROOT_PATH)
+            #print(self.ROOT_PATH)
             _file = open(f"{self.ROOT_PATH}/data/data_zhcn.json",encoding='utf-8')
             _summon = open(f"{self.ROOT_PATH}/data/summons_zhcn.json",encoding='utf-8')
             _translate = open(f"{self.ROOT_PATH}/data/translate.json",encoding='utf-8')
@@ -185,6 +185,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.process.readyReadStandardError.connect(self.onReadyReadStandardError)
         self.process.readyReadStandardOutput.connect(self.onReadyReadStandardOutput)
         self.process.finished.connect(self.onFinished)
+        # self.main_thread = Game_Thread()
 
 
     def saveFarmList(self):
@@ -210,80 +211,19 @@ class GBF_AutoTool(QWidget, Ui_Form):
             self.pushButton.setText("停止")
             self.running = True
             queue = self.lineEdit.text()
-            _list = re.split('，|,', queue)
-            for i in _list:
-                if i != '':
-                    if '任务' not in i:
-                        QMessageBox.warning(self,
-                                        "错误",
-                                        "未找到可执行任务",
-                                        QMessageBox.Yes)
-                        self.stop()
-                        break
-                    else:
-                        num = i.split("任务")[-1]
-                        if not num.isnumeric():
-                            QMessageBox.warning(self,
-                                        "错误",
-                                        "任务名异常",
-                                        QMessageBox.Yes)
-                            self.stop()
-                            break
-                        else:
-                            # 把任务setting改成settings.json
-                            dir = self.ROOT_PATH+'/backend/farm_queue/'
-                            _file = dir + 'settings' + str(num) + '.json'
-                            newdir = self.ROOT_PATH+'/backend/'
-                            try:
-                                if os.path.exists(newdir+'settings.json'):
-                                    os.remove(newdir+'settings.json')
-                                os.rename(_file,newdir+'settings.json')
-                            except:
-                                QMessageBox.warning(self,
-                                        "错误",
-                                        "没找到正确任务配置",
-                                        QMessageBox.Yes)
-                                self.stop()
-                                break
-                            _settings = open(f"{self.ROOT_PATH}/backend/settings.json",encoding='utf-8')
-                            if not self.check_sleep(json.load(_settings)):
-                                # Qthread start_bot
-                                self.process.start('python backend/main.py')
-                                self.process.waitForFinished()
-                            else:
-                                while True:
-                                    if self.sleep_over:
-                                        break
-            else:
-                # 停止游戏
-                self.stop()
+            self.process.start('python controller.py %s' % queue)
+        else:
+            # 停止游戏
+            self.stop()
 
     def stop(self):
         self.process.close()
-        try:
-            self.sleep_thread.terminate()
-        except:
-            pass
         self.pushButton.setText("开始")
-        self.running = False        
-
-    def check_sleep(self, _settings_dict):
-        if _settings_dict["game"]["farmingMode"] == "Take a break":
-            print('sleep')
-            self.pushButton.setText("休息")
-            self.running = True
-            mins = _settings_dict["game"]["itemAmount"]
-            self.sleep_over = False
-            self.sleep_thread = Sleep_Thread(60*mins)
-            self.sleep_thread.status.connect(self._update_sleep_status)
-            self.sleep_thread.start()
-            return True
-        else:
-            return False
+        self.running = False
 
     def _update_sleep_status(self):
         self.sleep_over = True
-    
+
     def getElement(self, summons_list):
         # 返回召唤石属性列表
         elements = []
