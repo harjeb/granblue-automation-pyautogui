@@ -44,6 +44,11 @@ exit
 
 ## ！！！本项目仅供学习使用！！！
 
+## 汉化后的qt界面
+![Gbf Automation ExReborn](https://github.com/harjeb/granblue-automation-pyautogui/blob/custom_dev/qt_gui/image/gbf_auto.png)
+
+## Changelog
+2023/1/4 Beta v1.0更新:完成新GUI的基本功能，增加队列执行，替换twitter api的舔表功能，不再需要开发者权限才能舔
 
 ## Custom Ver Goal
 - 用舔表网API替代twitter API降低工具使用难度
@@ -54,11 +59,11 @@ exit
 
 
 ## TODO
-- [ ] 功能汉化
-- [ ] 新qt界面
-- [ ] raid功能优化
-- [ ] 修复游戏更新导致的阻塞问题等
-
+- [] 功能汉化
+- [x] 新qt界面
+- [x] raid功能优化
+- [x] 修复游戏更新导致的阻塞问题等
+- [] 沙盒设置
 
 ## Disclaimer
 
