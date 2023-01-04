@@ -149,8 +149,8 @@ class EririRoomFinder:
         Returns:
             (str): A single room code that has not been visited.
         """
-        # TODO 读取settings中的boss名
-        boss_list = ["Lvl 200 Akasha"]
+        # TODO 增加多选功能
+        boss_list = [Settings.mission_name]
         for i in boss_list:
             if i in EririRoomFinder._list_of_raids.keys():
                 EririRoomFinder._list_of_id.append(EririRoomFinder._list_of_raids[i])
