@@ -16,8 +16,34 @@ import traceback
 import socket
 import shutil
 import re
+import logging
 import ctypes
 CP_console = f"cp{ctypes.cdll.kernel32.GetConsoleOutputCP()}"
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+if not os.path.exists('log'):
+    os.makedirs('log')
+
+current_date = time.strftime("%m_%d_%H_%M_%S_", time.localtime())
+logname = 'log/' + current_date + 'ga.log'  # 指定输出的日志文件名
+
+fh = logging.FileHandler(logname, encoding='utf-8', mode='a')
+fh.setLevel(logging.INFO)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+# 定义handler的输出格式
+custom_format = '%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s: %(message)s'
+# formatter = logging.Formatter('%(asctime)s-%(name)s-%(levelname)s-%(message)s')
+formatter = logging.Formatter(custom_format)
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+logger.addHandler(fh)
+logger.addHandler(ch)
+
 
 def excepthook(excType, excValue, tracebackobj):
     """
@@ -190,24 +216,39 @@ class GBF_AutoTool(QWidget, Ui_Form):
 
     def saveFarmList(self):
         # 判断设置是否正确
-
-        latest = self.action_queue[-1]
-        self.action_queue.append(1+latest)
-        # 保存战斗队列
-        dirs = self.ROOT_PATH+'/backend/farm_queue'
-        if not os.path.exists(dirs):
-            os.mkdir(dirs)
-        filenum = str(self.action_queue[-1])
-        self.saveSettings(dirs, 'settings'+filenum)
-
-        self.update_queue("任务"+str(filenum)+",")
+        if self.check_settings():
+            latest = self.action_queue[-1]
+            self.action_queue.append(1+latest)
+            # 保存战斗队列
+            dirs = self.ROOT_PATH+'/backend/farm_queue'
+            try:
+                if not os.path.exists(dirs):
+                    os.mkdir(dirs)
+                filenum = str(self.action_queue[-1])
+                self.saveSettings(dirs, 'settings'+filenum)
+                self.update_queue("任务"+str(filenum)+",")
+            except:
+                QMessageBox.warning(self,
+                        "错误",
+                        "未找到脚本文件夹<backend>,请检测exe是否在主目录中",
+                        QMessageBox.Yes)
+        else:
+            QMessageBox.warning(self,
+                        "错误",
+                        "配置不正确",
+                        QMessageBox.Yes)
 
     def update_queue(self,quest):
         tmp = self.lineEdit.text() + quest
         self.lineEdit.setText(tmp)
 
     def start(self):
-        if self.check_settings():
+        if self.lineEdit.text() == '':
+            QMessageBox.warning(self,
+                        "错误",
+                        "未找到脚本任务",
+                        QMessageBox.Yes)
+        else:
             if not self.running:
                 self.pushButton.setText("停止")
                 self.running = True
@@ -218,11 +259,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 if reply == QMessageBox.Yes:
                     # 停止Farm
                     self.stop()
-        else:
-            QMessageBox.warning(self,
-                        "错误",
-                        "配置不正确",
-                        QMessageBox.Yes)
 
     def check_settings(self):
         flag = True
@@ -482,16 +518,19 @@ class GBF_AutoTool(QWidget, Ui_Form):
     def onReadyReadStandardError(self):
         error = self.process.readAllStandardError().data().decode()
         self.textBrowser.appendPlainText(error.strip())
+        logger.error(error.strip())
 
     def onReadyReadStandardOutput(self):
         result = self.process.readAllStandardOutput().data().decode()
         self.textBrowser.appendPlainText(result.strip())
+        logger.info(result.strip())
 
     def onFinished(self, exitCode, exitStatus):
         if exitStatus == 0:
             self.textBrowser.appendPlainText("---------")
             self.textBrowser.appendPlainText("========Farm 结束========")
-
+            logger.info("---------")
+            logger.info("========Farm 结束========")
             self.running = False
             self.pushButton.setText('开始')
 
