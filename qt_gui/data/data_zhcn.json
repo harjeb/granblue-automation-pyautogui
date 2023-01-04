@@ -5,7 +5,8 @@
             "items": [
                 "Satin Feather",
                 "Zephyr Feather",
-                "Flying Sprout"
+                "Flying Sprout",
+                "Repeated Runs"
             ]
         },
         "Lucky Charm Hunt": {
@@ -13,7 +14,8 @@
             "items": [
                 "Fine Sand Bottle",
                 "Untamed Flame",
-                "Blistering Ore"
+                "Blistering Ore",
+                "Repeated Runs"
             ]
         },
         "Special Op's Request": {
@@ -21,7 +23,8 @@
             "items": [
                 "Fine Sand Bottle",
                 "Untamed Flame",
-                "Blistering Ore"
+                "Blistering Ore",
+                "Repeated Runs"
             ]
         },
         "Threat to the Fisheries": {
@@ -29,7 +32,8 @@
             "items": [
                 "Fresh Water Jug",
                 "Soothing Splash",
-                "Glowing Coral"
+                "Glowing Coral",
+                "Repeated Runs"
             ]
         },
         "The Fruit of Lumacie": {
@@ -37,7 +41,8 @@
             "items": [
                 "Rough Stone",
                 "Swirling Amber",
-                "Coarse Alluvium"
+                "Coarse Alluvium",
+                "Repeated Runs"
             ]
         },
         "Whiff of Danger": {
@@ -45,7 +50,8 @@
             "items": [
                 "Rough Stone",
                 "Swirling Amber",
-                "Coarse Alluvium"
+                "Coarse Alluvium",
+                "Repeated Runs"
             ]
         },
         "I Challenge You!": {
@@ -53,7 +59,8 @@
             "items": [
                 "Falcon Feather",
                 "Spring Water Jug",
-                "Vermilion Stone"
+                "Vermilion Stone",
+                "Repeated Runs"
             ]
         },
         "For Whom the Bell Tolls": {
@@ -61,7 +68,8 @@
             "items": [
                 "Slimy Shroom",
                 "Hollow Soul",
-                "Lacrimosa"
+                "Lacrimosa",
+                "Repeated Runs"
             ]
         },
         "Golonzo's Battles of Old": {
@@ -69,7 +77,8 @@
             "items": [
                 "Wheat Stalk",
                 "Iron Cluster",
-                "Olea Plant"
+                "Olea Plant",
+                "Repeated Runs"
             ]
         },
         "The Dungeon Diet": {
@@ -77,20 +86,23 @@
             "items": [
                 "Indigo Fruit",
                 "Foreboding Clover",
-                "Blood Amber"
+                "Blood Amber",
+                "Repeated Runs"
             ]
         },
         "Trust Busting Dustup": {
             "map": "Former Capital Mephorash",
             "items": [
                 "Sand Brick",
-                "Native Reed"
+                "Native Reed",
+                "Repeated Runs"
             ]
         },
         "Erste Kingdom Episode 4": {
             "map": "Former Capital Mephorash",
             "items": [
-                "Antique Cloth"
+                "Antique Cloth",
+                "Repeated Runs"
             ]
         },
         "Imperial Wanderer's Soul": {
@@ -98,13 +110,15 @@
             "items": [
                 "Prosperity Flame",
                 "Explosive Material",
-                "Steel Liquid"
+                "Steel Liquid",
+                "Repeated Runs"
             ]
         },
         "Rocket Raid": {
             "map": "Agastia",
             "items": [
-                "Steel Liquid"
+                "Steel Liquid",
+                "Repeated Runs"
             ]
         },
         "Stocking Up for Winter": {
@@ -112,31 +126,36 @@
             "items": [
                 "Merkmal Fig",
                 "Bastion Block",
-                "Corroded Cartridge"
+                "Corroded Cartridge",
+                "Repeated Runs"
             ]
         },
         "The Mysterious Room": {
             "map": "Merkmal Island",
             "items": [
-                "Bastion Block"
+                "Bastion Block",
+                "Repeated Runs"
             ]
         },
         "The Right of Might": {
             "map": "Groz Island",
             "items": [
-                "Raw Gemstone"
+                "Raw Gemstone",
+                "Repeated Runs"
             ]
         },
         "Pholia the Maiden Episode 1": {
             "map": "Groz Island",
             "items": [
-                "Riot Root"
+                "Riot Root",
+                "Repeated Runs"
             ]
         },
         "Pholia the Maiden Episode 3": {
             "map": "Groz Island",
             "items": [
-                "Riot Root"
+                "Riot Root",
+                "Repeated Runs"
             ]
         },
         "Teachings of the Sage Episode 2": {
@@ -144,7 +163,8 @@
             "items": [
                 "Gray Sandstone",
                 "Kluger Herb",
-                "Meditative Sutra"
+                "Meditative Sutra",
+                "Repeated Runs"
             ]
         },
         "Isle of Primals Episode 3": {
@@ -152,7 +172,8 @@
             "items": [
                 "Jumbo Beast Bone",
                 "Bestia Fruit",
-                "Toxic Tulip"
+                "Toxic Tulip",
+                "Repeated Runs"
             ]
         },
         "Deception's Inception Episode 4": {
@@ -160,7 +181,8 @@
             "items": [
                 "Jumbo Beast Bone",
                 "Bestia Fruit",
-                "Toxic Tulip"
+                "Toxic Tulip",
+                "Repeated Runs"
             ]
         },
         "Be All You Can Be": {
@@ -168,20 +190,23 @@
             "items": [
                 "Rhem Pepper",
                 "Rusty Eave",
-                "Translucent Silk"
+                "Translucent Silk",
+                "Repeated Runs"
             ]
         },
         "Once Lost, Once Found": {
             "map": "Starke Island",
             "items": [
                 "Broken Teacup",
-                "Dusty Book"
+                "Dusty Book",
+                "Repeated Runs"
             ]
         },
         "A Girl Named Mika Episode 2": {
             "map": "The Edgelands",
             "items": [
-                "Converging Rays"
+                "Converging Rays",
+                "Repeated Runs"
             ]
         },
         "House of Happiness": {
@@ -189,7 +214,8 @@
             "items": [
                 "Converging Rays",
                 "Meditative Sutra",
-                "Jumbo Beast Bone"
+                "Jumbo Beast Bone",
+                "Repeated Runs"
             ]
         }
     },
@@ -207,7 +233,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Red Dragon Scale",
-                "Hellfire Fragment"
+                "Hellfire Fragment",
+                "Repeated Runs"
             ]
         },
         "H Fire Trial": {
@@ -223,7 +250,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Red Dragon Scale",
-                "Hellfire Fragment"
+                "Hellfire Fragment",
+                "Repeated Runs"
             ]
         },
         "VH Fire Trial": {
@@ -239,7 +267,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Red Dragon Scale",
-                "Hellfire Fragment"
+                "Hellfire Fragment",
+                "Repeated Runs"
             ]
         },
         "N Water Trial": {
@@ -255,7 +284,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Blue Dragon Scale",
-                "Deluge Fragment"
+                "Deluge Fragment",
+                "Repeated Runs"
             ]
         },
         "H Water Trial": {
@@ -271,7 +301,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Blue Dragon Scale",
-                "Deluge Fragment"
+                "Deluge Fragment",
+                "Repeated Runs"
             ]
         },
         "VH Water Trial": {
@@ -287,7 +318,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Blue Dragon Scale",
-                "Deluge Fragment"
+                "Deluge Fragment",
+                "Repeated Runs"
             ]
         },
         "N Earth Trial": {
@@ -303,7 +335,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Brown Dragon Scale",
-                "Wasteland Fragment"
+                "Wasteland Fragment",
+                "Repeated Runs"
             ]
         },
         "H Earth Trial": {
@@ -319,7 +352,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Brown Dragon Scale",
-                "Wasteland Fragment"
+                "Wasteland Fragment",
+                "Repeated Runs"
             ]
         },
         "VH Earth Trial": {
@@ -335,7 +369,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Brown Dragon Scale",
-                "Wasteland Fragment"
+                "Wasteland Fragment",
+                "Repeated Runs"
             ]
         },
         "N Wind Trial": {
@@ -351,7 +386,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Green Dragon Scale",
-                "Typhoon Fragment"
+                "Typhoon Fragment",
+                "Repeated Runs"
             ]
         },
         "H Wind Trial": {
@@ -367,7 +403,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Green Dragon Scale",
-                "Typhoon Fragment"
+                "Typhoon Fragment",
+                "Repeated Runs"
             ]
         },
         "VH Wind Trial": {
@@ -383,7 +420,8 @@
                 "Flawless Prism",
                 "Rainbow Prism",
                 "Green Dragon Scale",
-                "Typhoon Fragment"
+                "Typhoon Fragment",
+                "Repeated Runs"
             ]
         },
         "N Light Trial": {
@@ -398,7 +436,8 @@
                 "Flawed Prism",
                 "Flawless Prism",
                 "Rainbow Prism",
-                "White Dragon Scale"
+                "White Dragon Scale",
+                "Repeated Runs"
             ]
         },
         "H Light Trial": {
@@ -413,7 +452,8 @@
                 "Flawed Prism",
                 "Flawless Prism",
                 "Rainbow Prism",
-                "White Dragon Scale"
+                "White Dragon Scale",
+                "Repeated Runs"
             ]
         },
         "VH Light Trial": {
@@ -428,7 +468,8 @@
                 "Flawed Prism",
                 "Flawless Prism",
                 "Rainbow Prism",
-                "White Dragon Scale"
+                "White Dragon Scale",
+                "Repeated Runs"
             ]
         },
         "N Dark Trial": {
@@ -443,7 +484,8 @@
                 "Flawed Prism",
                 "Flawless Prism",
                 "Rainbow Prism",
-                "Black Dragon Scale"
+                "Black Dragon Scale",
+                "Repeated Runs"
             ]
         },
         "H Dark Trial": {
@@ -458,7 +500,8 @@
                 "Flawed Prism",
                 "Flawless Prism",
                 "Rainbow Prism",
-                "Black Dragon Scale"
+                "Black Dragon Scale",
+                "Repeated Runs"
             ]
         },
         "VH Dark Trial": {
@@ -473,25 +516,29 @@
                 "Flawed Prism",
                 "Flawless Prism",
                 "Rainbow Prism",
-                "Black Dragon Scale"
+                "Black Dragon Scale",
+                "Repeated Runs"
             ]
         },
         "N Shiny Slime Search!": {
             "map": "Shiny Slime Search!",
             "items": [
-                "EXP"
+                "EXP",
+                "Repeated Runs"
             ]
         },
         "H Shiny Slime Search!": {
             "map": "Shiny Slime Search!",
             "items": [
-                "EXP"
+                "EXP",
+                "Repeated Runs"
             ]
         },
         "VH Shiny Slime Search!": {
             "map": "Shiny Slime Search!",
             "items": [
-                "EXP"
+                "EXP",
+                "Repeated Runs"
             ]
         },
         "EX Ifrit Showdown": {
@@ -501,7 +548,8 @@
                 "Scorching Peak",
                 "Infernal Garnet",
                 "Ifrit Anima",
-                "Ifrit Omega Anima"
+                "Ifrit Omega Anima",
+                "Repeated Runs"
             ]
         },
         "EX Cocytus Showdown": {
@@ -511,7 +559,8 @@
                 "Crystal Spirit",
                 "Frozen Hell Prism",
                 "Cocytus Anima",
-                "Cocytus Omega Anima"
+                "Cocytus Omega Anima",
+                "Repeated Runs"
             ]
         },
         "EX Vohu Manah Showdown": {
@@ -521,7 +570,8 @@
                 "Luminous Judgment",
                 "Evil Judge Crystal",
                 "Vohu Manah Anima",
-                "Vohu Manah Omega Anima"
+                "Vohu Manah Omega Anima",
+                "Repeated Runs"
             ]
         },
         "EX Sagittarius Showdown": {
@@ -531,7 +581,8 @@
                 "Sagittarius Rune",
                 "Horseman's Plate",
                 "Sagittarius Anima",
-                "Sagittarius Omega Anima"
+                "Sagittarius Omega Anima",
+                "Repeated Runs"
             ]
         },
         "EX Corow Showdown": {
@@ -541,7 +592,8 @@
                 "Sunlight Quartz",
                 "Halo Light Quartz",
                 "Corow Anima",
-                "Corow Omega Anima"
+                "Corow Omega Anima",
+                "Repeated Runs"
             ]
         },
         "EX Diablo Showdown": {
@@ -551,25 +603,29 @@
                 "Shadow Silver",
                 "Phantom Demon Jewel",
                 "Diablo Anima",
-                "Diablo Omega Anima"
+                "Diablo Omega Anima",
+                "Repeated Runs"
             ]
         },
         "N Angel Halo": {
             "map": "Angel Halo",
             "items": [
-                "Angel Halo Weapons"
+                "Angel Halo Weapons",
+                "Repeated Runs"
             ]
         },
         "H Angel Halo": {
             "map": "Angel Halo",
             "items": [
-                "Angel Halo Weapons"
+                "Angel Halo Weapons",
+                "Repeated Runs"
             ]
         },
         "VH Angel Halo": {
             "map": "Angel Halo",
             "items": [
-                "Angel Halo Weapons"
+                "Angel Halo Weapons",
+                "Repeated Runs"
             ]
         },
         "Campaign-Exclusive Quest": {
@@ -582,19 +638,22 @@
     "共斗": {
         "H3-1 In a Dusk Dream": {
             "items": [
-                "EXP"
+                "EXP",
+                "Repeated Runs"
             ]
         },
         "EX1-1 Corridor of Puzzles": {
             "items": [
                 "Warrior Creed",
-                "Mage Creed"
+                "Mage Creed",
+                "Repeated Runs"
             ]
         },
         "EX1-3 Lost in the Dark": {
             "items": [
                 "Warrior Creed",
-                "Mage Creed"
+                "Mage Creed",
+                "Repeated Runs"
             ]
         },
         "EX2-2 Time of Judgement": {
@@ -605,7 +664,8 @@
                 "Pilgrim Distinction",
                 "Alchemist Distinction",
                 "Monk's Distinction",
-                "Evil Judge Crystal"
+                "Evil Judge Crystal",
+                "Repeated Runs"
             ]
         },
         "EX2-3 Time of Revelation": {
@@ -616,7 +676,8 @@
                 "Fencer Distinction",
                 "Dual Wielder Distinction",
                 "Forester's Distinction",
-                "Infernal Garnet"
+                "Infernal Garnet",
+                "Repeated Runs"
             ]
         },
         "EX2-4 Time of Eminence": {
@@ -629,7 +690,8 @@
                 "Mystic Distinction",
                 "Shredder Distinction",
                 "Contractor Distinction",
-                "Halo Light Quartz"
+                "Halo Light Quartz",
+                "Repeated Runs"
             ]
         },
         "EX3-2 Rule of the Tundra": {
@@ -641,7 +703,8 @@
                 "Dragoon's Distinction",
                 "Skofnung Replica",
                 "Langeleik Replica",
-                "Kapilavastu Replica"
+                "Kapilavastu Replica",
+                "Repeated Runs"
             ]
         },
         "EX3-3 Rule of the Plains": {
@@ -652,7 +715,8 @@
                 "Gunslinger Distinction",
                 "Cavalryman Distinction",
                 "Longstrider's Distinction",
-                "Horseman's Plate"
+                "Horseman's Plate",
+                "Repeated Runs"
             ]
         },
         "EX3-4 Rule of the Twilight": {
@@ -664,7 +728,8 @@
                 "Assassin Distinction",
                 "Ninja Distinction",
                 "Dancer Distinction",
-                "Phantom Demon Jewel"
+                "Phantom Demon Jewel",
+                "Repeated Runs"
             ]
         },
         "EX4-2 Amidst the Waves": {
@@ -676,7 +741,8 @@
                 "Pilgrim Distinction",
                 "Alchemist Distinction",
                 "Mage Distinction",
-                "Monk's Distinction"
+                "Monk's Distinction",
+                "Repeated Runs"
             ]
         },
         "EX4-3 Amidst the Petals": {
@@ -690,7 +756,8 @@
                 "Sharpshooter Distinction",
                 "Gunslinger Distinction",
                 "Longstrider's Distinction",
-                "Dancer Distinction"
+                "Dancer Distinction",
+                "Repeated Runs"
             ]
         },
         "EX4-4 Amidst Severe Cliffs": {
@@ -702,7 +769,8 @@
                 "Combatant Distinction",
                 "Gladiator Distinction",
                 "Sword Master Distinction",
-                "Fencer Distinction"
+                "Fencer Distinction",
+                "Repeated Runs"
             ]
         },
         "EX4-5 Amidst the Flames": {
@@ -716,7 +784,8 @@
                 "Bandit Distinction",
                 "Troubadour Distinction",
                 "Dragoon's Distinction",
-                "Contractor Distinction"
+                "Contractor Distinction",
+                "Repeated Runs"
             ]
         }
     },
@@ -730,7 +799,8 @@
                 "Tiamat Amood Omega",
                 "Tiamat Bolt Omega",
                 "Tiamat Gauntlet Omega",
-                "Tiamat Glaive Omega"
+                "Tiamat Glaive Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 风妈": {
@@ -742,7 +812,8 @@
                 "Tiamat Amood Omega",
                 "Tiamat Bolt Omega",
                 "Tiamat Gauntlet Omega",
-                "Tiamat Glaive Omega"
+                "Tiamat Glaive Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 70 高达": {
@@ -754,7 +825,8 @@
                 "Colossus Blade Omega",
                 "Colossus Cane Omega",
                 "Colossus Carbine Omega",
-                "Colossus Fist Omega"
+                "Colossus Fist Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 高达": {
@@ -766,7 +838,8 @@
                 "Colossus Blade Omega",
                 "Colossus Cane Omega",
                 "Colossus Carbine Omega",
-                "Colossus Fist Omega"
+                "Colossus Fist Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 60 泥鳅": {
@@ -778,7 +851,8 @@
                 "Leviathan Bow Omega",
                 "Leviathan Gaze Omega",
                 "Leviathan Scepter Omega",
-                "Leviathan Spear Omega"
+                "Leviathan Spear Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 泥鳅": {
@@ -790,7 +864,8 @@
                 "Leviathan Bow Omega",
                 "Leviathan Gaze Omega",
                 "Leviathan Scepter Omega",
-                "Leviathan Spear Omega"
+                "Leviathan Spear Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 60 土妹": {
@@ -802,7 +877,8 @@
                 "Yggdrasil Bow Omega",
                 "Yggdrasil Crystal Blade Omega",
                 "Yggdrasil Dagger Omega",
-                "Yggdrasil Dewbranch Omega"
+                "Yggdrasil Dewbranch Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 土妹": {
@@ -814,7 +890,8 @@
                 "Yggdrasil Bow Omega",
                 "Yggdrasil Crystal Blade Omega",
                 "Yggdrasil Dagger Omega",
-                "Yggdrasil Dewbranch Omega"
+                "Yggdrasil Dewbranch Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 75 光妈": {
@@ -826,7 +903,8 @@
                 "Luminiera Bhuj Omega",
                 "Luminiera Bolt Omega",
                 "Luminiera Harp Omega",
-                "Luminiera Sword Omega"
+                "Luminiera Sword Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 光妈": {
@@ -838,7 +916,8 @@
                 "Luminiera Bhuj Omega",
                 "Luminiera Bolt Omega",
                 "Luminiera Harp Omega",
-                "Luminiera Sword Omega"
+                "Luminiera Sword Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 75 船妈": {
@@ -850,7 +929,8 @@
                 "Celeste Harp Omega",
                 "Celeste Claw Omega",
                 "Celeste Horn Omega",
-                "Celeste Zaghnal Omega"
+                "Celeste Zaghnal Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 船妈": {
@@ -862,7 +942,8 @@
                 "Celeste Harp Omega",
                 "Celeste Claw Omega",
                 "Celeste Horn Omega",
-                "Celeste Zaghnal Omega"
+                "Celeste Zaghnal Omega",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 湿婆": {
@@ -873,7 +954,8 @@
                 "Hand of Brahman",
                 "Scimitar of Brahman",
                 "Trident of Brahman",
-                "Nilakantha"
+                "Nilakantha",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 欧罗巴": {
@@ -884,7 +966,8 @@
                 "Tyros Bow",
                 "Tyros Scepter",
                 "Tyros Zither",
-                "Spirit of Mana"
+                "Spirit of Mana",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 神盾": {
@@ -895,7 +978,8 @@
                 "Nibelung Horn",
                 "Nibelung Klinge",
                 "Nibelung Messer",
-                "Godsworn Edge"
+                "Godsworn Edge",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 军神": {
@@ -906,7 +990,8 @@
                 "Last Storm Blade",
                 "Last Storm Harp",
                 "Last Storm Lance",
-                "Coruscant Crozier"
+                "Coruscant Crozier",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 梅塔": {
@@ -917,7 +1002,8 @@
                 "Mittron's Treasured Blade",
                 "Mittron's Gauntlet",
                 "Mittron's Bow",
-                "Pillar of Flame"
+                "Pillar of Flame",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 阿凡达": {
@@ -928,7 +1014,8 @@
                 "Abyss Striker",
                 "Abyss Spine",
                 "Abyss Gaze",
-                "Zechariah"
+                "Zechariah",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 奥西里斯": {
@@ -939,7 +1026,8 @@
                 "Obscuritas",
                 "Phantasmas",
                 "Abydos",
-                "Bigeh and Edfu"
+                "Bigeh and Edfu",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 荷鲁斯": {
@@ -950,31 +1038,36 @@
                 "Gungnir",
                 "Sleipnir Shoe",
                 "Harakhte",
-                "Harsiesis"
+                "Harsiesis",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 火天司": {
             "map": "Michael",
             "items": [
-                "Michael Anima"
+                "Michael Anima",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 水天司": {
             "map": "Gabriel",
             "items": [
-                "Gabriel Anima"
+                "Gabriel Anima",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 土天司": {
             "map": "Uriel",
             "items": [
-                "Uriel Anima"
+                "Uriel Anima",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 风天司": {
             "map": "Raphael",
             "items": [
-                "Raphael Anima"
+                "Raphael Anima",
+                "Repeated Runs"
             ]
         },
         "四大天司": {
@@ -983,39 +1076,45 @@
                 "Fire Halo",
                 "Water Halo",
                 "Earth Halo",
-                "Wind Halo"
+                "Wind Halo",
+                "Repeated Runs"
             ]
         },
         "Lvl 110 蔷薇女王": {
             "map": "Rose Queen",
             "items": [
-                "Rose Petal"
+                "Rose Petal",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 大公": {
             "map": "Grand Order",
             "items": [
                 "Azure Feather",
-                "Heavenly Horn"
+                "Heavenly Horn",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 大公": {
             "map": "Grand Order",
             "items": [
-                "Verdant Azurite"
+                "Verdant Azurite",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 小巴": {
             "map": "Proto Bahamut",
             "items": [
                 "Champion Merit",
-                "Horn of Bahamut"
+                "Horn of Bahamut",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 大巴": {
             "map": "Proto Bahamut",
             "items": [
-                "Primeval Horn"
+                "Primeval Horn",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 U巴": {
@@ -1040,34 +1139,39 @@
                 "Odin Anima",
                 "Odin Omega Anima",
                 "Lich Anima",
-                "Lich Omega Anima"
+                "Lich Omega Anima",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 超巴": {
             "map": "Ultimate Bahamut",
             "items": [
                 "Silver Centrum",
-                "Ultima Unit"
+                "Ultima Unit",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 阿卡夏": {
             "map": "Akasha",
             "items": [
-                "Hollow Key"
+                "Hollow Key",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 路西法": {
             "map": "Lucilius",
             "items": [
                 "Dark Residue",
-                "Shadow Substance"
+                "Shadow Substance",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 林德虫": {
             "map": "Lindwurm",
             "items": [
                 "Golden Scale",
-                "Lineage Fragment"
+                "Lineage Fragment",
+                "Repeated Runs"
             ]
         },
         "黄龙&麒麟HL": {
@@ -1076,7 +1180,8 @@
                 "Huanglong Anima",
                 "Qilin Anima",
                 "Golden Talisman",
-                "Obsidian Talisman"
+                "Obsidian Talisman",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 双子": {
@@ -1085,7 +1190,8 @@
                 "Twin Elements Anima",
                 "Twin Elements Omega Anima",
                 "Ancient Ecke Sachs",
-                "Ecke Sachs"
+                "Ecke Sachs",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 双子": {
@@ -1094,7 +1200,8 @@
                 "Twin Elements Anima",
                 "Twin Elements Omega Anima",
                 "Ancient Ecke Sachs",
-                "Ecke Sachs"
+                "Ecke Sachs",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 冰皇": {
@@ -1103,7 +1210,8 @@
                 "Macula Marius Anima",
                 "Macula Marius Omega Anima",
                 "Ancient Auberon",
-                "Auberon"
+                "Auberon",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 冰皇": {
@@ -1112,7 +1220,8 @@
                 "Macula Marius Anima",
                 "Macula Marius Omega Anima",
                 "Ancient Auberon",
-                "Auberon"
+                "Auberon",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 美杜莎": {
@@ -1121,7 +1230,8 @@
                 "Medusa Anima",
                 "Medusa Omega Anima",
                 "Ancient Perseus",
-                "Perseus"
+                "Perseus",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 美杜莎": {
@@ -1130,7 +1240,8 @@
                 "Medusa Anima",
                 "Medusa Omega Anima",
                 "Ancient Perseus",
-                "Perseus"
+                "Perseus",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 哪吒": {
@@ -1139,7 +1250,8 @@
                 "Nezha Anima",
                 "Nezha Omega Anima",
                 "Ancient Nalakuvara",
-                "Nalakuvara"
+                "Nalakuvara",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 哪吒": {
@@ -1148,7 +1260,8 @@
                 "Nezha Anima",
                 "Nezha Omega Anima",
                 "Ancient Nalakuvara",
-                "Nalakuvara"
+                "Nalakuvara",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 阿波罗": {
@@ -1157,7 +1270,8 @@
                 "Apollo Anima",
                 "Apollo Omega Anima",
                 "Ancient Bow of Artemis",
-                "Bow of Artemis"
+                "Bow of Artemis",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 阿波罗": {
@@ -1166,7 +1280,8 @@
                 "Apollo Anima",
                 "Apollo Omega Anima",
                 "Ancient Bow of Artemis",
-                "Bow of Artemis"
+                "Bow of Artemis",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 D天": {
@@ -1175,7 +1290,8 @@
                 "Dark Angel Olivia Anima",
                 "Dark Angel Olivia Omega Anima",
                 "Ancient Cortana",
-                "Cortana"
+                "Cortana",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 D天": {
@@ -1184,7 +1300,8 @@
                 "Dark Angel Olivia Anima",
                 "Dark Angel Olivia Omega Anima",
                 "Ancient Cortana",
-                "Cortana"
+                "Cortana",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 雅典娜": {
@@ -1193,7 +1310,8 @@
                 "Athena Anima",
                 "Athena Omega Anima",
                 "Erichthonius",
-                "Sword of Pallas"
+                "Sword of Pallas",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 格拉尼": {
@@ -1202,7 +1320,8 @@
                 "Grani Anima",
                 "Grani Omega Anima",
                 "Bow of Sigurd",
-                "Wilhelm"
+                "Wilhelm",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 巴尔": {
@@ -1211,7 +1330,8 @@
                 "Baal Anima",
                 "Baal Omega Anima",
                 "Solomon's Axe",
-                "Spymur's Vision"
+                "Spymur's Vision",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 迦偻达": {
@@ -1220,7 +1340,8 @@
                 "Garuda Anima",
                 "Garuda Omega Anima",
                 "Plume of Suparna",
-                "Indra's Edge"
+                "Indra's Edge",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 奥丁": {
@@ -1229,7 +1350,8 @@
                 "Odin Anima",
                 "Odin Omega Anima",
                 "Gungnir",
-                "Sleipnir Shoe"
+                "Sleipnir Shoe",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 巫妖": {
@@ -1238,7 +1360,8 @@
                 "Lich Anima",
                 "Lich Omega Anima",
                 "Obscuritas",
-                "Phantasmas"
+                "Phantasmas",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 火大马": {
@@ -1246,7 +1369,8 @@
             "items": [
                 "Prometheus Anima",
                 "Fire of Prometheus",
-                "Chains of Caucasus"
+                "Chains of Caucasus",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 水大马": {
@@ -1254,7 +1378,8 @@
             "items": [
                 "Ca Ong Anima",
                 "Keeper of Hallowed Ground",
-                "Savior of Hallowed Ground"
+                "Savior of Hallowed Ground",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 土大马": {
@@ -1262,7 +1387,8 @@
             "items": [
                 "Gilgamesh Anima",
                 "All-Might Spear",
-                "All-Might Battle-Axe"
+                "All-Might Battle-Axe",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 风大马": {
@@ -1270,7 +1396,8 @@
             "items": [
                 "Morrigna Anima",
                 "Le Fay",
-                "Unius"
+                "Unius",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 光大马": {
@@ -1278,7 +1405,8 @@
             "items": [
                 "Hector Anima",
                 "Bow of Iliad",
-                "Adamantine Gauntlet"
+                "Adamantine Gauntlet",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 暗大马": {
@@ -1286,7 +1414,8 @@
             "items": [
                 "Anubis Anima",
                 "Hermanubis",
-                "Scales of Dominion"
+                "Scales of Dominion",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 黑风妈": {
@@ -1294,7 +1423,8 @@
             "items": [
                 "Tiamat Malice Anima",
                 "Hatsoiilhal",
-                "Majestas"
+                "Majestas",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 黑泥鳅": {
@@ -1302,7 +1432,8 @@
             "items": [
                 "Leviathan Malice Anima",
                 "Kaladanda",
-                "Kris of Hypnos"
+                "Kris of Hypnos",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 弗洛涅修斯": {
@@ -1310,7 +1441,8 @@
             "items": [
                 "Phronesis Anima",
                 "Dark Thrasher",
-                "Master Bamboo Sword"
+                "Master Bamboo Sword",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 玛丽斯": {
@@ -1318,7 +1450,8 @@
             "items": [
                 "Luminiera Malice Anima",
                 "Colomba",
-                "Seyfert"
+                "Seyfert",
+                "Repeated Runs"
             ]
         },
         "Lvl 150 群体神": {
@@ -1326,115 +1459,133 @@
             "items": [
                 "Hive God Anima",
                 "Agonize",
-                "Faceless"
+                "Faceless",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 火龙": {
             "map": "Wilnas",
             "items": [
-                "Wilnas's Finger"
+                "Wilnas's Finger",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 水龙": {
             "map": "Wamdus",
             "items": [
-                "Wamdus's Cnidocyte"
+                "Wamdus's Cnidocyte",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 土龙": {
             "map": "Galleon",
             "items": [
-                "Galleon's Jaw"
+                "Galleon's Jaw",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 风龙": {
             "map": "Ewiyar",
             "items": [
-                "Ewiyar's Beak"
+                "Ewiyar's Beak",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 光龙": {
             "map": "Lu Woh",
             "items": [
-                "Lu Woh's Horn"
+                "Lu Woh's Horn",
+                "Repeated Runs"
             ]
         },
         "Lvl 200 暗龙": {
             "map": "Fediel",
             "items": [
-                "Fediel's Spine"
+                "Fediel's Spine",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 火六道": {
             "map": "Xeno Ifrit",
             "items": [
                 "True Xeno Ifrit Anima",
-                "Infernal Vajra"
+                "Infernal Vajra",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 水六道": {
             "map": "Xeno Cocytus",
             "items": [
                 "True Xeno Cocytus Anima",
-                "Frozen Hellplume"
+                "Frozen Hellplume",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 土六道": {
             "map": "Xeno Vohu Manah",
             "items": [
                 "True Xeno Vohu Manah Anima",
-                "Sacrosanct Sutra"
+                "Sacrosanct Sutra",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 风六道": {
             "map": "Xeno Sagittarius",
             "items": [
                 "True Xeno Sagittarius Anima",
-                "Zodiac Arc"
+                "Zodiac Arc",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 光六道": {
             "map": "Xeno Corow",
             "items": [
                 "True Xeno Corow Anima",
-                "Flame Fanner"
+                "Flame Fanner",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 暗六道": {
             "map": "Xeno Diablo",
             "items": [
                 "True Xeno Diablo Anima",
-                "Wraithbind Fetter"
+                "Wraithbind Fetter",
+                "Repeated Runs"
             ]
         },
         "Lvl 100 神仙": {
             "map": "Shenxian",
             "items": [
-                "Shenxian Badge"
+                "Shenxian Badge",
+                "Repeated Runs"
             ]
         },
         "Lvl 90 朱雀": {
             "map": "Agni",
             "items": [
-                "Zhuque Badge"
+                "Zhuque Badge",
+                "Repeated Runs"
             ]
         },
         "Lvl 90 玄武": {
             "map": "Neptune",
             "items": [
-                "Xuanwu Badge"
+                "Xuanwu Badge",
+                "Repeated Runs"
             ]
         },
         "Lvl 90 白虎": {
             "map": "Titan",
             "items": [
-                "Baihu Badge"
+                "Baihu Badge",
+                "Repeated Runs"
             ]
         },
         "Lvl 90 青龙": {
             "map": "Zephyrus",
             "items": [
-                "Qinglong Badge"
+                "Qinglong Badge",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 贝努": {
@@ -1443,7 +1594,8 @@
                 "Bennu Anima",
                 "Bennu Omega Anima",
                 "Tatjenen",
-                "Ished"
+                "Ished",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 阿图姆": {
@@ -1452,14 +1604,16 @@
                 "Atum Anima",
                 "Atum Omega Anima",
                 "Benbenet",
-                "Al-Abad"
+                "Al-Abad",
+                "Repeated Runs"
             ]
         },
         "Lvl 275 迪亚斯帕拉": {
             "map": "Diaspora",
             "items": [
                 "Automagod Plating",
-                "Schrodinger"
+                "Schrodinger",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 泰芙努特": {
@@ -1468,7 +1622,8 @@
                 "Tefnut Anima",
                 "Tefnut Omega Anima",
                 "Uraeus",
-                "Esna"
+                "Esna",
+                "Repeated Runs"
             ]
         },
         "Lvl 120 拉": {
@@ -1477,32 +1632,37 @@
                 "Ra Anima",
                 "Ra Omega Anima",
                 "Abu Simbel",
-                "Mandjet"
+                "Mandjet",
+                "Repeated Runs"
             ]
         },
         "Lvl 250 巴布": {
             "map": "Beelzebub",
             "items": [
-                "Abyssal Wing"
+                "Abyssal Wing",
+                "Repeated Runs"
             ]
         },
         "Lvl 250 老贝": {
             "map": "Belial",
             "items": [
-                "Cunning Devil's Horn"
+                "Cunning Devil's Horn",
+                "Repeated Runs"
             ]
         },
         "Lvl 300 极巴": {
             "map": "Super Ultimate Bahamut",
             "items": [
-                "Ultimate Memory"
+                "Ultimate Memory",
+                "Repeated Runs"
             ]
         },
         "Lvl 275 无限": {
             "map": "Mugen",
             "items": [
                 "Extinction Vestige",
-                "Extinction Blade"
+                "Extinction Blade",
+                "Repeated Runs"
             ]
         }
     },
@@ -2272,7 +2432,8 @@
         "Any": {
             "map": "None",
             "items": [
-                "分钟"
+                "分钟",
+                "Repeated Runs"
             ]
         }
     }
