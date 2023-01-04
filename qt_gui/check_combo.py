@@ -126,6 +126,8 @@ class CheckableComboBox(QComboBox):
         metrics = QFontMetrics(self.lineEdit().font())
         elidedText = metrics.elidedText(text, Qt.ElideRight, self.lineEdit().width())
         self.lineEdit().setText(elidedText)
+        if elidedText != '':
+            self.setStyleSheet('')
 
     def addItem(self, text, data=None):
         item = QStandardItem()

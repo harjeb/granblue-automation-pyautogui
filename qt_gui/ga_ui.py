@@ -362,5 +362,6 @@ class Ui_Form(object):
         self.label_17.setText(_translate("Form", "无法正常使用战斗脚本时会选择系统默认脚本"))
         self.label_18.setText(_translate("Form", "沙盒设置(占位)"))
         self.TabWidget.setTabText(self.TabWidget.indexOf(self.tab_2), _translate("Form", "设置"))
+        self.textBrowser.setReadOnly(True)
 
 

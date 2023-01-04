@@ -207,14 +207,40 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.lineEdit.setText(tmp)
 
     def start(self):
-        if not self.running:
-            self.pushButton.setText("停止")
-            self.running = True
-            queue = self.lineEdit.text()
-            self.process.start('python controller.py %s' % queue)
+        if self.check_settings():
+            if not self.running:
+                self.pushButton.setText("停止")
+                self.running = True
+                queue = self.lineEdit.text()
+                self.process.start('python controller.py %s' % queue)
+            else:
+                reply = QMessageBox.question(self, '', '是否停止Farm?',QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                    # 停止Farm
+                    self.stop()
         else:
-            # 停止游戏
-            self.stop()
+            QMessageBox.warning(self,
+                        "错误",
+                        "配置不正确",
+                        QMessageBox.Yes)
+
+    def check_settings(self):
+        flag = True
+        if self.lineEdit_3.text() == '':
+            flag = False
+            self.lineEdit_3.setStyleSheet("border: 1px solid red;")
+        if self.comboBox_4.currentText() == '' and not self.checkBox_12.isChecked():
+            flag = False
+            self.comboBox_4.setStyleSheet("border: 1px solid red;")
+        if (self.comboBox_5.currentText() == '' or self.lineEdit_4.text() == '') and self.checkBox_14.isChecked():
+            flag = False
+            if self.comboBox_5.currentText() == '':
+                self.comboBox_5.setStyleSheet("border: 1px solid red;")
+            if self.lineEdit_4.text() == '':
+                self.lineEdit_4.setStyleSheet("border: 1px solid red;")
+        return flag
+
+
 
     def stop(self):
         self.process.close()
@@ -384,12 +410,14 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 for line in lines:
                     self.mainscript.append(line.strip())
                 self.mainscript_name = os.path.split(fileName)[1]
+                lineedit.setStyleSheet("")
             else:
                 lines2 = open(self.txtFile,encoding='utf-8').readlines()
                 self.nmscript = []
                 for line in lines2:
                     self.nmscript.append(line.strip())
                 self.nmscript_name = os.path.split(fileName)[1]
+                lineedit.setStyleSheet("")
 
     @QtCore.pyqtSlot(str)
     def onActivatedText(self, text):
