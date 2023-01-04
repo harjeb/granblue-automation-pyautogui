@@ -48,9 +48,10 @@ exit
 ![Gbf Automation ExReborn](https://github.com/harjeb/granblue-automation-pyautogui/blob/custom_dev/qt_gui/image/gbf_auto.png)
 
 ## Changelog
-2023/1/4 Beta v1.0更新:完成新GUI的基本功能，增加队列执行，替换twitter api的舔表功能，不再需要开发者权限才能舔
+2023/1/4 Beta v1.0更新:完成新GUI的基本功能，增加队列执行，替换twitter api的舔表功能，不再需要开发者权限才能舔，discord统计功能和部分设置暂时移除
 
 ## Custom Ver Goal
+- 原作者的tauri桌面程序会出现日志显示不同步，无法显示中文和无法正常停止等问题，改用pyqt重新编写
 - 用舔表网API替代twitter API降低工具使用难度
 - 优化部分代码逻辑，增加执行效率
 - 增加随机时间等待功能，降低认证码识别
