@@ -153,7 +153,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
 
         self.comboBox_4.addItems(self.summons_list)
         self.comboBox_5.addItems(self.summons_list)
-
         # 默认勾选项
         # configuration.enableBezierCurveMouseMovement
         self.checkBox_2.setChecked(True)
@@ -263,7 +262,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
                         QMessageBox.Yes)
         else:
             if not self.running:
-                self.textBrowser.setCenterOnScroll(True)
                 self.pushButton.setText("停止")
                 self.running = True
                 queue = self.lineEdit.text()
