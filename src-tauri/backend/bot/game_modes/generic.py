@@ -51,12 +51,13 @@ class Generic:
             if Game.find_and_click_button("play_again"):
                 Game.check_for_popups()
             else:
-                raise GenericException(
-                    "Failed to detect the 'Play Again' button. Bot can start either at the Combat screen with the 'Attack' button visible, the Loot Collection screen with the 'Play Again' " +
-                    "button visible, or the Coop Room screen with the 'Start' button visible with the party already selected...")
+                pass
+                #raise GenericException(
+                #    "Failed to detect the 'Play Again' button. Bot can start either at the Combat screen with the 'Attack' button visible, the Loot Collection screen with the 'Play Again' " +
+                #    "button visible, or the Coop Room screen with the 'Start' button visible with the party already selected...")
 
             # Check for AP.
-            Game.check_for_ap()
+            #Game.check_for_ap()
 
             # Check if the bot is at the Summon Selection screen.
             if ImageUtils.confirm_location("select_a_summon", tries = 30):
@@ -71,6 +72,7 @@ class Generic:
                     else:
                         raise GenericException("Failed to skip party selection.")
             else:
-                raise GenericException("Failed to arrive at the Summon Selection screen.")
+                pass
+                #raise GenericException("Failed to arrive at the Summon Selection screen.")
 
         return None
