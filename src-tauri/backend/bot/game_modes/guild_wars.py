@@ -101,11 +101,13 @@ class GuildWars:
                                 ImageUtils.generate_alert("You did not unlock Extreme+ yet!")
                                 raise GuildWarsException("You did not unlock Extreme+ yet!")
                             else:
-                                raise GuildWarsException("There appears to be a deadzone issue that the bot failed 10 times to resolve. Please refresh the page and try again.")
+                                MessageLog.print_message("\n[RAID] There appears to be a deadzone issue that the bot failed 10 times to resolve. Please refresh the page and try again.")
+                                #raise GuildWarsException("There appears to be a deadzone issue that the bot failed 10 times to resolve. Please refresh the page and try again.")
 
                     return None
                 else:
-                    raise GuildWarsException("Failed to open component to host Meat raids in the Guild Wars page.")
+                    MessageLog.print_message("Failed to open component to host Meat raids in the Guild Wars page.")
+                    #raise GuildWarsException("Failed to open component to host Meat raids in the Guild Wars page.")
             else:
                 MessageLog.print_message(f"\n[GUILD.WARS] Now proceeding to farm Nightmares.")
 
@@ -179,7 +181,8 @@ class GuildWars:
                     else:
                         GuildWarsException("Failed to open component to host Meat raids in the Guild Wars page due to running out of host materials.")
         else:
-            raise GuildWarsException("Failed to arrive at Guild Wars page.")
+            MessageLog.print_message("\n[WARNING] Failed to reach the Backup Requests screen.")
+            MessageLog.print_message("\n[RAID] Now navigate to the raid again...")
 
         return None
 
@@ -206,7 +209,7 @@ class GuildWars:
             GuildWars._navigate()
 
         # Check for AP.
-        Game.check_for_ap()
+        #Game.check_for_ap()
 
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
@@ -219,6 +222,7 @@ class GuildWars:
                 if CombatMode.start_combat_mode():
                     Game.collect_loot(is_completed = True)
         else:
-            raise GuildWarsException("Failed to arrive at the Summon Selection screen.")
+            #raise GuildWarsException("Failed to arrive at the Summon Selection screen.")
+            MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
 
         return None
