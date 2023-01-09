@@ -35,8 +35,10 @@ class GuildWars:
         banner_locations = ImageUtils.find_all("event_banner", custom_confidence = 0.7)
         if len(banner_locations) == 0:
             banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
-        MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
-
+        try:
+            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+        except:
+            return None
         Game.wait(3.0)
 
         difficulty = ""
