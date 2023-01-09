@@ -196,9 +196,20 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.comboBox_5.setEnabled(False)
         #game.debugMode
         self.checkBox_13.setChecked(False)
+        #sandbox.numberOfDefenders
+        self.checkBox_18.clicked.connect(self.onStateChanged)
+        self.spinBox_5.setEnabled(False)
+        self.lineEdit_6.setEnabled(False)
+        self.spinBox_11.setEnabled(False)
+        self.spinBox_12.setEnabled(False)
+        #chaojiying
+        self.checkBox_15.clicked.connect(self.onStateChanged)
+        self.lineEdit_2.setEnabled(False)
+        self.lineEdit_5.setEnabled(False)
 
         self.lineEdit_3.clicked.connect(self.openFileNameDialog)
         self.lineEdit_4.clicked.connect(self.openFileNameDialog)
+        self.lineEdit_6.clicked.connect(self.openFileNameDialog)
         self.pushButton_2.clicked.connect(self.saveFarmList)
 
         # 战斗脚本内容
@@ -206,6 +217,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.mainscript_name = ''
         self.nmscript = []
         self.nmscript_name = ''
+        self.defenderscript_name = ''
+        self.defenderscript = []
 
         # 任务队列
         self.action_queue = [0]
@@ -323,7 +336,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
                         "generic":{},
                         "xenoClash":{},
                         "adjustment":{},
-                        "sandbox":{}}
+                        "sandbox":{},
+                        "chaojiying":{}}
         setting_dict["game"]["combatScriptName"] = self.mainscript_name
         setting_dict["game"]["combatScript"] = self.mainscript
         setting_dict["game"]["farmingMode"] = self.translate(self.comboBox.currentText())
@@ -405,14 +419,16 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["adjustment"]["enableArcarumAdjustment"] = False
         setting_dict["adjustment"]["adjustArcarumAction"] = 3
         setting_dict["adjustment"]["adjustArcarumStageEffect"] = 10
-        setting_dict["sandbox"]["enableDefender"] = False
-        setting_dict["sandbox"]["enableGoldChest"] = False
-        setting_dict["sandbox"]["enableCustomDefenderSettings"] = False
-        setting_dict["sandbox"]["numberOfDefenders"] = 1
-        setting_dict["sandbox"]["defenderCombatScriptName"] = ""
-        setting_dict["sandbox"]["defenderCombatScript"] = []
-        setting_dict["sandbox"]["defenderGroupNumber"] = 1
-        setting_dict["sandbox"]["defenderPartyNumber"] = 1
+        setting_dict["sandbox"]["enableDefender"] = self.checkBox_18.isChecked()
+        setting_dict["sandbox"]["enableGoldChest"] = self.checkBox_17.isChecked()
+        setting_dict["sandbox"]["enableCustomDefenderSettings"] = self.checkBox_18.isChecked()
+        setting_dict["sandbox"]["numberOfDefenders"] = self.spinBox_5.value()
+        setting_dict["sandbox"]["defenderCombatScriptName"] = self.defenderscript_name
+        setting_dict["sandbox"]["defenderCombatScript"] = self.defenderscript
+        setting_dict["sandbox"]["defenderGroupNumber"] = self.spinBox_11.value()
+        setting_dict["sandbox"]["defenderPartyNumber"] = self.spinBox_12.value()
+        setting_dict["chaojiying"]["username"] = self.lineEdit_2.text()
+        setting_dict["chaojiying"]["password"] = self.lineEdit_5.text()
 
         json_str = json.dumps(setting_dict, indent=4)
         with open(save_path+'/%s.json' % setname, 'w') as json_file:
@@ -459,12 +475,19 @@ class GBF_AutoTool(QWidget, Ui_Form):
                     self.mainscript.append(line.strip())
                 self.mainscript_name = os.path.split(fileName)[1]
                 lineedit.setStyleSheet("")
-            else:
+            elif 'nightmare_script' == lineedit.objectName():
                 lines2 = open(self.txtFile,encoding='utf-8').readlines()
                 self.nmscript = []
                 for line in lines2:
                     self.nmscript.append(line.strip())
                 self.nmscript_name = os.path.split(fileName)[1]
+                lineedit.setStyleSheet("")
+            else:
+                lines3 = open(self.txtFile,encoding='utf-8').readlines()
+                self.defenderscript = []
+                for line in lines3:
+                    self.defenderscript.append(line.strip())
+                self.defenderscript_name = os.path.split(fileName)[1]
                 lineedit.setStyleSheet("")
 
     @QtCore.pyqtSlot(str)
@@ -526,6 +549,22 @@ class GBF_AutoTool(QWidget, Ui_Form):
             self.spinBox_9.setEnabled(False)
             self.spinBox_10.setEnabled(False)
             self.comboBox_5.setEnabled(False)
+        if self.checkBox_18.isChecked():
+            self.spinBox_5.setEnabled(True)
+            self.lineEdit_6.setEnabled(True)
+            self.spinBox_11.setEnabled(True)
+            self.spinBox_12.setEnabled(True)
+        else:
+            self.spinBox_5.setEnabled(False)
+            self.lineEdit_6.setEnabled(False)
+            self.spinBox_11.setEnabled(False)
+            self.spinBox_12.setEnabled(False)
+        if self.checkBox_15.isChecked():
+            self.lineEdit_2.setEnabled(True)
+            self.lineEdit_5.setEnabled(True)
+        else:
+            self.lineEdit_2.setEnabled(False)
+            self.lineEdit_5.setEnabled(False)
 
     def onReadyReadStandardError(self):
         try:

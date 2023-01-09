@@ -187,6 +187,11 @@ class Settings:
     adjust_arcarum_action: int = dictor(_data, "adjustment.adjustArcarumAction", 3)
     adjust_arcarum_stage_effect: int = dictor(_data, "adjustment.adjustArcarumStageEffect", 10)
     # #### end of adjustment ####
+
+    # #### chaojiying ####
+    chaojiying_user: str = dictor(_data, "chaojiying.username", "")
+    chaojiying_password: str = dictor(_data, "chaojiying.password", "")
+    # #### end of chaojiying ####
     # ################## end of settings.json ###################
     #############################################################
 
