@@ -436,6 +436,7 @@ class Ui_Form(object):
         self.label_17.setText(_translate("Form", "无法正常使用战斗脚本时会选择系统默认脚本"))
         self.label_17.setToolTip("Enable this if the regular method of combat script selection failed.")
         self.checkBox_15.setText(_translate("Form", "超级鹰验证码识别"))
+        self.checkBox_15.setToolTip("付费api，如需要请自行注册充值")
         self.lineEdit_2.setPlaceholderText(_translate("Form", "账号"))
         self.lineEdit_5.setPlaceholderText(_translate("Form", "密码"))
         self.label_18.setText(_translate("Form", "转世沙盒设置"))
