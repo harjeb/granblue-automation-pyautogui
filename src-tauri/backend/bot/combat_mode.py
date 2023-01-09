@@ -2,12 +2,13 @@ import copy
 import os
 from typing import List
 import time
+import random
 
 from utils.settings import Settings
 from utils.message_log import MessageLog
 from utils.image_utils import ImageUtils
 from utils.mouse_utils import MouseUtils
-
+import pyautogui
 
 class CombatModeException(Exception):
     def __init__(self, message):
@@ -336,13 +337,26 @@ class CombatMode:
 
             CombatMode._check_for_battle_end()
 
-            # TODO 添加混淆点击
+            CombatMode._obfuscate_click()
 
             tries -= 1
 
         MessageLog.print_message("[COMBAT] Attack ended.")
 
         return True
+
+    @staticmethod
+    def _obfuscate_click():
+        """
+        混淆点击,防止gbf anti-bot 检测
+        """
+        # safe_area
+        top_left = (285,200)
+        bottom_right = (435,500)
+        MessageLog.print_message("[COMBAT] obfuscate click.")
+        MouseUtils.move_to(random.randint(285,435),random.randint(200,500))
+        pyautogui.click(clicks = 1)
+        
 
     @staticmethod
     def _enable_auto() -> bool:
