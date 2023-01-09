@@ -37,6 +37,9 @@ class Game:
 
     _discord_process = None
     _discord_queue = multiprocessing.Queue()
+    captcha_box = None
+
+
 
     def __init__(self):
         super().__init__()
@@ -250,6 +253,35 @@ class Game:
         return False
 
     @staticmethod
+    def identify_captcha():
+        ImageUtils.get_captcha_img()
+        from utils.chaojiying import Chaojiying_Client
+        chaojiying = Chaojiying_Client(Settings.chaojiying_user, Settings.chaojiying_password, '907069')	#用户中心>>软件ID 生成一个替换 96001
+        im = open('temp/captcha.png', 'rb').read()													
+        code = chaojiying.PostPic(im, 1902)['pic_str']
+        code = code.lower()
+        MessageLog.print_message("\n[CAPTCHA] CAPTCHA is %s." % code)
+        return code
+
+    @staticmethod
+    def write_captcha(code):
+        if Game.captcha_box == None:
+            Game.captcha_box = ImageUtils.find_button("verification_text")
+        else:
+            pass
+        code_textbox = (Game.captcha_box[0] , Game.captcha_box[1])
+        MouseUtils.move_and_click_point(code_textbox[0], code_textbox[1], "template_room_code_textbox", mouse_clicks = 2)
+        MouseUtils.clear_textbox()
+        # Copy the room code to the clipboard and then paste it into the "Room Code" textbox.
+        MouseUtils.copy_to_clipboard(code)
+        MouseUtils.paste_from_clipboard()
+        Game.wait(2)
+        if ImageUtils.confirm_location("captcha", bypass_general_adjustment = True):
+            return False
+        else:
+            return True
+
+    @staticmethod
     def check_for_captcha():
         """Checks for CAPTCHA right after selecting a Summon and if detected, alert the user and then stop the bot.
 
@@ -258,11 +290,22 @@ class Game:
         """
         try:
             if ImageUtils.confirm_location("captcha", bypass_general_adjustment = True):
-                raise RuntimeError("CAPTCHA DETECTED!")
+                # go to identify
+                ok = False
+                flag = False
+                for i in range(5):
+                    if not ok:
+                        CAPTCHA = Game.identify_captcha()
+                        ok = Game.write_captcha(CAPTCHA)
+                    else:
+                        flag = True
+                        break
+                if not flag:
+                    raise RuntimeError("CAPTCHA DETECTED!")
+                return True
             else:
                 MessageLog.print_message("\n[CAPTCHA] CAPTCHA not detected.")
-
-            return None
+                return False
         except RuntimeError:
             Game._discord_queue.put(f"> Bot encountered exception while checking for CAPTCHA: \n{traceback.format_exc()}")
             MessageLog.print_message(f"\n[ERROR] Bot encountered exception while checking for CAPTCHA: \n{traceback.format_exc()}")
@@ -374,7 +417,8 @@ class Game:
             MouseUtils.move_and_click_point(summon_location[0], summon_location[1], "template_support_summon", mouse_clicks = 2)
 
             # Check for CAPTCHA here. If detected, stop the bot and alert the user.
-            Game.check_for_captcha()
+            if Game.check_for_captcha():
+                MouseUtils.move_and_click_point(summon_location[0], summon_location[1], "template_support_summon", mouse_clicks = 2)
 
             return True
         elif Settings.enable_bypass_reset_summon:
@@ -1031,7 +1075,7 @@ class Game:
 
             Game.stop_discord_process()
 
-            ImageUtils.generate_alert(f"Bot encountered exception in Farming Mode: \n{e}")
+            #ImageUtils.generate_alert(f"Bot encountered exception in Farming Mode: \n{e}")
 
             MessageLog.print_message("\n######################################################################")
             MessageLog.print_message("######################################################################")

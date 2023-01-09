@@ -73,6 +73,14 @@ class ImageUtils:
         return Settings.window_left, Settings.window_top, Settings.window_width, Settings.window_height
 
     @staticmethod
+    def get_captcha_img():
+        top_left = (147,575)
+        bottom_right = (340,650)
+        captcha_img = cv2.imread("temp/source.png")
+        cropped = captcha_img[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
+        cv2.imwrite("temp/captcha.png", cropped)
+
+    @staticmethod
     def _match(template: numpy.ndarray, confidence: float = 0.8) -> bool:
         """Updates the window dimensions for PyAutoGUI to perform faster operations in.
 
@@ -612,7 +620,7 @@ class ImageUtils:
                 test_image = pyautogui.screenshot(f"temp/test.png", region = (left, top, width, height))
                 # test_image.show() # Uncomment this line of code to see what the bot captured for the region of the detected text.
                 result = ImageUtils._reader.readtext(f"temp/test.png", detail = 0)
-
+                #result = []
                 # Split any unnecessary characters in the extracted text until only the number remains.
                 result_cleaned = 0
                 if len(result) != 0:
