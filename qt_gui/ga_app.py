@@ -284,6 +284,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 if reply == QMessageBox.Yes:
                     # 停止Farm
                     self.stop()
+            self.pushButton.setText("开始")
+            self.running = False
 
     def check_settings(self):
         flag = True
@@ -305,8 +307,6 @@ class GBF_AutoTool(QWidget, Ui_Form):
 
     def stop(self):
         self.process.close()
-        self.pushButton.setText("开始")
-        self.running = False
 
     def _update_sleep_status(self):
         self.sleep_over = True
