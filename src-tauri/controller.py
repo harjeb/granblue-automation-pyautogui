@@ -13,9 +13,7 @@ def check_sleep(_settings_dict):
         mins = _settings_dict["game"]["itemAmount"]
         sleep_time = 60*mins
         print("=====开始休息=====")
-        for i in range(sleep_time):
-            time.sleep(1)
-            print("need sleep %d" % (sleep_time-i))
+        time.sleep(sleep_time)
         return True
     else:
         return False
