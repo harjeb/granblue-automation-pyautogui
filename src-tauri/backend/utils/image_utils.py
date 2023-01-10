@@ -15,7 +15,8 @@ from playsound import playsound
 
 from utils.settings import Settings
 from utils.message_log import MessageLog
-
+from bot.combat_mode import CombatMode
+from bot.game import Game
 
 class ImageUtils:
     """
@@ -327,6 +328,17 @@ class ImageUtils:
         """
         if Settings.debug_mode:
             MessageLog.print_message(f"\n[DEBUG] Starting process to find the {image_name.upper()} button image...")
+
+        if image_name == "select_a_summon":
+            # 可能在resume game界面，需要重新进战斗
+            if ImageUtils.confirm_location("resume_quests"):
+                MessageLog.print_message(f"RELOAD combat")
+                Game.find_and_click_button("resume")
+                Game.wait(3)
+                # Now start Combat Mode and detect any item drops.
+                if CombatMode.start_combat_mode():
+                    Game.collect_loot(is_completed = True)
+                return False
 
         template: numpy.ndarray = cv2.imread(f"{ImageUtils._current_dir}/images/headers/{image_name.lower()}_header.jpg", 0)
 

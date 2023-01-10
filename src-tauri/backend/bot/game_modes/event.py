@@ -154,7 +154,7 @@ class Event:
             MessageLog.print_message(f"[EVENT.TOKEN.DRAWBOXES] Now hosting Event Raid...")
             if not Game.find_and_click_button("event_raid_battle"):
                 # Go to the Home screen.
-                Game.go_back_home(confirm_location_check = True)                
+                Game.go_back_home(confirm_location_check = True)
                 MessageLog.print_message("[ERROR] Now go back HOME...")
                 #ImageUtils.generate_alert(
                 #    "Failed to detect Token Drawbox layout for this Event. Are you sure this Event has Token Drawboxes? If not, switch to \"Event\" Farming Mode.")
