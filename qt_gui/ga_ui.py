@@ -391,6 +391,7 @@ class Ui_Form(object):
         self.label_20.setText(_translate("Form", "队伍"))
         self.lineEdit.setPlaceholderText(_translate("Form", "任务队列"))
         self.pushButton.setText(_translate("Form", "开始"))
+        self.textBrowser.verticalScrollBar().setValue(self.textBrowser.verticalScrollBar().maximum())
         self.textBrowser.moveCursor(QtGui.QTextCursor.End)
         initialMessage = """****************************************\nWelcome to Granblue Automation EXReborn!\n****************************************\nInstructions\n----------------\n
     1. Have your game window and the Bottom Menu visible. Set the game window size set to the second "notch".

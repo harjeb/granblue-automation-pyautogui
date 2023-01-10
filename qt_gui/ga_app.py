@@ -575,7 +575,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
             error = self.process.readAllStandardError().data().decode()
             self.textBrowser.appendPlainText(error.strip())
             logger.error(error.strip())
-        self.textBrowser.ensureCursorVisible()
+        self.textBrowser.moveCursor(QtGui.QTextCursor.End)
 
     def onReadyReadStandardOutput(self):
         try:
@@ -586,14 +586,14 @@ class GBF_AutoTool(QWidget, Ui_Form):
             error = self.process.readAllStandardError().data().decode()
             self.textBrowser.appendPlainText(error.strip())
             logger.error(error.strip())
-        self.textBrowser.ensureCursorVisible()
+        self.textBrowser.moveCursor(QtGui.QTextCursor.End)
 
     def onFinished(self, exitCode, exitStatus):
         if exitStatus == 0:
             try:
                 self.textBrowser.appendPlainText("---------")
                 self.textBrowser.appendPlainText("========Farm 结束========")
-                self.textBrowser.ensureCursorVisible()
+                self.textBrowser.moveCursor(QtGui.QTextCursor.End)
                 logger.info("---------")
                 logger.info("========Farm 结束========")
                 self.running = False
@@ -601,7 +601,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
             except:
                 logger.info("---------")
                 logger.info("========Farm 结束========")
-                self.textBrowser.ensureCursorVisible()
+                self.textBrowser.moveCursor(QtGui.QTextCursor.End)
                 self.running = False
                 self.pushButton.setText('开始')
 
