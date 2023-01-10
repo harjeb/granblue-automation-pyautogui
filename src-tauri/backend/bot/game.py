@@ -1034,32 +1034,36 @@ class Game:
 
             first_run = True
             while Settings.item_amount_farmed < Settings.item_amount_to_farm:
-                if Settings.farming_mode == "Quest":  # 任务
-                    Quest.start(first_run)
-                elif Settings.farming_mode == "Special":   # 特殊本（碎片）
-                    Special.start(first_run)
-                elif Settings.farming_mode == "Coop":     # 共斗
-                    Coop.start(first_run)
-                elif Settings.farming_mode == "Raid":    # 舔/多人
-                    Raid.start(first_run)
-                elif Settings.farming_mode == "Event" or Settings.farming_mode == "Event (Token Drawboxes)":   # SS 活动
-                    Event.start(first_run)
-                elif Settings.farming_mode == "Rise of the Beasts":      # 四象
-                    RiseOfTheBeasts.start(first_run)
-                elif Settings.farming_mode == "Guild Wars":          # 古战场
-                    GuildWars.start(first_run)
-                elif Settings.farming_mode == "Dread Barrage":       # 公会战
-                    DreadBarrage.start(first_run)
-                elif Settings.farming_mode == "Proving Grounds":     #连战
-                    ProvingGrounds.start(first_run)
-                elif Settings.farming_mode == "Xeno Clash":          # 六道
-                    XenoClash.start(first_run)
-                elif Settings.farming_mode == "Arcarum":              # 转世
-                    Arcarum.start()
-                elif Settings.farming_mode == "Arcarum Sandbox":      # 转世沙盒
-                    ArcarumSandbox.start()
-                elif Settings.farming_mode == "Generic":
-                    Generic.start()
+                try:
+                    if Settings.farming_mode == "Quest":  # 任务
+                        Quest.start(first_run)
+                    elif Settings.farming_mode == "Special":   # 特殊本（碎片）
+                        Special.start(first_run)
+                    elif Settings.farming_mode == "Coop":     # 共斗
+                        Coop.start(first_run)
+                    elif Settings.farming_mode == "Raid":    # 舔/多人
+                        Raid.start(first_run)
+                    elif Settings.farming_mode == "Event" or Settings.farming_mode == "Event (Token Drawboxes)":   # SS 活动
+                        Event.start(first_run)
+                    elif Settings.farming_mode == "Rise of the Beasts":      # 四象
+                        RiseOfTheBeasts.start(first_run)
+                    elif Settings.farming_mode == "Guild Wars":          # 古战场
+                        GuildWars.start(first_run)
+                    elif Settings.farming_mode == "Dread Barrage":       # 公会战
+                        DreadBarrage.start(first_run)
+                    elif Settings.farming_mode == "Proving Grounds":     #连战
+                        ProvingGrounds.start(first_run)
+                    elif Settings.farming_mode == "Xeno Clash":          # 六道
+                        XenoClash.start(first_run)
+                    elif Settings.farming_mode == "Arcarum":              # 转世
+                        Arcarum.start()
+                    elif Settings.farming_mode == "Arcarum Sandbox":      # 转世沙盒
+                        ArcarumSandbox.start()
+                    elif Settings.farming_mode == "Generic":
+                        Generic.start()
+                except Exception as e:
+                    MessageLog.print_message(e)
+                    MessageLog.print_message("\n[ERROR] game failed")
 
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                     # Generate a resting period if the user enabled it.
