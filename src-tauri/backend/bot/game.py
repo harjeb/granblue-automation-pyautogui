@@ -29,6 +29,7 @@ from bot.game_modes.special import Special
 from bot.game_modes.xeno_clash import XenoClash
 from bot.game_modes.generic import Generic
 
+pyautogui.FAILSAFE = False
 
 class Game:
     """
