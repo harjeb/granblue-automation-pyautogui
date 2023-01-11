@@ -1062,7 +1062,7 @@ class Game:
                     elif Settings.farming_mode == "Generic":
                         Generic.start()
                 except Exception as e:
-                    MessageLog.print_message(e)
+                    print(e)
                     MessageLog.print_message("\n[ERROR] game failed")
 
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
