@@ -334,7 +334,7 @@ class CombatMode:
 
             # Check if the Party wiped after attacking.
             CombatMode._check_for_wipe()
-
+            MessageLog.print_message("[DEBUG] here1...")
             CombatMode._check_for_battle_end()
 
             CombatMode._obfuscate_click()
@@ -1046,7 +1046,7 @@ class CombatMode:
                 Game.wait(3)
 
             CombatMode._check_for_wipe()
-
+            MessageLog.print_message("[DEBUG] here2...")
             if CombatMode._check_raid():
                 # Click Next if it is available and enable automation again if combat continues.
                 if Game.find_and_click_button("next", tries = 1, suppress_error = True):
@@ -1058,6 +1058,7 @@ class CombatMode:
                 elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None and \
                         CombatMode._check_for_battle_end() == "Nothing":
                     Game.wait(1.0)
+                    MessageLog.print_message("[DEBUG] Find attack and wait to attack...")
                     CombatMode._reload_for_attack(override = True)
                     CombatMode._wait_for_attack()
 
