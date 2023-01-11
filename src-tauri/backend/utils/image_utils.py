@@ -330,10 +330,10 @@ class ImageUtils:
             MessageLog.print_message(f"\n[DEBUG] Starting process to find the {image_name.upper()} button image...")
 
         if image_name == "select_a_summon":
+            MessageLog.print_message("Find resume image")
             # 可能在resume game界面，需要重新进战斗
-            if ImageUtils.confirm_location("resume_quests"):
-                MessageLog.print_message(f"RELOAD combat")
-                Game.find_and_click_button("resume")
+            if Game.find_and_click_button("resume"):
+                MessageLog.print_message("RELOAD combat")
                 Game.wait(3)
                 # Now start Combat Mode and detect any item drops.
                 if CombatMode.start_combat_mode():
