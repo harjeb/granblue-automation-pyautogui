@@ -1190,6 +1190,18 @@ class CombatMode:
         CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 50, bypass_general_adjustment = True)
 
         if CombatMode._attack_button_location is None:
+            # Check for salute.  检查是否败北
+            if ImageUtils.confirm_location("salute_participants", tries = 3, suppress_error = True):
+                # Salute the participants.
+                MessageLog.print_message(f"[WARNING] Raid has unfortunately wiped during Combat Mode. Leaving the Raid room...")
+                Game.find_and_click_button("salute")
+                Game.find_and_click_button("ok")
+                # Then cancel the popup that asks you if you want to use a Full Elixir to come back.
+                Game.find_and_click_button("cancel")
+
+                # Then click the "Leave" button.
+                Game.find_and_click_button("retreat_confirmation")
+
             MessageLog.print_message(f"\n[ERROR] Cannot find Attack button. Raid must have just ended.")
             return False
 
