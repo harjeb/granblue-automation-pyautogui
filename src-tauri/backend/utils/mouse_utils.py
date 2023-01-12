@@ -90,7 +90,7 @@ class MouseUtils:
 
             pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
 
-        if image_name == "attack":
+        if image_name == "attack" or image_name == "back":
             #obfuscate_click(maxclick=5)
             pyautogui.click(clicks = mouse_clicks)
             try:
@@ -100,6 +100,7 @@ class MouseUtils:
             except:
                 pass
         else:
+            # 混淆点击
             p = 15
             R = random.randint(1,100)
             if R >= p:
