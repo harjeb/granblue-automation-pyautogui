@@ -337,7 +337,7 @@ class CombatMode:
             MessageLog.print_message("[DEBUG] here1...")
             CombatMode._check_for_battle_end()
 
-            CombatMode._obfuscate_click()
+            #CombatMode._obfuscate_click()
 
             tries -= 1
 
@@ -1068,6 +1068,11 @@ class CombatMode:
                             MessageLog.print_message("[DEBUG] Clicked the Next button to move to the next wave. Attempting to restart Full/Semi Auto...")
 
                         CombatMode._enable_auto()
+                else:
+                    MessageLog.print_message("[DEBUG] here3...")
+                    # Check for exit conditions and restart auto.
+                    if CombatMode._check_for_battle_end() == "Nothing":
+                        CombatMode._enable_auto()
             elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] Attack and Next buttons have vanished. Determining if bot should reload...")
@@ -1078,6 +1083,11 @@ class CombatMode:
                         CombatMode._enable_full_auto()
                     elif CombatMode._semi_auto:
                         CombatMode._enable_semi_auto()
+            else:
+                MessageLog.print_message("[DEBUG] here4...")
+                # Check for exit conditions and restart auto.
+                if CombatMode._check_for_battle_end() == "Nothing":
+                    CombatMode._enable_auto()
 
         return None
 
