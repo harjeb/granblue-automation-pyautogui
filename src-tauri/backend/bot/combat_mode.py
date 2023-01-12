@@ -104,6 +104,10 @@ class CombatMode:
         Returns:
             None
         """
+        from bot.game import Game
+        # 如果技能无法使用，跳出OK btn
+        Game.find_and_click_button("ok")
+
         dialog_location = ImageUtils.find_button("dialog_lyria", tries = 2, suppress_error = True, bypass_general_adjustment = True)
         if dialog_location is None:
             dialog_location = ImageUtils.find_button("dialog_vyrn", tries = 2, suppress_error = True, bypass_general_adjustment = True)
@@ -732,6 +736,9 @@ class CombatMode:
                 y = CombatMode._attack_button_location[1] + 171
 
                 MouseUtils.move_and_click_point(x, y, "template_skill")
+
+                # 如果技能无法使用，跳出OK btn
+                Game.find_and_click_button("ok")
 
                 # Check if the skill requires a target.
                 if len(skill_command_list) > 0 and ImageUtils.confirm_location("use_skill", bypass_general_adjustment = True):
