@@ -337,6 +337,12 @@ class CombatMode:
             MessageLog.print_message("[DEBUG] here1...")
             CombatMode._check_for_battle_end()
 
+            if tries > 10:
+                # 检查是否不在战斗界面
+                if ImageUtils.find_button("menu", tries = 5, suppress_error = True) is None:
+                    # 不在战斗界面
+                    MessageLog.print_message("[COMBAT] Not in combat.")
+                    break
             #CombatMode._obfuscate_click()
 
             tries -= 1
