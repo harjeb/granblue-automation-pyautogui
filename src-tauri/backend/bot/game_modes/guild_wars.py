@@ -218,7 +218,7 @@ class GuildWars:
             Game.find_and_click_button("resume")
             Game.wait(5)
             # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode():
+            if CombatMode.start_combat_mode(["enablefullauto"]):
                 Game.collect_loot(is_completed = True)
 
 
