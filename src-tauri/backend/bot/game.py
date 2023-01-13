@@ -295,6 +295,9 @@ class Game:
                 # go to identify
                 ok = False
                 flag = False
+                if Settings.chaojiying_user == "":
+                    MessageLog.print_message("Not set chaojiying!")
+                    sys.exit(0)
                 for i in range(5):
                     if not ok:
                         CAPTCHA = Game.identify_captcha()
