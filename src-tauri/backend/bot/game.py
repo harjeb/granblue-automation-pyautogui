@@ -3,6 +3,7 @@ import random
 import time
 import traceback
 from typing import List
+import sys
 
 import pyautogui
 
@@ -258,7 +259,7 @@ class Game:
         ImageUtils.get_captcha_img()
         from utils.chaojiying import Chaojiying_Client
         chaojiying = Chaojiying_Client(Settings.chaojiying_user, Settings.chaojiying_password, '907069')	#用户中心>>软件ID 生成一个替换 96001
-        im = open('temp/captcha.png', 'rb').read()													
+        im = open('temp/captcha.png', 'rb').read()
         code = chaojiying.PostPic(im, 1902)['pic_str']
         code = code.lower()
         MessageLog.print_message("\n[CAPTCHA] CAPTCHA is %s." % code)
@@ -266,17 +267,17 @@ class Game:
 
     @staticmethod
     def write_captcha(code):
-        if Game.captcha_box == None:
-            Game.captcha_box = ImageUtils.find_button("verification_text")
-        else:
-            pass
-        code_textbox = (Game.captcha_box[0] , Game.captcha_box[1])
+        MessageLog.print_message("\n[CAPTCHA] start write CAPTCHA.")
+        captcha_box = ImageUtils.find_button("verification_text")
+        MessageLog.print_message("\n[CAPTCHA] box post is %s." % str(captcha_box))
+        code_textbox = (captcha_box[0] , captcha_box[1])
         MouseUtils.move_and_click_point(code_textbox[0], code_textbox[1], "template_room_code_textbox", mouse_clicks = 2)
         MouseUtils.clear_textbox()
         # Copy the room code to the clipboard and then paste it into the "Room Code" textbox.
         MouseUtils.copy_to_clipboard(code)
         MouseUtils.paste_from_clipboard()
         Game.wait(2)
+        Game.find_and_click_button("send")
         if ImageUtils.confirm_location("captcha", bypass_general_adjustment = True):
             return False
         else:
@@ -302,7 +303,9 @@ class Game:
                         flag = True
                         break
                 if not flag:
-                    raise RuntimeError("CAPTCHA DETECTED!")
+                    MessageLog.print_message("CAPTCHA DETECTED!")
+                    sys.exit(0)
+                    #raise RuntimeError("CAPTCHA DETECTED!")
                 return True
             else:
                 MessageLog.print_message("\n[CAPTCHA] CAPTCHA not detected.")
