@@ -129,7 +129,7 @@ class GuildWars:
                     if len(raid_battle_locations) >= 3:
                         MouseUtils.move_and_click_point(raid_battle_locations[0][0], raid_battle_locations[0][1], "event_raid_battle")
 
-                        if not ImageUtils.wait_vanish("guild_wars_nightmare_150", timeout = 10):
+                        if ImageUtils.wait_vanish("guild_wars_nightmare_150", timeout = 10):
                             Game.find_and_click_button("guild_wars_nightmare_150")
                             # 选择150 NM
                             NM_locations = ImageUtils.find_all("guild_wars_nightmares")
@@ -143,7 +143,7 @@ class GuildWars:
                     if len(raid_battle_locations) >= 3:
                         MouseUtils.move_and_click_point(raid_battle_locations[0][0], raid_battle_locations[0][1], "event_raid_battle")
 
-                        if not ImageUtils.wait_vanish("guild_wars_nightmare_150", timeout = 10):
+                        if ImageUtils.wait_vanish("guild_wars_nightmare_150", timeout = 10):
                             # Game.find_and_click_button("guild_wars_nightmare_150")
                             # 选择200 NM
                             NM_locations = ImageUtils.find_all("guild_wars_nightmares")
