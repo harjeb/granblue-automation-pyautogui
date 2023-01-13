@@ -1055,6 +1055,12 @@ class CombatMode:
             # Check for exit conditions.
             CombatMode._check_for_battle_end()
 
+            # 检查是否还在战斗界面
+            if ImageUtils.find_button("menu", tries = 5, suppress_error = True) is None:
+                # 不在战斗界面
+                MessageLog.print_message("[COMBAT] Not in combat 2.")
+                break
+
             if Game.find_and_click_button("next", tries = 1, suppress_error = True):
                 Game.wait(3)
 
