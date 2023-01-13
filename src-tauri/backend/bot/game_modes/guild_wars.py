@@ -130,13 +130,13 @@ class GuildWars:
                         MouseUtils.move_and_click_point(raid_battle_locations[0][0], raid_battle_locations[0][1], "event_raid_battle")
 
                         if ImageUtils.wait_vanish("guild_wars_nightmare_150", timeout = 10):
-                            Game.find_and_click_button("guild_wars_nightmare_150")
+                            #Game.find_and_click_button("guild_wars_nightmare_150")
                             # 选择150 NM
                             NM_locations = ImageUtils.find_all("guild_wars_nightmares")
                             MouseUtils.move_and_click_point(NM_locations[0][0], NM_locations[0][1], "guild_wars_nightmares")
-
-                        if ImageUtils.confirm_location("guild_wars_nightmare"):
-                            start_check_for_nm150 = Game.find_and_click_button("start")
+                        Game.wait(3)
+                        if ImageUtils.confirm_location("select_a_summon",tries=10):
+                            start_check_for_nm150 = True
                 elif difficulty == "NM200":
                     MessageLog.print_message(f"\n[GUILD.WARS] Now hosting NM200 now...")
 
@@ -148,7 +148,9 @@ class GuildWars:
                             # 选择200 NM
                             NM_locations = ImageUtils.find_all("guild_wars_nightmares")
                             MouseUtils.move_and_click_point(NM_locations[1][0], NM_locations[1][1], "guild_wars_nightmares")
-
+                        Game.wait(3)
+                        if ImageUtils.confirm_location("select_a_summon",tries=10):
+                            start_check_for_nm150 = True
 
                 if difficulty != "NM150" and ImageUtils.confirm_location("guild_wars_nightmare"):
                     nightmare_locations = ImageUtils.find_all("guild_wars_nightmares")
