@@ -80,8 +80,8 @@ class MouseUtils:
         # Move the mouse to the specified coordinates.
         if Settings.enable_bezier_curve_mouse_movement:
             # HumanClicker only accepts int as the mouse speed.
-            if int(custom_mouse_speed) < 1:
-                custom_mouse_speed = 1
+            # if int(custom_mouse_speed) < 1:
+            #     custom_mouse_speed = 1
 
             MouseUtils._hc.move((new_x, new_y), duration = custom_mouse_speed, humanCurve = pyclick.HumanCurve(pyautogui.position(), (new_x, new_y)))
         else:
