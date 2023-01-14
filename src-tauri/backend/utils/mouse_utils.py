@@ -90,7 +90,7 @@ class MouseUtils:
 
             pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
 
-        if image_name == "attack" or image_name == "back":
+        if image_name == "attack" or image_name == "back" or image_name == "ok":
             #obfuscate_click(maxclick=5)
             pyautogui.click(clicks = mouse_clicks)
             try:

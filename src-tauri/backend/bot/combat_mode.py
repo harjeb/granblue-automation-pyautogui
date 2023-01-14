@@ -823,6 +823,9 @@ class CombatMode:
                         MessageLog.print_message(f"[COMBAT] Summon #{summon_index} cannot be invoked due to current restrictions.")
                         Game.find_and_click_button("cancel")
 
+                # Wait summon anime
+                Game.wait(3)
+
                 # Click the "Back" button to return.
                 Game.find_and_click_button("back")
 
