@@ -206,6 +206,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.checkBox_15.clicked.connect(self.onStateChanged)
         self.lineEdit_2.setEnabled(False)
         self.lineEdit_5.setEnabled(False)
+        #xenoClash.selectTopOption
+        self.checkBox_16.setChecked(True)
 
         self.lineEdit_3.clicked.connect(self.openFileNameDialog)
         self.lineEdit_4.clicked.connect(self.openFileNameDialog)
@@ -392,7 +394,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["raid"]["enableNoTimeout"] = self.checkBox_6.isChecked()
         setting_dict["arcarum"]["enableStopOnArcarumBoss"] = True
         setting_dict["generic"]["enableForceReload"] = False
-        setting_dict["xenoClash"]["selectTopOption"] = True
+        setting_dict["xenoClash"]["selectTopOption"] = self.checkBox_16.isChecked()
         setting_dict["adjustment"]["enableCalibrationAdjustment"] = False
         setting_dict["adjustment"]["adjustCalibration"] = 5
         setting_dict["adjustment"]["enableGeneralAdjustment"] = False
