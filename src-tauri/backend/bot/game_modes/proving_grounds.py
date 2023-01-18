@@ -85,7 +85,7 @@ class ProvingGrounds:
             MessageLog.print_message("\n[PROVING.GROUNDS] Starting Proving Grounds Mission again...")
 
         # Check for AP.
-        Game.check_for_ap()
+        #Game.check_for_ap()
 
         # Check if the bot is at the Summon Selection screen.
         if (first_run or ProvingGrounds._first_time) and ImageUtils.confirm_location("proving_grounds_summon_selection", tries = 30):
