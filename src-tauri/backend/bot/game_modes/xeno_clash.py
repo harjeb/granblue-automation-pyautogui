@@ -113,6 +113,14 @@ class XenoClash:
 
         Game.wait(3.0)
 
+        # Check for resume.
+        if ImageUtils.confirm_location("resume_quests", tries = 5):
+            Game.find_and_click_button("resume")
+            Game.wait(5)
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode(["enablefullauto"]):
+                Game.collect_loot(is_completed = True)
+
         if Game.find_and_click_button("xeno_special", tries = 30):
             # Find all the "Select" buttons.
             MouseUtils.scroll_screen_from_home_button(-400)
@@ -169,15 +177,6 @@ class XenoClash:
 
         # Check for AP.
         #Game.check_for_ap()
-
-        # Check for resume.
-        if ImageUtils.confirm_location("resume_quests", tries = 5):
-            Game.find_and_click_button("resume")
-            Game.wait(5)
-            # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)
-
 
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
