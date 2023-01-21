@@ -677,6 +677,7 @@ class Game:
         if skip_popup_check is False:
             loot_collection_tries = 30
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
+                Game.wait(5)
                 loot_collection_tries -= 1
                 if loot_collection_tries <= 0:
                     MessageLog.print_message("\n[WARN] Unable to progress in the Loot Collection process,return to Home")
