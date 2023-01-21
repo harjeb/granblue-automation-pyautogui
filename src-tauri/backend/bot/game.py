@@ -113,6 +113,11 @@ class Game:
         Returns:
             None
         """
+        if ImageUtils.confirm_location("alert_ok"):
+            MessageLog.print_message("\n[INFO] Chrome alert pops...")
+            Game.find_and_click_button("home")
+            Game.wait(5)
+
         if not ImageUtils.confirm_location("home"):
             MessageLog.print_message("\n[INFO] Moving back to the Home screen...")
             if Game.find_and_click_button("home") is False:

@@ -269,6 +269,7 @@ class CombatMode:
         # Wait for the Attack to process.
         MessageLog.print_message(f"[COMBAT] Ending Turn {CombatMode._turn_number}...")
         if CombatMode._full_auto is False and CombatMode._semi_auto is False:
+            Game.wait(2)
             Game.find_and_click_button("attack", tries = 30)
             while ImageUtils.find_button("cancel", suppress_error = True) is not None:
                 if Settings.debug_mode:
@@ -950,7 +951,7 @@ class CombatMode:
             None
         """
         from bot.game import Game
-
+        Game.wait(2)
         if Game.find_and_click_button("attack", tries = 30):
             if ImageUtils.wait_vanish("combat_cancel", timeout = 10):
                 MessageLog.print_message("[COMBAT] Successful executed a manual attack.")

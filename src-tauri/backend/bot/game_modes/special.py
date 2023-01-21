@@ -81,6 +81,16 @@ class Special:
         # Go to the Quest screen.
         Game.find_and_click_button("quest", suppress_error = True)
 
+        Game.wait(1)
+
+        # Check for resume.
+        if ImageUtils.confirm_location("resume_quests", tries = 5):
+            Game.find_and_click_button("resume")
+            Game.wait(5)
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode(["enablefullauto"]):
+                Game.collect_loot(is_completed = True)
+
         # Check for the "You retreated from the raid battle" popup.
         Game.wait(3.0)
         if ImageUtils.confirm_location("you_retreated_from_the_raid_battle", tries = 3):
@@ -270,14 +280,6 @@ class Special:
 
         # Check for AP.
         #Game.check_for_ap()
-
-        # Check for resume.
-        if ImageUtils.confirm_location("resume_quests", tries = 5):
-            Game.find_and_click_button("resume")
-            Game.wait(5)
-            # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)
 
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
