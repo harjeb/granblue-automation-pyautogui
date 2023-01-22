@@ -73,8 +73,9 @@ class ImageUtils:
 
     @staticmethod
     def get_captcha_img():
-        top_left = (147,575)
-        bottom_right = (340,650)
+        header_center_post = ImageUtils.find_button("captcha_header")
+        top_left = (header_center_post[0]-96,header_center_post[1]+175)
+        bottom_right = (header_center_post[0]+100,header_center_post[1]+250)
         captcha_img = cv2.imread("temp/source.png")
         cropped = captcha_img[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
         cv2.imwrite("temp/captcha.png", cropped)
