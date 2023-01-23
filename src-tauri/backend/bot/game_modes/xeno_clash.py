@@ -129,7 +129,7 @@ class XenoClash:
             if Settings.mission_name == "Xeno Clash Extreme":
                 # The Xeno Extremes are the two above the last two on the list.
                 MessageLog.print_message(f"[XENO.CLASH] Now hosting Xeno Clash Extreme...")
-                if Settings.xeno_clash_select_top_option:
+                if not Settings.xeno_clash_select_top_option:
                     MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 3][0], select_button_locations[len(select_button_locations) - 3][1], "select")
                 else:
                     MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 4][0], select_button_locations[len(select_button_locations) - 4][1], "select")
@@ -139,7 +139,7 @@ class XenoClash:
             elif Settings.mission_name == "Xeno Clash Raid":
                 # The Xeno Raids are the last two on the list.
                 MessageLog.print_message(f"[XENO.CLASH] Now hosting Xeno Clash Raid...")
-                if Settings.xeno_clash_select_top_option:
+                if not Settings.xeno_clash_select_top_option:
                     MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 1][0], select_button_locations[len(select_button_locations) - 1][1], "select")
                 else:
                     MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 2][0], select_button_locations[len(select_button_locations) - 2][1], "select")
