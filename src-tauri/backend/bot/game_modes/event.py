@@ -105,10 +105,6 @@ class Event:
         MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
 
         Game.wait(3.0)
-        # 可能在resume game界面，需要重新进战斗
-        if ImageUtils.confirm_location("resume_quests"):
-            MessageLog.print_message(f"RELOAD combat")
-            Game.find_and_click_button("resume")
 
         # Check and click away the "Daily Missions" popup.
         if ImageUtils.confirm_location("event_daily_missions", tries = 3):
@@ -306,7 +302,6 @@ class Event:
                 # 可能在resume game界面，需要重新进战斗
                 if ImageUtils.confirm_location("resume_quests"):
                     MessageLog.print_message(f"RELOAD combat")
-                    Game.find_and_click_button("resume")
                 else:
                     MessageLog.print_message(f"NOT FOUND RELOAD BTN,TRY RELOAD")
                     Game.find_and_click_button("reload")
