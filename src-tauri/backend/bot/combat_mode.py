@@ -268,6 +268,7 @@ class CombatMode:
 
         # Wait for the Attack to process.
         MessageLog.print_message(f"[COMBAT] Ending Turn {CombatMode._turn_number}...")
+        count = 0
         if CombatMode._full_auto is False and CombatMode._semi_auto is False:
             Game.wait(1)
             Game.find_and_click_button("attack", tries = 30)
@@ -275,11 +276,17 @@ class CombatMode:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] While waiting for the incorrect turn to process, the \"Cancel\" button has not vanished from the screen yet.")
                 Game.wait(1.0)
+                if count >= 60:
+                    break
+                count += 1
         else:
             while ImageUtils.find_button("attack", suppress_error = True) is not None:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] While waiting for the incorrect turn to process, the \"Attack\" button has not vanished from the screen yet.")
                 Game.wait(1.0)
+                if count >= 60:
+                    break
+                count += 1
 
         reload_check = False
 
