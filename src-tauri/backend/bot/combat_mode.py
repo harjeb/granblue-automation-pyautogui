@@ -1072,6 +1072,13 @@ class CombatMode:
                 MessageLog.print_message("[COMBAT] Not in combat 2.")
                 break
 
+            # 检查是否还在战斗界面
+            if ImageUtils.find_button("ok", tries = 5, suppress_error = True) is None:
+                # 不在战斗界面
+                MessageLog.print_message("[COMBAT] combat out of time.")
+                Game.find_and_click_button("ok", tries = 1, suppress_error = True)
+                break
+                
             if Game.find_and_click_button("next", tries = 1, suppress_error = True):
                 Game.wait(3)
 
