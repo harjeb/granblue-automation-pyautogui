@@ -118,6 +118,11 @@ class Game:
             Game.find_and_click_button("home")
             Game.wait(5)
 
+        if Game.find_and_click_button("alert_ok_cn"):
+            MessageLog.print_message("\n[INFO] Chrome alert pops2...")
+            Game.find_and_click_button("home")
+            Game.wait(5)
+
         if not ImageUtils.confirm_location("home"):
             MessageLog.print_message("\n[INFO] Moving back to the Home screen...")
             if Game.find_and_click_button("home") is False:
