@@ -598,11 +598,13 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 self.textBrowser.moveCursor(QtGui.QTextCursor.End)
                 logger.info("---------")
                 logger.info("========Farm 结束========")
+                self.process.close()
                 self.running = False
                 self.pushButton.setText('开始')
             except:
                 logger.info("---------")
                 logger.info("========Farm 结束========")
+                self.process.close()
                 self.textBrowser.moveCursor(QtGui.QTextCursor.End)
                 self.running = False
                 self.pushButton.setText('开始')
