@@ -123,6 +123,10 @@ class Game:
             Game.find_and_click_button("home")
             Game.wait(5)
 
+        if Game.find_and_click_button("ok"):
+            MessageLog.print_message("\n[INFO] ok btn pops...")
+            Game.find_and_click_button("ok")
+
         if not ImageUtils.confirm_location("home"):
             MessageLog.print_message("\n[INFO] Moving back to the Home screen...")
             if Game.find_and_click_button("home") is False:
