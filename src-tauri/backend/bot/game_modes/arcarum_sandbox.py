@@ -429,11 +429,12 @@ class ArcarumSandbox:
         if len(action_locations) == 1:
             MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
         elif Settings.enable_defender and Settings.number_of_defeated_defenders < Settings.number_of_defenders:
-            MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
+            MouseUtils.move_and_click_point(action_locations[-2][0], action_locations[-2][1], "arcarum_sandbox_action")
             MessageLog.print_message(f"\n[ARCARUM.SANDBOX] Found Defender and fighting it...")
             Settings.engaged_defender_battle = True
         else:
-            MouseUtils.move_and_click_point(action_locations[1][0], action_locations[1][1], "arcarum_sandbox_action")
+            # If there is Defender,the mission should be latest
+            MouseUtils.move_and_click_point(action_locations[-1][0], action_locations[-1][1], "arcarum_sandbox_action")
 
         return None
 
@@ -597,6 +598,9 @@ class ArcarumSandbox:
             if Game.check_for_pending():
                 ArcarumSandbox._first_run = True
                 ArcarumSandbox._navigate_to_zone()
+            elif ImageUtils.find_button("home_news") is not None:
+                Game.go_back_home(confirm_location_check = True)
+                ArcarumSandbox._navigate_to_zone()
             else:
                 # If the bot cannot find the "Play Again" button, click the Expedition button.
                 Game.find_and_click_button("expedition")
@@ -615,7 +619,7 @@ class ArcarumSandbox:
 
         # Refill AAP if needed.
         ArcarumSandbox._play_zone_boss()
-        ArcarumSandbox._refill_aap()
+        #ArcarumSandbox._refill_aap()
 
         Game.wait(3.0)
 
