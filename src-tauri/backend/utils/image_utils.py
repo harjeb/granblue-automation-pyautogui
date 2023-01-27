@@ -73,12 +73,18 @@ class ImageUtils:
 
     @staticmethod
     def get_captcha_img():
+        from shutil import copyfile
+        from time import strftime, localtime
+        date_tag = strftime('%H_%M',localtime())
         header_center_post = ImageUtils.find_button("captcha_header")
-        top_left = (header_center_post[0]-96,header_center_post[1]+175)
-        bottom_right = (header_center_post[0]+100,header_center_post[1]+250)
+        copyfile("temp/match.png", "temp/match_%s.png" % date_tag)
+        top_left = (header_center_post[0]-96-Settings.window_left,header_center_post[1]+175-Settings.window_top)
+        bottom_right = (header_center_post[0]+100-Settings.window_left,header_center_post[1]+250-Settings.window_top)
         captcha_img = cv2.imread("temp/source.png")
+        copyfile("temp/source.png", "temp/source_%s.png" % date_tag)
         cropped = captcha_img[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]
         cv2.imwrite("temp/captcha.png", cropped)
+        copyfile("temp/captcha.png", "temp/captcha%s.png" % date_tag)
 
     @staticmethod
     def _match(template: numpy.ndarray, confidence: float = 0.8) -> bool:
@@ -119,7 +125,6 @@ class ImageUtils:
         if match_check:
             region = (ImageUtils._match_location[0] + width, ImageUtils._match_location[1] + height)
             cv2.rectangle(src, ImageUtils._match_location, region, 255, 5)
-
             if Settings.debug_mode:
                 cv2.imwrite(f"temp/match.png", src)
 
