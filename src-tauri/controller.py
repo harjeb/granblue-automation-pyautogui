@@ -44,6 +44,7 @@ for i in _list:
                     break
                 _settings = open(f"{ROOT_PATH}/backend/settings.json",encoding='utf-8')
                 if not check_sleep(json.load(_settings)):
+                    _settings.close()
                     os.system('python backend/main.py')
 
 
