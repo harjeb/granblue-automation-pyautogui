@@ -133,6 +133,9 @@ class Game:
                 MessageLog.print_message("[WARN] Failed to find and click the Home button.")
                 #raise RuntimeError("Failed to find and click the Home button. Maybe the Home button located on the bottom bar is not visible?")
         else:
+            #Force to Home
+            Game.find_and_click_button("home")
+            Game.wait(2)
             MessageLog.print_message("[INFO] Bot is at the Home screen.")
 
         # Handle any misc popups on the Home screen.
