@@ -199,6 +199,8 @@ class Raid:
             else:
                 summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
             if summon_check:
+                if Game.check_for_captcha():
+                    Game.select_default_summon()
                 # Select the Party.
                 if Game.quick_start_mission():
                     # Handle the rare case where joining the Raid after selecting the Summon and Party led the bot to the Quest Results screen with no loot to collect.
