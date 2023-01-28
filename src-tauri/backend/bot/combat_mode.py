@@ -746,7 +746,7 @@ class CombatMode:
                 MouseUtils.move_and_click_point(x, y, "template_skill")
 
                 # 如果技能无法使用，跳出OK btn
-                Game.find_and_click_button("ok")
+                Game.find_and_click_button("ok",tries=2)
 
                 # Check if the skill requires a target.
                 if len(skill_command_list) > 0 and ImageUtils.confirm_location("use_skill", bypass_general_adjustment = True):
@@ -1212,6 +1212,10 @@ class CombatMode:
 
         # Save the positions of the "Attack" and "Back" button.
         CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 50, bypass_general_adjustment = True)
+        if "one_punch" in Settings.combat_script_name:
+            Game.find_and_click_button("attack")
+            Game.find_and_click_button("reload")
+            MessageLog.print_message("One punch !!!")
 
         if CombatMode._attack_button_location is None:
             # Check for salute.  检查是否败北

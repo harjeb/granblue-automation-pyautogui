@@ -424,8 +424,8 @@ class ArcarumSandbox:
 
         Game.wait(1.0)
         # if gold chest exists, the mission may be invisible
-        if Game.find_and_click_button("gold_chest"):
-            return None
+        # if Game.find_and_click_button("gold_chest"):
+        #     return None
             # Game.find_and_click_button("ok")
             # Game.wait(2.0)
             # ArcarumSandbox._open_gold_chest()
@@ -454,8 +454,12 @@ class ArcarumSandbox:
         from bot.game import Game
 
         MessageLog.print_message(f"[ARCARUM.SANDBOX] Now determining if bot is starting all the way at the left edge of the Zone...")
+        count = 0
         while Game.find_and_click_button("arcarum_sandbox_left_arrow", tries = 1, suppress_error = True):
             Game.wait(1.0)
+            count += 1
+            if count > 30:
+                break
 
         MessageLog.print_message(f"[ARCARUM.SANDBOX] Left edge of the Zone has been reached.")
 
@@ -573,7 +577,7 @@ class ArcarumSandbox:
         from bot.game import Game
 
         action_locations: List[Tuple[int, ...]] = ImageUtils.find_all("arcarum_sandbox_action")
-        MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
+        #MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
         Game.find_and_click_button("ok")
         Game.wait(3.0)
         if Game.find_and_click_button("ok", suppress_error = True) is False:
@@ -609,8 +613,18 @@ class ArcarumSandbox:
                 ArcarumSandbox._first_run = True
                 ArcarumSandbox._navigate_to_zone()
             else:
+                if Game.find_and_click_button("mimic", suppress_error = True):
+                    Game.wait(3.0)
+                    if Game.find_party_and_start_mission(Settings.group_number, Settings.party_number):
+                        if CombatMode.start_combat_mode():
+                            Game.collect_loot(is_completed = True)
+                    Game.find_and_click_button("expedition")
+
                 # If the bot find the "close" button, click.
                 Game.find_and_click_button("close")
+
+                # If the bot find the "ok" button, click.
+                Game.find_and_click_button("ok")
 
                 # If the bot cannot find the "Play Again" button, click the Expedition button.
                 Game.find_and_click_button("expedition")
@@ -620,12 +634,15 @@ class ArcarumSandbox:
 
                 # Click away the Treasure popup if it shows up.
                 Game.find_and_click_button("ok", suppress_error = True)
-                if Settings.enable_gold_chest and Game.find_and_click_button("arcarum_gold_chest") is True:
+                if Settings.enable_gold_chest and Game.find_and_click_button("gold_chest") is True:
                     ArcarumSandbox._open_gold_chest()
                 else:
                     # Start the mission again.
                     Game.wait(3.0)
-                    ArcarumSandbox._navigate_to_mission(skip_to_action = True)
+                    # navigate to mission again.
+                    ArcarumSandbox._first_run = True
+                    ArcarumSandbox._navigate_to_zone()
+                    #ArcarumSandbox._navigate_to_mission(skip_to_action = True)
 
         # Refill AAP if needed.
         ArcarumSandbox._play_zone_boss()
