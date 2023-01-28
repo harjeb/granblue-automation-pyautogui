@@ -424,11 +424,17 @@ class ArcarumSandbox:
 
         Game.wait(1.0)
         # if gold chest exists, the mission may be invisible
-        # if Game.find_and_click_button("gold_chest"):
-        #     return None
-            # Game.find_and_click_button("ok")
-            # Game.wait(2.0)
-            # ArcarumSandbox._open_gold_chest()
+        if Game.find_and_click_button("gold_chest"):
+            ArcarumSandbox._open_gold_chest()
+            return None
+
+        if Game.find_and_click_button("mimic", suppress_error = True):
+            Game.wait(3.0)
+            if Game.find_party_and_start_mission(Settings.group_number, Settings.party_number):
+                if CombatMode.start_combat_mode():
+                    Game.collect_loot(is_completed = True)
+            Game.find_and_click_button("expedition")
+            return None
 
         # If there is no Defender, then the first action is the mission itself. Else, it is the second action.
         action_locations: List[Tuple[int, ...]] = ImageUtils.find_all("arcarum_sandbox_action")
@@ -576,11 +582,12 @@ class ArcarumSandbox:
         """
         from bot.game import Game
 
-        action_locations: List[Tuple[int, ...]] = ImageUtils.find_all("arcarum_sandbox_action")
         #MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
         Game.find_and_click_button("ok")
-        Game.wait(3.0)
+        Game.wait(5.0)
         if Game.find_and_click_button("ok", suppress_error = True) is False:
+            MessageLog.print_message("\n[ARCARUM.SANDBOX] Click first...")
+            action_locations: List[Tuple[int, ...]] = ImageUtils.find_all("arcarum_sandbox_action")
             MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
             Game.wait(3.0)
             if Game.find_party_and_start_mission(Settings.group_number, Settings.party_number):
@@ -619,6 +626,10 @@ class ArcarumSandbox:
                         if CombatMode.start_combat_mode():
                             Game.collect_loot(is_completed = True)
                     Game.find_and_click_button("expedition")
+
+                if ImageUtils.find_button("attack"):
+                    if CombatMode.start_combat_mode():
+                        Game.collect_loot(is_completed = True)
 
                 # If the bot find the "close" button, click.
                 Game.find_and_click_button("close")
