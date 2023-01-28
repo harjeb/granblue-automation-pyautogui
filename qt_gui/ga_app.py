@@ -208,6 +208,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.lineEdit_5.setEnabled(False)
         #xenoClash.selectTopOption
         self.checkBox_16.setChecked(True)
+        #sandbox.enableGoldChest
+        self.checkBox_17.setChecked(True)
 
         self.lineEdit_3.clicked.connect(self.openFileNameDialog)
         self.lineEdit_4.clicked.connect(self.openFileNameDialog)
