@@ -106,7 +106,8 @@ class CombatMode:
         """
         from bot.game import Game
         # 如果技能无法使用，跳出OK btn
-        Game.find_and_click_button("ok")
+        if ImageUtils.confirm_location("skill", tries = 2):
+            Game.find_and_click_button("ok",tries=2)
 
         dialog_location = ImageUtils.find_button("dialog_lyria", tries = 2, suppress_error = True, bypass_general_adjustment = True)
         if dialog_location is None:
@@ -264,7 +265,7 @@ class CombatMode:
         from bot.game import Game
 
         # Clear any detected dialog popups that might obstruct the "Attack" button.
-        CombatMode._check_for_dialog()
+        #CombatMode._check_for_dialog()
 
         # Wait for the Attack to process.
         MessageLog.print_message(f"[COMBAT] Ending Turn {CombatMode._turn_number}...")
@@ -746,7 +747,8 @@ class CombatMode:
                 MouseUtils.move_and_click_point(x, y, "template_skill")
 
                 # 如果技能无法使用，跳出OK btn
-                Game.find_and_click_button("ok",tries=2)
+                if ImageUtils.confirm_location("skill"):
+                    Game.find_and_click_button("ok",tries=2)
 
                 # Check if the skill requires a target.
                 if len(skill_command_list) > 0 and ImageUtils.confirm_location("use_skill", bypass_general_adjustment = True):

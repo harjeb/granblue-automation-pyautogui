@@ -503,6 +503,7 @@ class ArcarumSandbox:
         if ImageUtils.confirm_location("arcarum_sandbox") is False:
             Game.find_and_click_button("arcarum_sandbox_banner")
 
+        Game.wait(3.0)
         # Move to the Zone that the user's mission is at.
         if Settings.map_name == "Zone Eletio":
             navigation_check = Game.find_and_click_button("arcarum_sandbox_zone_eletio")
