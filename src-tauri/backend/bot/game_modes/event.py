@@ -111,6 +111,15 @@ class Event:
             MessageLog.print_message(f"\n[EVENT.TOKEN.DRAWBOXES] Detected \"Daily Missions\" popup. Clicking it away...")
             Game.find_and_click_button("close")
 
+        # Check for resume.
+        if ImageUtils.confirm_location("resume_quests", tries = 5):
+            Game.find_and_click_button("resume")
+            Game.wait(5)
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode(["enablefullauto"]):
+                Game.collect_loot(is_completed = True)
+            return None
+
         # Remove the difficulty prefix from the mission name.
         difficulty = ""
         formatted_mission_name = ""
