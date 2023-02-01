@@ -704,6 +704,16 @@ class Game:
                 # Search for and click on the "Extended Mastery" popup.
                 Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
 
+                if Game.find_and_click_button("alert_ok", tries = 1):
+                    MessageLog.print_message("\n[INFO] Chrome alert pops...")
+                    Game.find_and_click_button("home")
+                    Game.wait(5)
+
+                if Game.find_and_click_button("alert_ok_cn", tries = 1):
+                    MessageLog.print_message("\n[INFO] Chrome alert pops2...")
+                    Game.find_and_click_button("home")
+                    Game.wait(5)
+
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None
 
