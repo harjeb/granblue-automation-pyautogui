@@ -210,6 +210,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.checkBox_16.setChecked(True)
         #sandbox.enableGoldChest
         self.checkBox_17.setChecked(True)
+        #event.enableLocationIncrementByOne
 
         self.lineEdit_3.clicked.connect(self.openFileNameDialog)
         self.lineEdit_4.clicked.connect(self.openFileNameDialog)
@@ -389,8 +390,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["nightmare"]["nightmareSummonElements"] = self.getElement(self.comboBox_5.currentData())
         setting_dict["nightmare"]["nightmareGroupNumber"] = self.spinBox_9.value()
         setting_dict["nightmare"]["nightmarePartyNumber"] = self.spinBox_10.value()
-        setting_dict["event"]["enableLocationIncrementByOne"] = False
-        setting_dict["event"]["selectBottomCategory"] = False
+        setting_dict["event"]["enableLocationIncrementByOne"] = self.checkBox_19.isChecked()
+        setting_dict["event"]["selectBottomCategory"] = self.checkBox_20.isChecked()
         setting_dict["raid"]["enableAutoExitRaid"] = self.checkBox_5.isChecked()
         setting_dict["raid"]["timeAllowedUntilAutoExitRaid"] = self.spinBox_8.value()
         setting_dict["raid"]["enableNoTimeout"] = self.checkBox_6.isChecked()
