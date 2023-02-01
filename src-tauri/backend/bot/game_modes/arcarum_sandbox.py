@@ -430,6 +430,8 @@ class ArcarumSandbox:
 
         if Game.find_and_click_button("mimic", suppress_error = True):
             Game.wait(3.0)
+            if Game.check_for_captcha():
+                Game.wait(3.0)
             if Game.find_party_and_start_mission(Settings.group_number, Settings.party_number):
                 if CombatMode.start_combat_mode():
                     Game.collect_loot(is_completed = True)
@@ -655,6 +657,9 @@ class ArcarumSandbox:
                     ArcarumSandbox._first_run = True
                     ArcarumSandbox._navigate_to_zone()
                     #ArcarumSandbox._navigate_to_mission(skip_to_action = True)
+
+        if Game.check_for_captcha():
+            Game.wait(3.0)
 
         # Refill AAP if needed.
         ArcarumSandbox._play_zone_boss()
