@@ -3,8 +3,7 @@ import random
 import time
 import traceback
 from typing import List
-import sys
-
+import sys,os
 import pyautogui
 
 # The order of the following imports matter to avoid circular import error.
@@ -44,7 +43,33 @@ class Game:
 
 
     def __init__(self):
-        super().__init__()
+        #super().__init__()
+        from utils.settings import Settings
+        print('***********************00***********************')
+        Settings.update()
+        from utils.message_log import MessageLog
+        from utils import discord_utils
+        from utils.image_utils import ImageUtils
+        from utils.mouse_utils import MouseUtils
+        from utils.twitter_room_finder import TwitterRoomFinder
+        # Imports for all the supported game modes.
+        from bot.game_modes.arcarum import Arcarum
+        from bot.game_modes.arcarum_sandbox import ArcarumSandbox
+        from bot.game_modes.coop import Coop
+        from bot.game_modes.dread_barrage import DreadBarrage
+        from bot.game_modes.event import Event
+        from bot.game_modes.guild_wars import GuildWars
+        from bot.game_modes.proving_grounds import ProvingGrounds
+        from bot.game_modes.quest import Quest
+        #from bot.game_modes.raid import Raid
+        from bot.game_modes.raid_quick import Raid
+        from bot.game_modes.rotb import RiseOfTheBeasts
+        from bot.game_modes.special import Special
+        from bot.game_modes.xeno_clash import XenoClash
+        from bot.game_modes.generic import Generic
+
+
+
 
     @staticmethod
     def _calibrate_game_window(display_info_check: bool = False):
@@ -704,16 +729,6 @@ class Game:
                 # Search for and click on the "Extended Mastery" popup.
                 Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
 
-                if Game.find_and_click_button("alert_ok", tries = 1):
-                    MessageLog.print_message("\n[INFO] Chrome alert pops...")
-                    Game.find_and_click_button("home")
-                    Game.wait(5)
-
-                if Game.find_and_click_button("alert_ok_cn", tries = 1):
-                    MessageLog.print_message("\n[INFO] Chrome alert pops2...")
-                    Game.find_and_click_button("home")
-                    Game.wait(5)
-
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None
 
@@ -1032,8 +1047,8 @@ class Game:
             (bool): True if Farming Mode ended successfully.
         """
         try:
-            Game.start_discord_process()
-
+            #Game.start_discord_process()
+            Settings.update()
             # Calibrate the dimensions of the bot window on bot launch.
             Game._calibrate_game_window(display_info_check = True)
 

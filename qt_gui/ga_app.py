@@ -173,7 +173,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         #configuration.enableAutoQuickSummon
         self.checkBox_8.setChecked(False)
         #configuration.enableBypassResetSummon
-        self.checkBox.setChecked(False)
+        self.checkBox.setChecked(True)
         #configuration.staticWindow
         self.checkBox_9.setChecked(True)
         #configuration.enableMouseSecurityAttemptBypass

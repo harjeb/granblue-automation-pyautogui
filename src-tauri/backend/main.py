@@ -1,8 +1,8 @@
 import multiprocessing
 import time
-
+import os,sys
 from utils.message_log import MessageLog
-from bot.game import Game
+
 
 
 class MainDriver:
@@ -14,6 +14,7 @@ class MainDriver:
         super().__init__()
         self._game = None
         self._bot_process = None
+        self.root_path = os.path.abspath('.') 
 
     def is_running(self) -> bool:
         """Check the status of the bot process.
@@ -30,8 +31,23 @@ class MainDriver:
             None
         """
         # Initialize the Game class and start Farming Mode.
-        self._game = Game()
-        self._game.start_farming_mode()
+        c = 0
+        for filename in os.listdir(self.root_path+'/backend'):
+            setname = 'settings%s'% str(c)
+            if setname in filename and '_' not in filename:
+                _file = self.root_path + '/backend/' + setname + '.json'
+                os.rename(_file,self.root_path+'/backend/settings.json')
+                from utils.settings import Settings
+                Settings.update()
+                from bot.game import Game
+                self._game = Game()
+                self._game.start_farming_mode()
+                os.remove(self.root_path+'/backend/settings.json')
+                c += 1
+            elif setname in filename and '_'  in filename:
+                sleeptime = int(setname.split('_')[1])
+                time.sleep(sleeptime)
+                c += 1
         return None
 
     def start_bot(self):
@@ -68,7 +84,6 @@ if __name__ == "__main__":
     # Start the bot.
     bot_object = MainDriver()
     bot_object.start_bot()
-
     while True:
         if bot_object.is_running() is False:
             break
