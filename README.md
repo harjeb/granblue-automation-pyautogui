@@ -48,6 +48,8 @@ exit
 ![Gbf Automation ExReborn](https://github.com/harjeb/granblue-automation-pyautogui/blob/custom_dev/qt_gui/image/gbf_auto.png)
 
 ## Changelog
+2023/2/9 Beta v2.4更新：修复勇气之地Farm流程问题，修复大公多人战找房问题，修复其他小问题
+
 2023/1/14 Beta v1.7更新：古战场模式已经能稳定15小时运行无中断了，新增修改后的pyclick,需要安装完环境后手动安装。把原来的鼠标轨迹点减少至1/3，鼠标拟人移动时间最高降低了750%左右
 
 2023/1/4 Beta v1.0更新:完成新GUI的基本功能，增加队列执行，替换twitter api的舔表功能，不再需要开发者权限才能舔，discord统计功能和部分设置暂时移除
