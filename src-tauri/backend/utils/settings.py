@@ -138,6 +138,7 @@ class Settings:
     # #### end of sandbox defender #### #
 
     # #### event ####
+    first_event: bool = dictor(_data, "event.first", True)
     enable_event_location_incrementation_by_one: bool = dictor(_data, "event.enableLocationIncrementByOne", False)
     enable_select_bottom_category: bool = dictor(_data, "event.selectBottomCategory", False)
     # #### end of event ####
@@ -335,6 +336,7 @@ class Settings:
         # #### end of sandbox defender #### #
 
         # #### event ####
+        Settings.first_event: bool = dictor(_data, "event.first", True)
         Settings.enable_event_location_incrementation_by_one: bool = dictor(_data, "event.enableLocationIncrementByOne", False)
         Settings.enable_select_bottom_category: bool = dictor(_data, "event.selectBottomCategory", False)
         # #### end of event ####

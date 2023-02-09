@@ -207,7 +207,8 @@ class Raid:
                     if ImageUtils.confirm_location("no_loot", disable_adjustment = True):
                         MessageLog.print_message("\n[RAID] Seems that the Raid just ended. Moving back to the Home screen and joining another Raid...")
                     elif CombatMode.start_combat_mode():
-                        Game.collect_loot(is_completed = True)
+                        Settings.amount_of_runs_finished += 1
+                        Settings.item_amount_farmed += 1
                         # go back to the Home screen.
                         Game.find_and_click_button("home")
                         # Close the Skyscope mission popup.

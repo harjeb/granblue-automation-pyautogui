@@ -38,9 +38,11 @@ class ProvingGrounds:
         if len(banner_locations) == 0:
             banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
             if len(banner_locations) == 0:
-                raise ProvingGroundsException("Failed to find the Event banner.")
-        MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
-
+                MessageLog.print_message("Failed to find the Event banner.")
+        if Settings.first_event:
+            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+        else:
+            MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
         Game.wait(3.0)
 
         difficulty = ""
@@ -62,7 +64,7 @@ class ProvingGrounds:
                 # After the difficulty has been selected, click "Play" to land the bot at the Proving Grounds' Summon Selection screen.
                 Game.find_and_click_button("play")
         else:
-            raise ProvingGroundsException("Failed to arrive at the main screen for Proving Grounds.")
+            MessageLog.print_message("Failed to arrive at the main screen for Proving Grounds.")
 
         return None
 
@@ -83,12 +85,26 @@ class ProvingGrounds:
             ProvingGrounds._navigate()
         elif ProvingGrounds._first_time and Game.find_and_click_button("play_again"):
             MessageLog.print_message("\n[PROVING.GROUNDS] Starting Proving Grounds Mission again...")
-
+        else:
+            # Go to the Home screen.
+            Game.go_back_home(confirm_location_check = True)            
+            ProvingGrounds._navigate()
+            ProvingGrounds._first_time = False
         # Check for AP.
         #Game.check_for_ap()
+        Game.wait(2.0)
+        Game.find_and_click_button("proving_grounds_open_chest")
+        Game.find_and_click_button("play_again")
+        Game.find_and_click_button("close")
+
+        # Check for resume.
+        if ImageUtils.find_button("attack", tries = 5) is not None:
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode(["enablefullauto"]):
+                Game.collect_loot(is_completed = True)
 
         # Check if the bot is at the Summon Selection screen.
-        if (first_run or ProvingGrounds._first_time) and ImageUtils.confirm_location("proving_grounds_summon_selection", tries = 30):
+        if ImageUtils.confirm_location("proving_grounds_summon_selection", tries = 30):
             summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
             if summon_check:
                 Game.wait(2.0)
@@ -110,7 +126,11 @@ class ProvingGrounds:
                         MessageLog.print_message("\n[PROVING.GROUNDS] Moving onto the next battle for Proving Grounds...")
                         Game.find_and_click_button("ok")
                         ProvingGrounds._first_time = False
-        elif first_run is False and ProvingGrounds._first_time is False:
+                        Game.wait(3)
+        if ProvingGrounds._first_time is False:
+            if ImageUtils.find_button("proving_grounds_start") is None and ImageUtils.find_button("attack", tries = 10) is None:
+                return None
+            Game.find_and_click_button("proving_grounds_start")
             # No need to select a Summon again as it is reused.
             if CombatMode.start_combat_mode():
                 Game.collect_loot(is_completed = False)
@@ -132,7 +152,7 @@ class ProvingGrounds:
 
                     Game.wait(2.0)
                     Game.find_and_click_button("proving_grounds_open_chest")
-
+                    Game.wait(2.0)
                     if ImageUtils.confirm_location("proving_grounds_completion_loot"):
                         MessageLog.print_message("\n[PROVING.GROUNDS] Completion rewards has been acquired.")
                         Game.collect_loot(is_completed = True, skip_popup_check = True)
@@ -141,8 +161,8 @@ class ProvingGrounds:
                         if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                             ProvingGrounds._first_time = True
                     else:
-                        raise ProvingGroundsException("Failed to detect the Completion Loot screen for completing this Proving Grounds mission.")
+                        MessageLog.print_message("Failed to detect the Completion Loot screen for completing this Proving Grounds mission.")
         else:
-            raise ProvingGroundsException("Failed to arrive at the Summon Selection screen.")
+            MessageLog.print_message("Failed to arrive at the Summon Selection screen.")
 
         return None

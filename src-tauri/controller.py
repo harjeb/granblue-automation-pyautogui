@@ -54,5 +54,6 @@ for i in _list:
                     break
                 count += 1
 os.system('python backend/main.py')
+os.system('taskkill /f /im %s' % 'python.exe')
 
 

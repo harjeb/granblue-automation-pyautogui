@@ -211,6 +211,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         #sandbox.enableGoldChest
         self.checkBox_17.setChecked(True)
         #event.enableLocationIncrementByOne
+        #Settings.first_event
+        self.checkBox_21.setChecked(True)
 
         self.lineEdit_3.clicked.connect(self.openFileNameDialog)
         self.lineEdit_4.clicked.connect(self.openFileNameDialog)
@@ -434,6 +436,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["sandbox"]["defenderPartyNumber"] = self.spinBox_12.value()
         setting_dict["chaojiying"]["username"] = self.lineEdit_2.text()
         setting_dict["chaojiying"]["password"] = self.lineEdit_5.text()
+        setting_dict["event"]["first"] = self.checkBox_21.isChecked()
 
         json_str = json.dumps(setting_dict, indent=4)
         with open(save_path+'/%s.json' % setname, 'w') as json_file:

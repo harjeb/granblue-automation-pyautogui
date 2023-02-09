@@ -63,7 +63,7 @@ class EririRoomFinder:
 
         # Nightmare Raids
         "Lvl 100 Proto Bahamut": "54",
-        "Lvl 100 Grand Order": "60",
+        "Lvl 100 Grand Order": "57",
 
         # Rise of the Beasts Raids
         "Lvl 60 Zhuque": "77",
