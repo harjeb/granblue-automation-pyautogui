@@ -24,7 +24,7 @@ class RiseOfTheBeasts:
         """
         from bot.game import Game
 
-        if Settings.enable_nightmare and ImageUtils.confirm_location("rotb_extreme_plus", tries = 3):
+        if Settings.enable_nightmare and ImageUtils.find_button("play_next", tries = 3):
             MessageLog.print_message("\n[ROTB] Detected Extreme+. Starting it now...")
 
             MessageLog.print_message("\n********************************************************************************")
@@ -53,13 +53,67 @@ class RiseOfTheBeasts:
                     Game.collect_loot(is_completed = False, is_event_nightmare = True)
                     return True
 
-        elif not Settings.enable_nightmare and ImageUtils.confirm_location("rotb_extreme_plus", tries = 3):
-            MessageLog.print_message("\n[ROTB] Rise of the Beasts Extreme+ detected but user opted to not run it. Moving on...")
-            Game.find_and_click_button("close")
+        elif not Settings.enable_nightmare and ImageUtils.find_button("play_next", tries = 3):
+            MessageLog.print_message("\n[ROTB] Rise of the Beasts Extreme+ detected go default fight. Moving on...")
+            # Click the "Play Next" button to head to the Summon Selection screen.
+            Game.find_and_click_button("play_next")
+            Game.wait(1)
+            round_play_button_locations = ImageUtils.find_all("play_round_button")
+            MessageLog.print_message("\n[ROTB] Play qinglong ex +...")
+            MouseUtils.move_and_click_point(round_play_button_locations[3][0], round_play_button_locations[3][1], "play_round_button")
+
+            # Check if the bot is at the Summon Selection screen.
+            if ImageUtils.confirm_location("select_a_summon", tries = 30):
+                summon_check = Game.select_default_summon()
+                if summon_check:
+                    # Find and click the "OK" button to start the mission.
+                    Game.find_and_click_button("ok")
+
+                    # Now start Combat Mode and detect any item drops.
+                    if CombatMode.start_combat_mode():
+                        Game.collect_loot(is_completed = True)
+                        return True
+
         else:
             MessageLog.print_message("\n[ROTB] No Rise of the Beasts Extreme+ detected. Moving on...")
 
         return False
+
+    @staticmethod
+    def _trade():
+        from bot.game import Game
+        # Go to the Home screen.
+        Game.go_back_home(confirm_location_check = True)
+        MessageLog.print_message(f"\n[ROTB] Now navigating to trade...")
+        # Go to the Event by clicking on the "Menu" button and then click the very first banner.
+        Game.find_and_click_button("home_menu")
+        Game.wait(1.0)
+        banner_locations = ImageUtils.find_all("event_banner", custom_confidence = 0.7)
+        if len(banner_locations) == 0:
+            banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
+            if len(banner_locations) == 0:
+                MessageLog.print_message("Failed to find the Event banner.")
+
+        if Settings.first_event:
+            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+        else:
+            MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
+        Game.wait(3.0)
+
+        # Check for resume.
+        if ImageUtils.confirm_location("resume_quests", tries = 5):
+            Game.find_and_click_button("resume")
+            Game.wait(5)
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode(["enablefullauto"]):
+                Game.collect_loot(is_completed = True)        
+        Game.find_and_click_button("loot")
+        Game.wait(1.0)
+        Game.find_and_click_button("trade")
+        # if ImageUtils.find_button("trade_for"):
+        #     Game.find_and_click_button("trade_for")
+        Game.find_and_click_button("trade")
+        Game.find_and_click_button("ok")
 
     @staticmethod
     def _navigate():
@@ -81,20 +135,48 @@ class RiseOfTheBeasts:
         banner_locations = ImageUtils.find_all("event_banner", custom_confidence = 0.7)
         if len(banner_locations) == 0:
             banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
-        MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+            if len(banner_locations) == 0:
+                MessageLog.print_message("Failed to find the Event banner.")
 
+        if Settings.first_event:
+            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+        else:
+            MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
         Game.wait(3.0)
 
+        # Check for resume.
+        if ImageUtils.confirm_location("resume_quests", tries = 5):
+            Game.find_and_click_button("resume")
+            Game.wait(5)
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode(["enablefullauto"]):
+                Game.collect_loot(is_completed = True)
+
         if ImageUtils.confirm_location("rotb"):
+            # Scroll the screen down to make way for smaller screens.
+            MouseUtils.scroll_screen_from_home_button(-400)
             # Remove the difficulty prefix from the mission name.
             difficulty = ""
             temp_mission_name = ""
-            if Settings.mission_name.find("VH ") == 0:
+            if ImageUtils.find_button("extreme_p"):
+                difficulty = "Extreme+"
+            elif Settings.mission_name.find("VH ") == 0:
                 difficulty = "Very Hard"
                 temp_mission_name = Settings.mission_name[3:]
-            elif Settings.mission_name.find("EX ") == 0:
+            elif Settings.mission_name.find("EX") == 0:
                 difficulty = "Extreme"
-                temp_mission_name = Settings.mission_name[3:]
+                if ImageUtils.find_button("zhuque"):
+                    temp_mission_name = "Zhuque"
+                elif ImageUtils.find_button("baihu"):
+                    temp_mission_name = "Baihu"
+                elif ImageUtils.find_button("qinglong"):
+                    temp_mission_name = "Qinglong"
+                elif ImageUtils.find_button("sixiang_all"):
+                    temp_mission_name = "Qinglong"
+                elif ImageUtils.find_button("xuanwu"):
+                    temp_mission_name = "Xuanwu"
+                else:
+                    MessageLog.print_message("Failed to find any EX beasts.")
 
             # Only Raids are marked with Extreme difficulty.
             if difficulty == "Extreme":
@@ -116,7 +198,7 @@ class RiseOfTheBeasts:
                         MessageLog.print_message(f"[ROTB] Now starting EX Qinglong Raid...")
                         Game.find_and_click_button("rotb_raid_qinglong")
                 else:
-                    raise(RiseOfTheBeastsException("Failed to open the ROTB Battle the Beasts popup."))
+                    MessageLog.print_message("Failed to open the ROTB Battle the Beasts popup.")
 
             elif Settings.mission_name == "Lvl 100 Shenxian":
                 # Click on Shenxian to host.
@@ -127,11 +209,16 @@ class RiseOfTheBeasts:
                     MessageLog.print_message(f"[ROTB] There are no more Shenxian hosts left. Alerting user...")
                     raise RiseOfTheBeastsException("There are no more Shenxian hosts left.")
 
+            elif difficulty == "Extreme+":
+                MessageLog.print_message("[ROTB] Now hosting EX+ Quest...")
+                Game.find_and_click_button("extreme_p")
+                if Game.find_and_click_button("rotb_qinglong_p"):
+                    MessageLog.print_message(f"[ROTB] Now starting EX+ qinglong Raid...")
             else:
                 MessageLog.print_message(f"[ROTB] Now hosting {temp_mission_name} Quest...")
 
                 # Scroll the screen down to make way for smaller screens.
-                MouseUtils.scroll_screen_from_home_button(-400)
+                #MouseUtils.scroll_screen_from_home_button(-400)
 
                 # Find all instances of the "Select" button on the screen and click on the first instance.
                 select_button_locations = ImageUtils.find_all("select")
@@ -160,7 +247,7 @@ class RiseOfTheBeasts:
                 else:
                     raise(RiseOfTheBeastsException("Failed to open the ROTB Rising Beasts Showdown popup."))
         else:
-            raise RiseOfTheBeastsException("Failed to arrive at the ROTB page.")
+            MessageLog.print_message("Failed to arrive at the ROTB page.")
 
         return None
 
@@ -175,12 +262,22 @@ class RiseOfTheBeasts:
             None
         """
         from bot.game import Game
+        is_loot = 1
+        if not first_run:
+            is_loot = Settings.item_amount_farmed % 100
 
         # Start the navigation process.
         if first_run:
             RiseOfTheBeasts._navigate()
+        elif is_loot == 0:
+            MessageLog.print_message("Go to trade.")
+            RiseOfTheBeasts._trade()
+            RiseOfTheBeasts._navigate()
         elif Game.find_and_click_button("play_again"):
+            is_exp = Settings.item_amount_farmed % 8
             if Game.check_for_popups():
+                RiseOfTheBeasts._navigate()
+            elif is_exp == 0:
                 RiseOfTheBeasts._navigate()
         else:
             # If the bot cannot find the "Play Again" button, check for Pending Battles and then perform navigation again.
@@ -190,25 +287,17 @@ class RiseOfTheBeasts:
         # Check for AP.
         #Game.check_for_ap()
 
-        # Check for resume.
-        if ImageUtils.confirm_location("resume_quests", tries = 5):
-            Game.find_and_click_button("resume")
-            Game.wait(5)
-            # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)
-
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
-            summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
+            summon_check = Game.select_default_summon()
             if summon_check:
-                # Select the Party.
-                Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
+                # Find and click the "OK" button to start the mission.
+                Game.find_and_click_button("ok")
 
                 # Now start Combat Mode and detect any item drops.
                 if CombatMode.start_combat_mode():
                     Game.collect_loot(is_completed = True)
         else:
-            raise RiseOfTheBeastsException("Failed to arrive at the Summon Selection screen.")
+            MessageLog.print_message("Failed to arrive at the Summon Selection screen.")
 
         return None

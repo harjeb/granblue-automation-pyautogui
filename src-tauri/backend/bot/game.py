@@ -712,7 +712,7 @@ class Game:
 
         # Close all popups until the bot reaches the Loot Collected screen.
         if skip_popup_check is False:
-            loot_collection_tries = 30
+            loot_collection_tries = 80
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
                 Game.wait(5)
                 loot_collection_tries -= 1
@@ -1114,6 +1114,8 @@ class Game:
                     print(e)
                     MessageLog.print_message("\n[ERROR] game failed")
 
+                MessageLog.print_message("[ERROR] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %d=" % Settings.item_amount_farmed)
+                MessageLog.print_message("[ERROR] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %d=" % Settings.item_amount_to_farm)
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                     # Generate a resting period if the user enabled it.
                     Game._delay_between_runs()

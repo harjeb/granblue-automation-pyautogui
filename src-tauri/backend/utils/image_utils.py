@@ -287,6 +287,9 @@ class ImageUtils:
         Returns:
             (Tuple[int, int]): Tuple of coordinates of where the center of the button is located if image matching was successful. Otherwise, return None.
         """
+        if image_name == "extreme_p":
+            custom_confidence = 0.95
+
         if Settings.debug_mode:
             MessageLog.print_message(f"\n[DEBUG] Starting process to find the {image_name.upper()} button image...")
 
