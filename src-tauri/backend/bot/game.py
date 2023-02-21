@@ -19,6 +19,7 @@ from bot.game_modes.arcarum_sandbox import ArcarumSandbox
 from bot.game_modes.coop import Coop
 from bot.game_modes.dread_barrage import DreadBarrage
 from bot.game_modes.event import Event
+from bot.game_modes.fate import Fate
 from bot.game_modes.guild_wars import GuildWars
 from bot.game_modes.proving_grounds import ProvingGrounds
 from bot.game_modes.quest import Quest
@@ -714,7 +715,7 @@ class Game:
         if skip_popup_check is False:
             loot_collection_tries = 80
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
-                Game.wait(5)
+                Game.wait(10)
                 loot_collection_tries -= 1
                 if loot_collection_tries <= 0:
                     MessageLog.print_message("\n[WARN] Unable to progress in the Loot Collection process,return to Home")
@@ -1086,6 +1087,8 @@ class Game:
                 try:
                     if Settings.farming_mode == "Quest":  # 任务
                         Quest.start(first_run)
+                    elif Settings.farming_mode == "Fate":
+                        Fate.start(first_run)
                     elif Settings.farming_mode == "Special":   # 特殊本（碎片）
                         Special.start(first_run)
                     elif Settings.farming_mode == "Coop":     # 共斗

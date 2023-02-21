@@ -219,6 +219,9 @@
             ]
         }
     },
+    "Fate":{
+        "Fate_Episode":{"map":"fate episodes","items":["Repeated Runs"]}
+    },
     "特殊": {
         "N Fire Trial": {
             "map": "Uncap Treasure Quests",
@@ -1749,25 +1752,7 @@
                 "Repeated Runs"
             ]
         },
-        "EX Zhuque": {
-            "map": "Event Raid",
-            "items": [
-                "Repeated Runs"
-            ]
-        },
-        "EX Xuanwu": {
-            "map": "Event Raid",
-            "items": [
-                "Repeated Runs"
-            ]
-        },
-        "EX Baihu": {
-            "map": "Event Raid",
-            "items": [
-                "Repeated Runs"
-            ]
-        },
-        "EX Qinglong": {
+        "EX": {
             "map": "Event Raid",
             "items": [
                 "Repeated Runs"

@@ -3,7 +3,7 @@ from utils.message_log import MessageLog
 from utils.image_utils import ImageUtils
 from utils.mouse_utils import MouseUtils
 from bot.combat_mode import CombatMode
-
+import pyautogui
 
 class RiseOfTheBeastsException(Exception):
     def __init__(self, message):
@@ -110,8 +110,12 @@ class RiseOfTheBeasts:
         Game.find_and_click_button("loot")
         Game.wait(1.0)
         Game.find_and_click_button("trade")
-        # if ImageUtils.find_button("trade_for"):
-        #     Game.find_and_click_button("trade_for")
+        if ImageUtils.find_button("trade_for"):
+            Game.find_and_click_button("trade_for")
+            for i in range(30):
+                pyautogui.press('down')
+                Game.wait(0.5)
+            pyautogui.press("enter")
         Game.find_and_click_button("trade")
         Game.find_and_click_button("ok")
 
@@ -264,12 +268,15 @@ class RiseOfTheBeasts:
         from bot.game import Game
         is_loot = 1
         if not first_run:
-            is_loot = Settings.item_amount_farmed % 100
+            if Settings.mission_name != "Lvl 100 Shenxian":
+                is_loot = Settings.item_amount_farmed % 50
+            else:
+                is_loot = Settings.item_amount_farmed % 7
 
         # Start the navigation process.
         if first_run:
-            RiseOfTheBeasts._navigate()
-        elif is_loot == 0:
+          RiseOfTheBeasts._navigate()
+        elif is_loot == 1:
             MessageLog.print_message("Go to trade.")
             RiseOfTheBeasts._trade()
             RiseOfTheBeasts._navigate()
@@ -289,14 +296,22 @@ class RiseOfTheBeasts:
 
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
-            summon_check = Game.select_default_summon()
-            if summon_check:
-                # Find and click the "OK" button to start the mission.
-                Game.find_and_click_button("ok")
-
-                # Now start Combat Mode and detect any item drops.
-                if CombatMode.start_combat_mode():
-                    Game.collect_loot(is_completed = True)
+            if Settings.mission_name != "Lvl 100 Shenxian":
+                summon_check = Game.select_default_summon()
+                if summon_check:
+                    # Find and click the "OK" button to start the mission.
+                    Game.find_and_click_button("ok")
+                    # Now start Combat Mode and detect any item drops.
+                    if CombatMode.start_combat_mode():
+                        Game.collect_loot(is_completed = True)
+            else:
+                summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
+                if summon_check:
+                    # Find and click the "OK" button to start the mission.
+                    Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
+                    # Now start Combat Mode and detect any item drops.
+                    if CombatMode.start_combat_mode():
+                        Game.collect_loot(is_completed = True)
         else:
             MessageLog.print_message("Failed to arrive at the Summon Selection screen.")
 
