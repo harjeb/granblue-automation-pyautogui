@@ -259,10 +259,11 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 filenum = str(self.action_queue[-1])
                 self.saveSettings(dirs, 'settings'+filenum)
                 self.update_queue("任务"+str(filenum)+",")
-            except:
+            except Exception as e:
+                print(e)
                 QMessageBox.warning(self,
                         "错误",
-                        "未找到脚本文件夹<backend>,请检测exe是否在主目录中",
+                        "错误2",
                         QMessageBox.Yes)
         else:
             QMessageBox.warning(self,

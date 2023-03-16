@@ -23,74 +23,6 @@ class XenoClash:
     """
 
     @staticmethod
-    def check_for_xeno_clash_nightmare():
-        """Checks for Xeno Clash Nightmare and if it appears and the user enabled it in user settings, start it.
-
-        Returns:
-            (bool): Return True if Xeno Clash Nightmare was detected and successfully completed. Otherwise, return False.
-        """
-        from bot.game import Game
-
-        if Settings.enable_nightmare and ImageUtils.confirm_location("limited_time_quests", tries = 3):
-            # First check if the Xeno Clash Nightmare is skippable.
-            event_claim_loot_location = ImageUtils.find_button("event_claim_loot", suppress_error = True)
-            if event_claim_loot_location is not None:
-                MessageLog.print_message("\n[XENO] Skippable Xeno Clash Nightmare detected. Claiming it now...")
-                MouseUtils.move_and_click_point(event_claim_loot_location[0], event_claim_loot_location[1], "event_claim_loot")
-                Game.collect_loot(is_completed = False, is_event_nightmare = True)
-                return True
-            else:
-                MessageLog.print_message("\n[XENO] Detected Xeno Clash Nightmare. Starting it now...")
-
-                MessageLog.print_message("\n********************************************************************************")
-                MessageLog.print_message("********************************************************************************")
-                MessageLog.print_message(f"[XENO] Xeno Clash Nightmare")
-                MessageLog.print_message(f"[XENO] Xeno Clash Nightmare Summon Elements: {Settings.nightmare_summon_elements_list}")
-                MessageLog.print_message(f"[XENO] Xeno Clash Nightmare Summons: {Settings.nightmare_summon_list}")
-                MessageLog.print_message(f"[XENO] Xeno Clash Nightmare Group Number: {Settings.nightmare_group_number}")
-                MessageLog.print_message(f"[XENO] Xeno Clash Nightmare Party Number: {Settings.nightmare_party_number}")
-                MessageLog.print_message(f"[XENO] Xeno Clash Nightmare Combat Script: {Settings.nightmare_combat_script_name}")
-                MessageLog.print_message("********************************************************************************")
-                MessageLog.print_message("********************************************************************************\n")
-
-                # Click the "Play Next" button to head to the Summon Selection screen.
-                Game.find_and_click_button("play_next")
-
-                Game.wait(1)
-
-                # Select only the first Nightmare.
-                play_round_buttons = ImageUtils.find_all("play_round_button")
-                MouseUtils.move_and_click_point(play_round_buttons[0][0], play_round_buttons[0][1], "play_round_button")
-
-                Game.wait(1)
-
-                # Once the bot is at the Summon Selection screen, select your Summon and Party and start the mission.
-                if ImageUtils.confirm_location("select_a_summon", tries = 30):
-                    Game.select_summon(Settings.nightmare_summon_list, Settings.nightmare_summon_elements_list)
-                    start_check = Game.find_party_and_start_mission(int(Settings.nightmare_group_number), int(Settings.nightmare_party_number), bypass_first_run = True)
-
-                    # Once preparations are completed, start Combat Mode.
-                    if start_check and CombatMode.start_combat_mode(is_nightmare = True):
-                        Game.collect_loot(is_completed = False, is_event_nightmare = True)
-                        return True
-
-        elif not Settings.enable_nightmare and ImageUtils.confirm_location("limited_time_quests", tries = 3):
-            # First check if the Xeno Clash Nightmare is skippable.
-            event_claim_loot_location = ImageUtils.find_button("event_claim_loot", suppress_error = True)
-            if event_claim_loot_location is not None:
-                MessageLog.print_message("\n[XENO] Skippable Xeno Clash Nightmare detected but user opted to not run it. Claiming it regardless...")
-                MouseUtils.move_and_click_point(event_claim_loot_location[0], event_claim_loot_location[1], "event_claim_loot")
-                Game.collect_loot(is_completed = False, is_event_nightmare = True)
-                return True
-            else:
-                MessageLog.print_message("\n[XENO] Xeno Clash Nightmare detected but user opted to not run it. Moving on...")
-                Game.find_and_click_button("close")
-        else:
-            MessageLog.print_message("\n[XENO] No Xeno Clash Nightmare detected. Moving on...")
-
-        return False
-
-    @staticmethod
     def _navigate():
         """Navigates to the specified Xeno Clash mission.
 
@@ -98,20 +30,16 @@ class XenoClash:
             None
         """
         from bot.game import Game
+        formatted_mission_name = Settings.mission_name
+        MessageLog.print_message(f"\n[SPECIAL] Beginning process to navigate to the mission: {Settings.mission_name}...")
 
         # Go to the Home screen.
         Game.go_back_home(confirm_location_check = True)
 
-        MessageLog.print_message(f"\n[XENO.CLASH] Now navigating to Xeno Clash...")
+        # Go to the Quest screen.
+        Game.find_and_click_button("quest", suppress_error = True)
 
-        # Go to the Event by clicking on the "Menu" button and then click the very first banner.
-        Game.find_and_click_button("home_menu")
-        event_banner_locations = ImageUtils.find_all("event_banner", custom_confidence = 0.7)
-        if len(event_banner_locations) == 0:
-            event_banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
-        MouseUtils.move_and_click_point(event_banner_locations[0][0], event_banner_locations[0][1], "event_banner")
-
-        Game.wait(3.0)
+        Game.wait(1)
 
         # Check for resume.
         if ImageUtils.confirm_location("resume_quests", tries = 5):
@@ -121,34 +49,68 @@ class XenoClash:
             if CombatMode.start_combat_mode(["enablefullauto"]):
                 Game.collect_loot(is_completed = True)
 
-        if Game.find_and_click_button("xeno_special", tries = 30):
-            # Find all the "Select" buttons.
-            MouseUtils.scroll_screen_from_home_button(-400)
-            select_button_locations = ImageUtils.find_all("select")
+        # Check for the "You retreated from the raid battle" popup.
+        Game.wait(3.0)
+        if ImageUtils.confirm_location("you_retreated_from_the_raid_battle", tries = 3):
+            Game.find_and_click_button("ok")
 
-            if Settings.mission_name == "Xeno Clash Extreme":
-                # The Xeno Extremes are the two above the last two on the list.
-                MessageLog.print_message(f"[XENO.CLASH] Now hosting Xeno Clash Extreme...")
-                if not Settings.xeno_clash_select_top_option:
-                    MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 3][0], select_button_locations[len(select_button_locations) - 3][1], "select")
-                else:
-                    MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 4][0], select_button_locations[len(select_button_locations) - 4][1], "select")
+        if ImageUtils.confirm_location("quest"):
+            # Go to the Special screen.
+            Game.find_and_click_button("special")
 
-                difficulty_button_locations = ImageUtils.find_all("play_round_button")
-                MouseUtils.move_and_click_point(difficulty_button_locations[0][0], difficulty_button_locations[0][1], "play_round_button")
-            elif Settings.mission_name == "Xeno Clash Raid":
-                # The Xeno Raids are the last two on the list.
-                MessageLog.print_message(f"[XENO.CLASH] Now hosting Xeno Clash Raid...")
-                if not Settings.xeno_clash_select_top_option:
-                    MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 1][0], select_button_locations[len(select_button_locations) - 1][1], "select")
-                else:
-                    MouseUtils.move_and_click_point(select_button_locations[len(select_button_locations) - 2][0], select_button_locations[len(select_button_locations) - 2][1], "select")
+        if ImageUtils.confirm_location("special"):
+            tries = 2
+            # Try to select the specified Special mission for a number of tries.
+            while tries != 0:
+                MouseUtils.scroll_screen_from_home_button(-500)
+                Game.wait(3)
 
-                Game.wait(2.0)
+                mission_select_button = ImageUtils.find_button("showdowns")
+                if mission_select_button is not None:
+                    MessageLog.print_message(f"[SPECIAL] Navigating to {Settings.map_name}...")
 
-                Game.find_and_click_button("play")
-        else:
-            raise(XenoClashException("Failed to open the Xeno Special tab."))
+                    # Move to the specified Special by clicking its "Select" button.
+                    special_quest_select_button = (mission_select_button[0] + 145, mission_select_button[1] + 75)
+                    MouseUtils.move_and_click_point(special_quest_select_button[0], special_quest_select_button[1], "select")
+
+                    Game.wait(1)
+
+                    # click clashes
+                    Game.find_and_click_button("clashes")
+                    Game.wait(2)
+                    locations = ImageUtils.find_all("play_round_button")
+                    if formatted_mission_name == "火六道 Extreme":
+                        # Navigate to Ifrit Showdown.
+                        MessageLog.print_message(f"[SPECIAL] Selecting 火六道 Extreme...")
+                        MouseUtils.move_and_click_point(locations[0][0], locations[0][1], "play_round_button")
+                    elif formatted_mission_name == "水六道 Extreme":
+                        # Navigate to Cocytus Showdown.
+                        MessageLog.print_message(f"[SPECIAL] Selecting 水六道 Extreme...")
+                        MouseUtils.move_and_click_point(locations[1][0], locations[1][1], "play_round_button")
+                    elif formatted_mission_name == "土六道 Extreme":
+                        # Navigate to Vohu Manah Showdown.
+                        MessageLog.print_message(f"[SPECIAL] Selecting 土六道 Extreme...")
+                        MouseUtils.move_and_click_point(locations[2][0], locations[2][1], "play_round_button")
+                    elif formatted_mission_name == "风六道 Extreme":
+                        # Navigate to Sagittarius Showdown.
+                        MessageLog.print_message(f"[SPECIAL] Selecting 风六道 Extreme...")
+                        MouseUtils.move_and_click_point(locations[3][0], locations[3][1], "play_round_button")
+                    elif formatted_mission_name == "光六道 Extreme":
+                        # Navigate to Corow Showdown.
+                        MessageLog.print_message(f"[SPECIAL] Selecting 光六道 Extreme...")
+                        MouseUtils.move_and_click_point(locations[4][0], locations[4][1], "play_round_button")
+                    elif formatted_mission_name == "暗六道 Extreme":
+                        # Navigate to Diablo Showdown.
+                        MessageLog.print_message(f"[SPECIAL] Selecting 暗六道 Extreme...")
+                        MouseUtils.move_and_click_point(locations[5][0], locations[5][1], "play_round_button")
+
+                    # Now start the clash with the specified difficulty.
+                    Game.wait(1)
+                    MessageLog.print_message(f"[SPECIAL] Now navigating to ex...")
+                    locations = ImageUtils.find_all("play_round_button")
+
+                    MouseUtils.move_and_click_point(locations[0][0], locations[0][1], "play_round_button")
+                break
 
         return None
 

@@ -1856,7 +1856,37 @@
         }
     },
     "六道": {
-        "Xeno Clash Extreme": {
+        "火六道 Extreme": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "水六道 Extreme": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "风六道 Extreme": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "土六道 Extreme": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "光六道 Extreme": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "暗六道 Extreme": {
             "map": "Event Quest",
             "items": [
                 "Repeated Runs"

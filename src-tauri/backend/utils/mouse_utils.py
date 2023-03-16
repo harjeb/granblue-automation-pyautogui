@@ -247,5 +247,5 @@ class MouseUtils:
             None
         """
         message = pyperclip.paste()
-        pyautogui.write(message)
+        pyautogui.write(message.lower())
         return None

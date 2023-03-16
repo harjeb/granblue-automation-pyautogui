@@ -72,7 +72,6 @@ class Special:
             None
         """
         from bot.game import Game
-
         MessageLog.print_message(f"\n[SPECIAL] Beginning process to navigate to the mission: {Settings.mission_name}...")
 
         # Go to the Home screen.
@@ -185,6 +184,11 @@ class Special:
                                 MouseUtils.move_and_click_point(locations[2][0], locations[2][1], "play_round_button")
 
                         elif Settings.map_name == "Showdowns":
+
+                            # click clashes
+                            Game.find_and_click_button("showdowns_mission")
+                            Game.wait(2)
+
                             locations = ImageUtils.find_all("play_round_button")
 
                             if formatted_mission_name == "Ifrit Showdown":

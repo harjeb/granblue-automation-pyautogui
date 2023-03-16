@@ -43,27 +43,13 @@ class DreadBarrage:
 
         if ImageUtils.confirm_location("dread_barrage"):
             # Check if there is already a hosted Dread Barrage mission.
-            if ImageUtils.confirm_location("resume_quests"):
-                MessageLog.print_message(f"\n[WARNING] Detected that there is already a hosted Dread Barrage mission.")
-                expiry_time_in_seconds = 0
-
-                while ImageUtils.confirm_location("resume_quests", tries = 1):
-                    # If there is already a hosted Dread Barrage mission, the bot will wait for a total of 1 hour and 30 minutes
-                    # for either the raid to expire or for anyone in the room to clear it.
-                    MessageLog.print_message(f"\n[WARNING] The bot will now either wait for the expiry time of 1 hour and 30 minutes or for someone else in the room to clear it.")
-                    MessageLog.print_message(f"[WARNING] The bot will now refresh the page every 30 seconds to check if it is still there before proceeding.")
-                    MessageLog.print_message(f"[WARNING] User can either wait it out, revive and fight it to completion, or retreat from the mission manually.")
-                    Game.wait(30)
-
-                    Game.find_and_click_button("reload")
-                    Game.wait(2)
-
-                    expiry_time_in_seconds += 30
-                    if expiry_time_in_seconds >= 5400:
-                        break
-
-                MessageLog.print_message(f"\n[SUCCESS] Hosted Dread Barrage mission is now gone either because of timeout or someone else in the room killed it. Moving on...\n")
-
+            if ImageUtils.confirm_location("resume_quests", tries = 5):
+                Game.find_and_click_button("resume")
+                Game.wait(5)
+                # Now start Combat Mode and detect any item drops.
+                if CombatMode.start_combat_mode(["enablefullauto"]):
+                    Game.collect_loot(is_completed = True)
+                    return None
             # Find all the "Play" buttons at the top of the window.
             dread_barrage_play_button_locations = ImageUtils.find_all("dread_barrage_play")
 
@@ -124,14 +110,6 @@ class DreadBarrage:
 
         # Check for AP.
         #Game.check_for_ap()
-
-        # Check for resume.
-        if ImageUtils.confirm_location("resume_quests", tries = 5):
-            Game.find_and_click_button("resume")
-            Game.wait(5)
-            # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)
 
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):

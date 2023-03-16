@@ -14,6 +14,7 @@ from utils.image_utils import ImageUtils
 from utils.mouse_utils import MouseUtils
 from utils.twitter_room_finder import TwitterRoomFinder
 # Imports for all the supported game modes.
+from bot.combat_mode import CombatMode
 from bot.game_modes.arcarum import Arcarum
 from bot.game_modes.arcarum_sandbox import ArcarumSandbox
 from bot.game_modes.coop import Coop
@@ -46,7 +47,6 @@ class Game:
     def __init__(self):
         #super().__init__()
         from utils.settings import Settings
-        print('***********************00***********************')
         Settings.update()
         from utils.message_log import MessageLog
         from utils import discord_utils
@@ -582,28 +582,34 @@ class Game:
                     MessageLog.print_message(f"[INFO] Skipping Set Selection due to Raid only allowing parties from the Extra category.")
                 elif group_number < 8:
                     while set_location is None:
-                        set_location = ImageUtils.find_button("party_set_a", tries = 10)
+                        set_location = ImageUtils.find_button("party_set_a", tries = 10, custom_confidence=0.93)
                         if set_location is None:
                             tries -= 1
                             if tries <= 0:
                                 raise RuntimeError("Could not find Set A.")
 
                             # See if the user had Set B active instead of Set A if matching failed.
-                            set_location = ImageUtils.find_button("party_set_b", tries = 10)
+                            MessageLog.print_message(f"[INFO] Click Set B.")
+                            Game.find_and_click_button("party_set_b")
+                            set_location = ImageUtils.find_button("party_set_b", tries = 10, custom_confidence=0.93)
                 else:
                     while set_location is None:
-                        set_location = ImageUtils.find_button("party_set_b", tries = 10)
+                        set_location = ImageUtils.find_button("party_set_b", tries = 10, custom_confidence=0.93)
                         if set_location is None:
                             tries -= 1
                             if tries <= 0:
                                 raise RuntimeError("Could not find Set B.")
-
+                            MessageLog.print_message(f"[INFO] Click Set A.")
                             # See if the user had Set A active instead of Set B if matching failed.
-                            set_location = ImageUtils.find_button("party_set_a", tries = 10)
+                            Game.find_and_click_button("party_set_a")
+                            set_location = ImageUtils.find_button("party_set_a", tries = 10, custom_confidence=0.93)
 
             # Center the mouse on the "Set A" / "Set B" button and then click the correct Group tab.
             if Settings.debug_mode:
                 MessageLog.print_message(f"[DEBUG] Successfully selected the correct Set. Now selecting Group {group_number}...")
+
+            if group_number > 7:
+                group_number = group_number -7
 
             if group_number == 1:
                 x = set_location[0] - 350
@@ -726,6 +732,13 @@ class Game:
                 Game.find_and_click_button("ok", tries = 1, suppress_error = True)
                 Game.find_and_click_button("close", tries = 1, suppress_error = True)
                 Game.find_and_click_button("cancel", tries = 1, suppress_error = True)
+                # FA时刷新战斗
+                for i in range(5):
+                    if ImageUtils.find_button("attack", tries = 3) is None:
+                        Game.find_and_click_button("reload")
+                        Game.wait(3.0)
+                    CombatMode._enable_auto()
+                    Game.wait(1.0)
 
                 # Search for and click on the "Extended Mastery" popup.
                 Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)

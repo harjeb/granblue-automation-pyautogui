@@ -125,8 +125,7 @@ class ImageUtils:
         if match_check:
             region = (ImageUtils._match_location[0] + width, ImageUtils._match_location[1] + height)
             cv2.rectangle(src, ImageUtils._match_location, region, 255, 5)
-            if Settings.debug_mode:
-                cv2.imwrite(f"temp/match.png", src)
+            cv2.imwrite(f"temp/match.png", src)
 
             if Settings.additional_calibration_required is False:
                 temp_location = list(ImageUtils._match_location)

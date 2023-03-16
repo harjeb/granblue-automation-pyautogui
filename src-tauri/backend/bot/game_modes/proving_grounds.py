@@ -96,7 +96,6 @@ class ProvingGrounds:
         Game.find_and_click_button("proving_grounds_open_chest")
         Game.find_and_click_button("play_again")
         Game.find_and_click_button("close")
-
         # Check for resume.
         if ImageUtils.find_button("attack", tries = 5) is not None:
             # Now start Combat Mode and detect any item drops.

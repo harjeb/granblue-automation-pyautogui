@@ -85,7 +85,7 @@
     "Lvl 200 火龙":"Lvl 200 Wilnas",
     "Lvl 200 水龙":"Lvl 200 Wamdus",
     "Lvl 200 土龙":"Lvl 200 Galleon",
-    "Lvl 200 绿龙":"Lvl 200 Ewiyar",
+    "Lvl 200 风龙":"Lvl 200 Ewiyar",
     "Lvl 200 光龙":"Lvl 200 Lu Woh",
     "Lvl 200 暗龙":"Lvl 200 Fediel",
     "Lvl 100 火六道":"Lvl 100 Xeno Ifrit",
@@ -135,6 +135,12 @@
     "黑兔":"Black Rabbit", 
     "植松伸夫":"Nobiyo", 
     "黄龙":"Huanglong", 
-    "麒麟":"Qilin"}
+    "麒麟":"Qilin",
+    "火六道 Extreme":"火六道 Extreme",
+    "水六道 Extreme":"水六道 Extreme",
+    "土六道 Extreme":"土六道 Extreme",
+    "风六道 Extreme":"风六道 Extreme",
+    "光六道 Extreme":"光六道 Extreme",
+    "暗六道 Extreme":"暗六道 Extreme"}
 
     

@@ -437,6 +437,13 @@ class ArcarumSandbox:
                     Game.collect_loot(is_completed = True)
             Game.find_and_click_button("expedition")
             return None
+        
+        if ImageUtils.find_button("boost"):
+            # 有bonus怪
+            MessageLog.print_message(f"\n[ARCARUM.SANDBOX] Found Boost and fighting it...")
+            action_locations: List[Tuple[int, ...]] = ImageUtils.find_all("arcarum_sandbox_action")
+            MouseUtils.move_and_click_point(action_locations[0][0], action_locations[0][1], "arcarum_sandbox_action")
+            return None
 
         # If there is no Defender, then the first action is the mission itself. Else, it is the second action.
         action_locations: List[Tuple[int, ...]] = ImageUtils.find_all("arcarum_sandbox_action")
@@ -615,7 +622,19 @@ class ArcarumSandbox:
         if ArcarumSandbox._first_run:
             ArcarumSandbox._navigate_to_zone()
         elif Game.find_and_click_button("play_again") is False:
-            if Game.check_for_pending():
+            if Game.find_and_click_button("expedition"):
+                # Wait out the animations that play, whether it be Treasure or Defender spawning.
+                Game.wait(5.0)
+                # Click away the Treasure popup if it shows up.
+                Game.find_and_click_button("ok", suppress_error = True)
+                if Settings.enable_gold_chest and Game.find_and_click_button("gold_chest") is True:
+                    ArcarumSandbox._open_gold_chest()
+                else:
+                    # Start the mission again.
+                    Game.wait(3.0)
+                    # navigate to mission again.
+                    ArcarumSandbox._navigate_to_mission(skip_to_action = True)
+            elif Game.check_for_pending():
                 ArcarumSandbox._first_run = True
                 ArcarumSandbox._navigate_to_zone()
             elif ImageUtils.find_button("home_news") is not None:
