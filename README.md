@@ -48,7 +48,7 @@ exit
 ![Gbf Automation ExReborn](https://github.com/harjeb/granblue-automation-pyautogui/blob/custom_dev/qt_gui/image/gbf_auto.png)
 
 ## Changelog
-2023/3/16 Beta v2.5更新：更新新六道Farm流程，修复公会战，修复其他小问题
+2023/3/16 Beta v2.5更新：更新新六道Farm流程，优化FA时刷新，修复其他小问题
 
 2023/2/9 Beta v2.4更新：修复勇气之地Farm流程问题，修复大公多人战找房问题，修复其他小问题
 

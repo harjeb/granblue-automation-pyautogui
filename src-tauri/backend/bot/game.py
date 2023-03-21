@@ -315,6 +315,12 @@ class Game:
         MessageLog.print_message("\n[CAPTCHA] box post is %s." % str(captcha_box))
         code_textbox = (captcha_box[0] , captcha_box[1])
         MouseUtils.move_and_click_point(code_textbox[0], code_textbox[1], "template_room_code_textbox", mouse_clicks = 2)
+        # 判断是否开了大写,如果开启则关闭
+        import win32api
+        import win32con
+        if win32api.GetKeyState(20):
+            win32api.keybd_event(20,0,0,0) # 按下Caps Lock键
+            win32api.keybd_event(20,0,win32con.KEYEVENTF_KEYUP,0) # 释放Caps Lock键
         MouseUtils.clear_textbox()
         # Copy the room code to the clipboard and then paste it into the "Room Code" textbox.
         MouseUtils.copy_to_clipboard(code)
@@ -701,7 +707,7 @@ class Game:
         return None
 
     @staticmethod
-    def collect_loot(is_completed: bool, is_pending_battle: bool = False, is_event_nightmare: bool = False, skip_info: bool = False, skip_popup_check: bool = False, is_defender: bool = False):
+    def collect_loot(is_completed: bool, is_pending_battle: bool = False, is_event_nightmare: bool = False, skip_info: bool = False, skip_popup_check: bool = False, is_defender: bool = False,reload_auto=False):
         """Collects the loot from the Results screen while clicking away any dialog popups while updating the internal item count.
         
         Args:
@@ -716,12 +722,14 @@ class Game:
             None
         """
         temp_amount = 0
+        if 'reload_auto' in Settings.combat_script_name:
+            reload_auto = True
 
         # Close all popups until the bot reaches the Loot Collected screen.
         if skip_popup_check is False:
             loot_collection_tries = 80
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
-                Game.wait(10)
+                Game.wait(8)
                 loot_collection_tries -= 1
                 if loot_collection_tries <= 0:
                     MessageLog.print_message("\n[WARN] Unable to progress in the Loot Collection process,return to Home")
@@ -729,22 +737,28 @@ class Game:
                     break
                     #raise RuntimeError("Unable to progress in the Loot Collection process.")
 
+                Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
                 Game.find_and_click_button("ok", tries = 1, suppress_error = True)
                 Game.find_and_click_button("close", tries = 1, suppress_error = True)
                 Game.find_and_click_button("cancel", tries = 1, suppress_error = True)
-                # FA时刷新战斗
-                for i in range(5):
-                    if ImageUtils.find_button("attack", tries = 3) is None:
-                        Game.find_and_click_button("reload")
-                        Game.wait(3.0)
-                    CombatMode._enable_auto()
-                    Game.wait(1.0)
-
                 # Search for and click on the "Extended Mastery" popup.
-                Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
-
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None
+                Game.wait(2)
+                if reload_auto:
+                    if ImageUtils.confirm_location("loot_collected", tries = 1):
+                        return None
+                    # FA时刷新战斗
+                    for i in range(5):
+                        if ImageUtils.find_button("attack", tries = 3) is None:
+                            if ImageUtils.confirm_location("exp_gained", tries=1):
+                                break
+                            Game.find_and_click_button("reload")
+                            Game.wait(3.0)
+                        CombatMode._enable_auto()
+                        Game.wait(1.0)
+                    if ImageUtils.find_button("home_menu", tries = 1) is  not None:
+                        break
 
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] Have not detected the Loot Collection screen yet...")
