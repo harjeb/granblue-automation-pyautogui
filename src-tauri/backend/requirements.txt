@@ -16,3 +16,4 @@ tweepy~=4.10.1
 discord.py==2.0.1
 dictor~=0.1.10
 async_lru~=1.0.3
+websockets
