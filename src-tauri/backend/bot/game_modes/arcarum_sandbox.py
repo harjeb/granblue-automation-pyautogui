@@ -319,6 +319,12 @@ class ArcarumSandbox:
             "x": 300,
             "y": 180
         },
+        "Xeno Vohu Manah Militis": {
+            "section": 1,
+            "x": 350,
+            "y": 240
+        },
+
         "Tainted Hellmaiden": {
             "section": 1,
             "x": 100,

@@ -2,13 +2,14 @@
 # then will exit the raid on Turn 5 for the purposes of joining another one.
 
 Turn 1:
-	summon(6)
-	character1.useSkill(1)
-	
-	character3.useSkill(1)
-	character2.useSkill(2)
+	attack
+	reload
 end
 
-Turn 5:
+Turn 2:
+	enableFullAuto
+end
+
+Turn 6:
 	exit
 end

@@ -1,6 +1,8 @@
 import json
 import re
 from typing import Union
+import asyncio
+import websockets
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -156,37 +158,30 @@ class EririRoomFinder:
                 EririRoomFinder._list_of_id.append(EririRoomFinder._list_of_raids[i])
         while True:
             if len(EririRoomFinder._list_of_id) >= 1:
-                boss_id_list = ",".join(EririRoomFinder._list_of_id)
-                data = {"q":boss_id_list}
-                api_url = "https://gbs.eriri.net/hold/"
-                try:
-                    s = requests.Session()
-                    s.mount('https://', HTTPAdapter(max_retries=Retry(total=5)))
-                    resp_get = s.get(url=api_url, params=data)
-                    #r = requests.get(api_url, params=data)
-                    result = resp_get.json()
-                except:
-                    result = {}
+                async def find_room(_id):
+                    async with websockets.connect('wss://gbs.eriri.net:10310/socket.io/?EIO=4&transport=websocket') as websocket:
+                        await websocket.send('40')
+                        await websocket.send('42["updateFilter",[%s]]' % str(_id))
+                        while True:
+                            await websocket.send('3')
+                            recv_text = await websocket.recv()
+                            try:
+                                if recv_text.startswith("42"):
+                                    json_str = recv_text.split("[")[1].rstrip("]")
+                                    # 解析 JSON 对象
+                                    json_obj = json.loads(json_str.split('"new_req",')[1])
+                                    if 'id' in json_obj.keys():
+                                        # 获取 id 值
+                                        id_val = json_obj['id']
+                                        #print(id_val)  # 输出：12F64550
+                                        return(id_val)
+                            except:
+                                pass
 
-                if len(result.keys()) >= 1:
-                    _id_list = []
-                    _time_list = []
-                    for v in result.values():
-                        lastone = v[-1]
-                        _id = lastone['id']
-                        _time = lastone['t']
-                        _id_list.append(_id)
-                        _time_list.append(_time)
-
-                    latest = _id_list[_time_list.index(max(_time_list))]
-                    if latest not in EririRoomFinder._already_visited_codes:
-                        EririRoomFinder._already_visited_codes.append(latest)
-                        MessageLog.print_message(latest)
-                        return latest
-                    else:
-                        MessageLog.print_message("[WARNING] RAID HAS JOINED.")
-                else:
-                    MessageLog.print_message("[WARNING] request error pops.")
+                #print(EririRoomFinder._list_of_id[0])
+                roomid  = asyncio.get_event_loop().run_until_complete(find_room(EririRoomFinder._list_of_id[0]))
+                #print(roomid)
+                return roomid
             else:
                 MessageLog.print_message("[WARNING] return empty.")
                 return ''
