@@ -150,6 +150,7 @@ pip install -r requirements.txt
 -   [tweepy](https://pypi.org/project/tweepy)
 -   [discord.py](https://pypi.org/project/discord.py/)
 -   [dictor](https://github.com/perfecto25/dictor)
+-   [websockets](https://pypi.org/project/websockets/)
 
 # Instructions
 
