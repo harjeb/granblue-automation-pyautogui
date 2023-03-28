@@ -161,10 +161,12 @@ class EririRoomFinder:
                 async def find_room(_id):
                     async with websockets.connect('wss://gbs.eriri.net:10310/socket.io/?EIO=4&transport=websocket') as websocket:
                         await websocket.send('40')
+                        time.sleep(3)
                         await websocket.send('42["updateFilter",[%s]]' % str(_id))
                         while True:
                             await websocket.send('3')
                             recv_text = await websocket.recv()
+                            time.sleep(1)
                             try:
                                 if recv_text.startswith("42"):
                                     json_str = recv_text.split("[")[1].rstrip("]")
