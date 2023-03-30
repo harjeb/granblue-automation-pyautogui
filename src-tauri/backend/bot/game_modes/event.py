@@ -176,24 +176,23 @@ class Event:
                 else:
                     MouseUtils.move_and_click_point(categories[1][0] - 50, categories[1][1], "event_raid_category")
 
-            ap_locations = ImageUtils.find_all("ap")
-
+            ap_locations = ImageUtils.find_all("eap")
             if difficulty == "Very Hard":
-                MouseUtils.move_and_click_point(ap_locations[0][0], ap_locations[0][1], "ap")
+                MouseUtils.move_and_click_point(ap_locations[0][0], ap_locations[0][1], "eap")
                 if not ImageUtils.wait_vanish("close", timeout = 10):
-                    MouseUtils.move_and_click_point(ap_locations[0][0], ap_locations[0][1], "ap")
+                    MouseUtils.move_and_click_point(ap_locations[0][0], ap_locations[0][1], "eap")
                 else:
                     return None
             elif difficulty == "Extreme":
-                MouseUtils.move_and_click_point(ap_locations[1][0], ap_locations[1][1], "ap")
+                MouseUtils.move_and_click_point(ap_locations[1][0], ap_locations[1][1], "eap")
                 if not ImageUtils.wait_vanish("close", timeout = 10):
-                    MouseUtils.move_and_click_point(ap_locations[1][0], ap_locations[1][1], "ap")
+                    MouseUtils.move_and_click_point(ap_locations[1][0], ap_locations[1][1], "eap")
                 else:
                     return None
             elif difficulty == "Impossible":
-                MouseUtils.move_and_click_point(ap_locations[2][0], ap_locations[2][1], "ap")
+                MouseUtils.move_and_click_point(ap_locations[2][0], ap_locations[2][1], "eap")
                 if not ImageUtils.wait_vanish("close", timeout = 10):
-                    MouseUtils.move_and_click_point(ap_locations[2][0], ap_locations[2][1], "ap")
+                    MouseUtils.move_and_click_point(ap_locations[2][0], ap_locations[2][1], "eap")
                 else:
                     return None
 

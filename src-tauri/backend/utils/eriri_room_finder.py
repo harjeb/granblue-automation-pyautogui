@@ -3,6 +3,7 @@ import re
 from typing import Union
 import asyncio
 import websockets
+import time
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -159,24 +160,18 @@ class EririRoomFinder:
         while True:
             if len(EririRoomFinder._list_of_id) >= 1:
                 async def find_room(_id):
-                    async with websockets.connect('wss://gbs.eriri.net:10310/socket.io/?EIO=4&transport=websocket') as websocket:
-                        await websocket.send('40')
+                    async with websockets.connect('wss://gbs-open.eriri.net/private/api/stream/ws/') as websocket:
+                        await websocket.send('{"type":"filters","data":[%s]}' % str(_id))
                         time.sleep(3)
-                        await websocket.send('42["updateFilter",[%s]]' % str(_id))
                         while True:
-                            await websocket.send('3')
+                            await websocket.send('{"type":"ping"}')
                             recv_text = await websocket.recv()
+                            MessageLog.print_message(recv_text)
                             time.sleep(1)
                             try:
-                                if recv_text.startswith("42"):
-                                    json_str = recv_text.split("[")[1].rstrip("]")
-                                    # 解析 JSON 对象
-                                    json_obj = json.loads(json_str.split('"new_req",')[1])
-                                    if 'id' in json_obj.keys():
-                                        # 获取 id 值
-                                        id_val = json_obj['id']
-                                        #print(id_val)  # 输出：12F64550
-                                        return(id_val)
+                                msg = json.loads(recv_text)
+                                if msg['type'] == 't':
+                                    return(msg['data']['bi'])
                             except:
                                 pass
 

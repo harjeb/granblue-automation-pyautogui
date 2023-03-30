@@ -105,6 +105,9 @@
             "items": ["Converging Rays", "Meditative Sutra", "Jumbo Beast Bone"]
         }
     },
+    "Fate":{
+        "Fate_Episode":{"map":"fate episodes","items":["Repeated Runs"]}
+    },
     "Special": {
         "N Fire Trial": {
             "map": "Uncap Treasure Quests",
