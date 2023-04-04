@@ -141,11 +141,13 @@ class Game:
         """
         if Game.find_and_click_button("alert_ok"):
             MessageLog.print_message("\n[INFO] Chrome alert pops...")
+            Game.find_and_click_button("alert_ok")
             Game.find_and_click_button("home")
             Game.wait(5)
 
         if Game.find_and_click_button("alert_ok_cn"):
             MessageLog.print_message("\n[INFO] Chrome alert pops2...")
+            Game.find_and_click_button("alert_ok_cn")
             Game.find_and_click_button("home")
             Game.wait(5)
 

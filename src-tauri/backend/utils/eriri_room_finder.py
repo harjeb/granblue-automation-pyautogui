@@ -156,12 +156,12 @@ class EririRoomFinder:
         boss_list = [Settings.mission_name]
         for i in boss_list:
             if i in EririRoomFinder._list_of_raids.keys():
-                EririRoomFinder._list_of_id.append(EririRoomFinder._list_of_raids[i])
+                EririRoomFinder._list_of_id.append(int(EririRoomFinder._list_of_raids[i]))
         while True:
             if len(EririRoomFinder._list_of_id) >= 1:
                 async def find_room(_id):
                     async with websockets.connect('wss://gbs-open.eriri.net/private/api/stream/ws/') as websocket:
-                        await websocket.send('{"type":"filters","data":[%s]}' % str(_id))
+                        await websocket.send('{"type":"filters","data":%s}' % str(_id))
                         time.sleep(3)
                         while True:
                             await websocket.send('{"type":"ping"}')
@@ -176,7 +176,9 @@ class EririRoomFinder:
                                 pass
 
                 #print(EririRoomFinder._list_of_id[0])
-                roomid  = asyncio.get_event_loop().run_until_complete(find_room(EririRoomFinder._list_of_id[0]))
+                bploop = asyncio.new_event_loop()
+                roomid  = bploop.run_until_complete(find_room(EririRoomFinder._list_of_id))
+                bploop.close()
                 #print(roomid)
                 return roomid
             else:
