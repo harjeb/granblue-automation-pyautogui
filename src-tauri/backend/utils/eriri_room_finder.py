@@ -159,28 +159,25 @@ class EririRoomFinder:
                 EririRoomFinder._list_of_id.append(int(EririRoomFinder._list_of_raids[i]))
         while True:
             if len(EririRoomFinder._list_of_id) >= 1:
-                async def find_room(_id):
-                    async with websockets.connect('wss://gbs-open.eriri.net/private/api/stream/ws/') as websocket:
-                        await websocket.send('{"type":"filters","data":%s}' % str(_id))
-                        time.sleep(3)
-                        while True:
-                            await websocket.send('{"type":"ping"}')
-                            recv_text = await websocket.recv()
-                            MessageLog.print_message(recv_text)
-                            time.sleep(1)
-                            try:
-                                msg = json.loads(recv_text)
-                                if msg['type'] == 't':
-                                    return(msg['data']['bi'])
-                            except:
-                                pass
+                bossid = "%2C".join(EririRoomFinder._list_of_id)
+                api_url = "https://gbs-open.eriri.net/api/cache?q=%s" % bossid
+                try:
+                    s = requests.Session()
+                    s.mount('https://', HTTPAdapter(max_retries=Retry(total=5)))
+                    resp_get = s.get(url=api_url)
+                    result = resp_get.json()
+                except:
+                    result = {}
 
-                #print(EririRoomFinder._list_of_id[0])
-                bploop = asyncio.new_event_loop()
-                roomid  = bploop.run_until_complete(find_room(EririRoomFinder._list_of_id))
-                bploop.close()
-                #print(roomid)
-                return roomid
+                latest = 0
+                last = ''
+                for x in result:
+                    each = x["tweets"][-1]
+                    date = each["t"]
+                    if date > latest:
+                        latest = date
+                        last = each["bi"]
+                return last
             else:
                 MessageLog.print_message("[WARNING] return empty.")
                 return ''
