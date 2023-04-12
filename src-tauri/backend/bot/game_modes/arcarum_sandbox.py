@@ -529,12 +529,16 @@ class ArcarumSandbox:
         elif Settings.map_name == "Zone Harbinger":
             navigation_check = Game.find_and_click_button("arcarum_sandbox_zone_harbinger")
         elif Settings.map_name == "Zone Invidia":
+            MouseUtils.scroll_screen_from_home_button(-400)
             navigation_check = Game.find_and_click_button("arcarum_sandbox_zone_invidia")
         elif Settings.map_name == "Zone Joculator":
+            MouseUtils.scroll_screen_from_home_button(-400)
             navigation_check = Game.find_and_click_button("arcarum_sandbox_zone_joculator")
         elif Settings.map_name == "Zone Kalendae":
+            MouseUtils.scroll_screen_from_home_button(-400)
             navigation_check = Game.find_and_click_button("arcarum_sandbox_zone_kalendae")
         elif Settings.map_name == "Zone Liber":
+            MouseUtils.scroll_screen_from_home_button(-400)
             navigation_check = Game.find_and_click_button("arcarum_sandbox_zone_liber")
         else:
             raise ArcarumSandboxException("Invalid map name provided for Arcarum Replicard Sandbox navigation.")

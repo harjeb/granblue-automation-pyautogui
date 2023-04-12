@@ -60,8 +60,10 @@ class RiseOfTheBeasts:
             Game.wait(1)
             round_play_button_locations = ImageUtils.find_all("play_round_button")
             MessageLog.print_message("\n[ROTB] Play qinglong ex +...")
-            MouseUtils.move_and_click_point(round_play_button_locations[3][0], round_play_button_locations[3][1], "play_round_button")
-
+            try:
+                MouseUtils.move_and_click_point(round_play_button_locations[3][0], round_play_button_locations[3][1], "play_round_button")
+            except:
+                pass
             # Check if the bot is at the Summon Selection screen.
             if ImageUtils.confirm_location("select_a_summon", tries = 30):
                 summon_check = Game.select_default_summon()
@@ -109,15 +111,34 @@ class RiseOfTheBeasts:
                 Game.collect_loot(is_completed = True)        
         Game.find_and_click_button("loot")
         Game.wait(1.0)
-        Game.find_and_click_button("trade")
+        if ImageUtils.find_button("gold"):
+            Game.find_and_click_button("trade")
+        else:
+            MouseUtils.scroll_screen_from_home_button(-1500)
+            Game.wait(1.0)
+            Game.find_and_click_button("secondpage")
+            Game.wait(1.0)
+            MouseUtils.scroll_screen_from_home_button(1500)
+            Game.wait(3.0)
+            Game.find_and_click_button("trade")
+            MessageLog.print_message(f"\n00000...")
         if ImageUtils.find_button("trade_for"):
+            MessageLog.print_message(f"\n999...")
             Game.find_and_click_button("trade_for")
             for i in range(30):
                 pyautogui.press('down')
                 Game.wait(0.5)
             pyautogui.press("enter")
-        Game.find_and_click_button("trade")
-        Game.find_and_click_button("ok")
+            Game.find_and_click_button("trade")
+            Game.find_and_click_button("ok")
+        else:
+            if ImageUtils.find_button("trade_long"):
+                MessageLog.print_message(f"\n11111...")
+                Game.find_and_click_button("trade_long")
+                Game.wait(1)
+                Game.find_and_click_button("ok")
+                MessageLog.print_message(f"\n2222...")
+                Game.wait(3)
 
     @staticmethod
     def _navigate():
@@ -269,12 +290,13 @@ class RiseOfTheBeasts:
         is_loot = 1
         if not first_run:
             if Settings.mission_name != "Lvl 100 Shenxian":
-                is_loot = Settings.item_amount_farmed % 50
+                is_loot = Settings.item_amount_farmed % 40
             else:
                 is_loot = Settings.item_amount_farmed % 7
 
         # Start the navigation process.
         if first_run:
+          RiseOfTheBeasts._trade()
           RiseOfTheBeasts._navigate()
         elif is_loot == 1:
             MessageLog.print_message("Go to trade.")

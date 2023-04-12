@@ -444,6 +444,9 @@ class Game:
             # Now select the first Summon.
             choose_a_summon_location = ImageUtils.find_button("choose_a_summon")
             MouseUtils.move_and_click_point(choose_a_summon_location[0], choose_a_summon_location[1] + 187, "choose_a_summon")
+            # Check for CAPTCHA here. If detected, stop the bot and alert the user.
+            if Game.check_for_captcha():
+                MouseUtils.move_and_click_point(choose_a_summon_location[0], choose_a_summon_location[1] + 187, "choose_a_summon")
             return True
         except:
             MessageLog.print_message("\n[ERROR] Seems Choose First Summon failed...")
@@ -740,9 +743,14 @@ class Game:
                     #raise RuntimeError("Unable to progress in the Loot Collection process.")
 
                 Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
+                if Settings.farming_mode == "Rise of the Beasts":
+                    if ImageUtils.confirm_location("sixiang_full", tries = 1, suppress_error = True, disable_adjustment = True):
+                        RiseOfTheBeasts._trade()
+                        return None
                 Game.find_and_click_button("ok", tries = 1, suppress_error = True)
                 Game.find_and_click_button("close", tries = 1, suppress_error = True)
                 Game.find_and_click_button("cancel", tries = 1, suppress_error = True)
+
                 # Search for and click on the "Extended Mastery" popup.
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None

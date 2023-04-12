@@ -156,7 +156,7 @@ class EririRoomFinder:
         boss_list = [Settings.mission_name]
         for i in boss_list:
             if i in EririRoomFinder._list_of_raids.keys():
-                EririRoomFinder._list_of_id.append(int(EririRoomFinder._list_of_raids[i]))
+                EririRoomFinder._list_of_id.append(EririRoomFinder._list_of_raids[i])
         while True:
             if len(EririRoomFinder._list_of_id) >= 1:
                 bossid = "%2C".join(EririRoomFinder._list_of_id)
