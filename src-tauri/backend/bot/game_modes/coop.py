@@ -20,6 +20,7 @@ class Coop:
     _coop_ex2_list = ["EX2-2 Time of Judgement", "EX2-3 Time of Revelation", "EX2-4 Time of Eminence"]
     _coop_ex3_list = ["EX3-2 Rule of the Tundra", "EX3-3 Rule of the Plains", "EX3-4 Rule of the Twilight"]
     _coop_ex4_list = ["EX4-2 Amidst the Waves", "EX4-3 Amidst the Petals", "EX4-4 Amidst Severe Cliffs", "EX4-5 Amidst the Flames"]
+    _coop_final_list = ["Final Throes of Dark Steel", "Final Throes of Death"]
 
     @staticmethod
     def _navigate():
@@ -42,7 +43,7 @@ class Coop:
 
         if ImageUtils.confirm_location("coop"):
             # Scroll down the screen to see more of the Coop missions on smaller screens.
-            MouseUtils.scroll_screen_from_home_button(-400)
+            MouseUtils.scroll_screen_from_home_button(-600)
 
             # Find the locations of all of the "Host Quest" buttons.
             host_quest_button_locations = ImageUtils.find_all("coop_host_quest")
@@ -112,8 +113,19 @@ class Coop:
                     if ImageUtils.confirm_location("coop_ex4"):
                         MessageLog.print_message(f"\n[COOP] Now selecting Coop mission: \"{Settings.mission_name}\"")
                         coop_host_locations = ImageUtils.find_all("coop_host_quest_circle")
-                        MouseUtils.move_and_click_point(coop_host_locations[Coop._coop_ex4_list.index(Settings.mission_name) + 1][0],
-                                                        coop_host_locations[Coop._coop_ex4_list.index(Settings.mission_name) + 1][1],
+                        MouseUtils.move_and_click_point(coop_host_locations[Coop._coop_ex4_list.index(Settings.mission_name)+1][0],
+                                                        coop_host_locations[Coop._coop_ex4_list.index(Settings.mission_name)+1][1],
+                                                        "coop_host_quest")
+                elif Settings.mission_name in Coop._coop_final_list:
+                    MessageLog.print_message(f"\n[COOP] Now navigating to \"{Settings.mission_name}\" from Final.")
+                    #MouseUtils.scroll_screen_from_home_button(-600)
+                    MouseUtils.move_and_click_point(host_quest_button_locations[5][0], host_quest_button_locations[5][1], "coop_host_quest")
+
+                    if ImageUtils.confirm_location("coop_final"):
+                        MessageLog.print_message(f"\n[COOP] Now selecting Coop mission: \"{Settings.mission_name}\"")
+                        coop_host_locations = ImageUtils.find_all("coop_host_quest_circle")
+                        MouseUtils.move_and_click_point(coop_host_locations[Coop._coop_final_list.index(Settings.mission_name)][0],
+                                                        coop_host_locations[Coop._coop_final_list.index(Settings.mission_name)][1],
                                                         "coop_host_quest")
 
             # After clicking on the Coop mission, create a new Room.
@@ -133,7 +145,11 @@ class Coop:
             MessageLog.print_message(f"\n[COOP] Selecting a Party for Coop mission: \"{Settings.mission_name}\".")
             Game.find_and_click_button("coop_select_party")
         else:
-            raise CoopException("Failed to arrive at Coop page.")
+            # Check for resume.
+            if ImageUtils.find_button("attack", tries = 30):
+                # Now start Combat Mode and detect any item drops.
+                if CombatMode.start_combat_mode(["enablefullauto"]):
+                    Game.collect_loot(is_completed = True)
 
         return None
 
@@ -154,28 +170,29 @@ class Coop:
             Coop._navigate()
         else:
             # Head back to the Coop Room.
-            Game.find_and_click_button("coop_room")
+            if not Game.find_and_click_button("coop_room"):
+                Coop._navigate()
+            else:
+                Game.wait(1)
 
-            Game.wait(1)
+                # Check for "Daily Missions" popup for Coop.
+                if ImageUtils.confirm_location("coop_daily_missions"):
+                    Game.find_and_click_button("close")
 
-            # Check for "Daily Missions" popup for Coop.
-            if ImageUtils.confirm_location("coop_daily_missions"):
-                Game.find_and_click_button("close")
+                Game.wait(1)
 
-            Game.wait(1)
+                # Now that the bot is back at the Coop Room/Lobby, check if it closed due to time running out.
+                if ImageUtils.confirm_location("coop_room_closed"):
+                    MessageLog.print_message("\n[COOP] Coop room has closed due to time running out.")
+                    return None
 
-            # Now that the bot is back at the Coop Room/Lobby, check if it closed due to time running out.
-            if ImageUtils.confirm_location("coop_room_closed"):
-                MessageLog.print_message("\n[COOP] Coop room has closed due to time running out.")
-                return None
+                # Start the Coop Mission again.
+                Game.find_and_click_button("coop_start")
 
-            # Start the Coop Mission again.
-            Game.find_and_click_button("coop_start")
-
-            Game.wait(1)
+                Game.wait(1)
 
         # Check for AP.
-        Game.check_for_ap()
+        #Game.check_for_ap()
 
         # Check if the bot is at the Party Selection screen. Note that the bot is hosting solo so no support summon selection.
         if first_run and ImageUtils.confirm_location("coop_without_support_summon", tries = 30):
