@@ -158,7 +158,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.checkBox_2.setChecked(True)
         self.checkBox_2.clicked.connect(self.onStateChanged)
         # configuration.enableRandomizedDelayBetweenRuns
-        self.checkBox_4.setChecked(True)
+        self.checkBox_4.setChecked(False)
         self.checkBox_4.clicked.connect(self.onStateChanged)
         #configuration.delayBetweenRunsLowerBound
         self.spinBox_6.setValue(5)
@@ -177,7 +177,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         #configuration.staticWindow
         self.checkBox_9.setChecked(True)
         #configuration.enableMouseSecurityAttemptBypass
-        self.checkBox_10.setChecked(True)
+        self.checkBox_10.setChecked(False)
         #configuration.alternativeCombatScriptSelector
         self.checkBox_11.setChecked(False)
         #raid.enableAutoExitRaid
@@ -263,7 +263,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
                 print(e)
                 QMessageBox.warning(self,
                         "错误",
-                        "错误2",
+                        "错误",
                         QMessageBox.Yes)
         else:
             QMessageBox.warning(self,

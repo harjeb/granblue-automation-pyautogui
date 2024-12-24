@@ -146,9 +146,12 @@ class Coop:
             Game.find_and_click_button("coop_select_party")
         else:
             # Check for resume.
+            # Now click the "Start" button to start the Coop Mission.
+            Game.find_and_click_button("coop_start")
+            Game.wait(3.0)
             if ImageUtils.find_button("attack", tries = 30):
                 # Now start Combat Mode and detect any item drops.
-                if CombatMode.start_combat_mode(["enablefullauto"]):
+                if CombatMode.start_combat_mode():
                     Game.collect_loot(is_completed = True)
 
         return None
@@ -169,9 +172,13 @@ class Coop:
         if first_run:
             Coop._navigate()
         else:
+            while Game.find_and_click_button("close"):
+                Game.wait(1)
             # Head back to the Coop Room.
             if not Game.find_and_click_button("coop_room"):
                 Coop._navigate()
+                # Now click the "Start" button to start the Coop Mission.
+                Game.find_and_click_button("coop_start")
             else:
                 Game.wait(1)
 
@@ -195,7 +202,7 @@ class Coop:
         #Game.check_for_ap()
 
         # Check if the bot is at the Party Selection screen. Note that the bot is hosting solo so no support summon selection.
-        if first_run and ImageUtils.confirm_location("coop_without_support_summon", tries = 30):
+        if ImageUtils.confirm_location("coop_without_support_summon", tries = 30):
             # Select the Party.
             Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
 

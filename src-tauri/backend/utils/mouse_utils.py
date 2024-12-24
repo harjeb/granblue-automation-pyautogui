@@ -1,24 +1,76 @@
 import random
 
 import pyautogui
-import pyclick
 import pyperclip
-
+from pyHM import mouse
+#from utils.cBezier import bezierTrajectory
+from pyclick import HumanClicker
 from utils.settings import Settings
 from utils.message_log import MessageLog
-
+import time
 
 class MouseUtils:
     """
     Provides the utility functions needed to perform mouse-related actions.
     """
-
-    _hc = pyclick.HumanClicker()
+    hc = HumanClicker()
 
     if Settings.enable_bezier_curve_mouse_movement is False:
-        pyautogui.MINIMUM_DURATION = 0.1
-        pyautogui.MINIMUM_SLEEP = 0.05
-        pyautogui.PAUSE = 0.25
+        pyautogui.MINIMUM_DURATION = 0
+        pyautogui.MINIMUM_SLEEP = 0
+        pyautogui.PAUSE = 0.008
+
+
+
+    @staticmethod
+    def quadratic_bezier(t, start, control, end):
+        """
+        二次贝塞尔曲线公式
+        :param t: 在0到1之间的参数
+        :param start: 起始点位置 (x1, y1)
+        :param control: 控制点位置 (x2, y2)
+        :param end: 结束点位置 (x3, y3)
+        :return: 点的坐标 (x, y)
+        """
+        x = (1 - t) ** 2 * start[0] + 2 * (1 - t) * t * control[0] + t ** 2 * end[0]
+        y = (1 - t) ** 2 * start[1] + 2 * (1 - t) * t * control[1] + t ** 2 * end[1]
+        return (x, y)
+
+    @staticmethod
+    def smooth_mouse_move(start, end, control, duration):
+        """
+        使鼠标沿曲线平滑移动
+        :param start: 起始坐标 (x, y)
+        :param end: 结束坐标 (x, y)
+        :param control: 控制点坐标 (x, y)
+        :param duration: 移动持续时间（秒）
+        """
+        steps = 100
+        step_time = duration / steps
+        
+        for i in range(steps + 1):
+            t = i / steps
+            x, y = MouseUtils.quadratic_bezier(t, start, control, end)
+            
+            # 移动鼠标到当前位置
+            pyautogui.moveTo(x + random.uniform(-3, 3), y + random.uniform(-3, 3))  # 加入一些随机性
+
+            # 等待下一步
+            time.sleep(step_time)
+
+
+
+    @staticmethod
+    def click():
+        pyautogui.click()
+
+    @staticmethod
+    def move(x,y):
+        MouseUtils.hc.move((x,y),2)
+        #bezierTrajectory.move(x, y)
+        #mouse.move(x, y, multiplier=round(random.uniform(3.5, 5.5), 3))
+        # 鼠标当前的位置
+
 
     @staticmethod
     def move_to(x: int, y: int, custom_mouse_speed: float = 0.0):
@@ -32,17 +84,7 @@ class MouseUtils:
         Returns:
             None
         """
-        if Settings.enable_bezier_curve_mouse_movement:
-            # HumanClicker only accepts int as the mouse speed.
-            if int(custom_mouse_speed) < 1:
-                custom_mouse_speed = 1
-
-            MouseUtils._hc.move((x, y), duration = custom_mouse_speed, humanCurve = pyclick.HumanCurve(pyautogui.position(), (x, y)))
-        else:
-            if custom_mouse_speed <= 0.0:
-                custom_mouse_speed = Settings.custom_mouse_speed
-
-            pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
+        MouseUtils.move(x, y)
 
         return None
 
@@ -78,18 +120,9 @@ class MouseUtils:
             MessageLog.print_message(f"[DEBUG] New coordinates: ({new_x}, {new_y})")
 
         # Move the mouse to the specified coordinates.
-        if Settings.enable_bezier_curve_mouse_movement:
-            # HumanClicker only accepts int as the mouse speed.
-            # if int(custom_mouse_speed) < 1:
-            #     custom_mouse_speed = 1
+        MouseUtils.move(new_x, new_y)
 
-            MouseUtils._hc.move((new_x, new_y), duration = custom_mouse_speed, humanCurve = pyclick.HumanCurve(pyautogui.position(), (new_x, new_y)))
-        else:
-            if custom_mouse_speed <= 0.0:
-                custom_mouse_speed = Settings.custom_mouse_speed
-
-            pyautogui.moveTo(x, y, duration = custom_mouse_speed, tween = pyautogui.easeInOutQuad)
-
+        from bot.game import Game
         if image_name == "attack" or image_name == "back" or image_name == "ok":
             #obfuscate_click(maxclick=5)
             pyautogui.click(clicks = mouse_clicks)
@@ -99,6 +132,7 @@ class MouseUtils:
                     f.write(str(post)+'\n')
             except:
                 pass
+        
         else:
             # 混淆点击
             p = 15
@@ -120,10 +154,19 @@ class MouseUtils:
                         f.write(str(post)+'\n')
                 except:
                     pass
+        # 混淆移动
+        #当前坐标
+        #Game.wait(random.uniform(0.85, 1.79))
+        # fix_x = new_x + random.randint(-300,300)
+        # fix_y = new_y + random.randint(-300,300)
+        # MouseUtils.move(fix_x, fix_y)
 
+        if Settings.farming_mode == "Raid":
+            Game.wait(random.uniform(0.51, 0.94))
+        else:
+            Game.wait(random.uniform(0.97, 2.54))
+        
         # This delay is necessary as ImageUtils will take the screenshot too fast and the bot will use the last frame before clicking to navigate.
-        from bot.game import Game
-        Game.wait(1)
 
         return None
 
@@ -179,10 +222,6 @@ class MouseUtils:
 
         MouseUtils.move_to(x, y)
 
-        if Settings.enable_bezier_curve_mouse_movement:
-            # Reset the pause delay back to 0.25, primarily for ImageUtils' methods using pyautogui.
-            pyautogui.PAUSE = 0.25
-
         pyautogui.scroll(scroll_clicks, x = x, y = y)
 
         return None
@@ -205,9 +244,6 @@ class MouseUtils:
 
         MouseUtils.move_to(x, y)
 
-        if Settings.enable_bezier_curve_mouse_movement:
-            # Reset the pause delay back to 0.25, primarily for ImageUtils' methods using pyautogui.
-            pyautogui.PAUSE = 0.25
 
         pyautogui.scroll(scroll_clicks, x = x, y = y)
 

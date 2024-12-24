@@ -2,14 +2,14 @@ from utils.message_log import MessageLog
 from utils.settings import Settings
 from utils.image_utils import ImageUtils
 from bot.combat_mode import CombatMode
-
+from utils.mouse_utils import MouseUtils
 
 class GenericException(Exception):
     def __init__(self, message):
         super().__init__(message)
 
 
-class Generic:
+class _Generic:
     """
     Provides any lightweight utility functions necessary to repeat a setup that supports the "Play Again" logic.
     """
@@ -26,11 +26,11 @@ class Generic:
         MessageLog.print_message(f"\n[GENERIC] Now checking for run eligibility...")
 
         # Bot can start either at the Combat screen with the "Attack" button visible, the Loot Collection screen with the "Play Again" button visible, or the Coop Room screen.
-        if ImageUtils.find_button("attack", tries = 10):
+        if ImageUtils.find_button("attack", tries = 5):
             MessageLog.print_message(f"[GENERIC] Bot is at the Combat screen. Starting Combat Mode now...")
             if CombatMode.start_combat_mode():
                 Game.collect_loot(is_completed = True)
-        elif Game.find_and_click_button("coop_start", tries = 10):
+        elif Game.find_and_click_button("coop_start", tries = 5):
             MessageLog.print_message(f"[GENERIC] Bot is at the Coop Room screen. Starting the Coop mission and Combat Mode now...")
 
             Game.wait(3.0)
@@ -48,13 +48,9 @@ class Generic:
             MessageLog.print_message(f"[GENERIC] Bot is not at the Combat or Coop Room screen. Checking for the Loot Collection screen now...")
 
             # Press the "Play Again" button if necessary, otherwise start Combat Mode.
-            if Game.find_and_click_button("play_again"):
+            if Game.find_and_click_button("play_again"):   
                 Game.check_for_popups()
-            else:
-                pass
-                #raise GenericException(
-                #    "Failed to detect the 'Play Again' button. Bot can start either at the Combat screen with the 'Attack' button visible, the Loot Collection screen with the 'Play Again' " +
-                #    "button visible, or the Coop Room screen with the 'Start' button visible with the party already selected...")
+            
 
             # Check for AP.
             #Game.check_for_ap()

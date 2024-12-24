@@ -62,7 +62,7 @@ class ProvingGrounds:
                     MouseUtils.move_and_click_point(difficulty_button_locations[2][0], difficulty_button_locations[2][1], "play_round_button")
 
                 # After the difficulty has been selected, click "Play" to land the bot at the Proving Grounds' Summon Selection screen.
-                Game.find_and_click_button("play")
+                #Game.find_and_click_button("play")
         else:
             MessageLog.print_message("Failed to arrive at the main screen for Proving Grounds.")
 

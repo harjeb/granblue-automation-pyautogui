@@ -10,9 +10,10 @@ class MainDriver:
     This driver class allows the Game class to be run on a separate Thread.
     """
 
-    def __init__(self):
+    def __init__(self, set_path):
         super().__init__()
         self._game = None
+        self.set_path = set_path
         self._bot_process = None
         self.root_path = os.path.abspath('.') 
 
@@ -31,23 +32,26 @@ class MainDriver:
             None
         """
         # Initialize the Game class and start Farming Mode.
-        c = 0
-        for filename in os.listdir(self.root_path+'/backend'):
-            setname = 'settings%s'% str(c)
-            if setname in filename and '_' not in filename:
-                _file = self.root_path + '/backend/' + setname + '.json'
-                os.rename(_file,self.root_path+'/backend/settings.json')
-                from utils.settings import Settings
-                Settings.update()
-                from bot.game import Game
-                self._game = Game()
-                self._game.start_farming_mode()
-                os.remove(self.root_path+'/backend/settings.json')
-                c += 1
-            elif setname in filename and '_'  in filename:
-                sleeptime = int(setname.split('_')[1])
-                time.sleep(sleeptime)
-                c += 1
+        # c = 0
+        # for filename in os.listdir(self.root_path+'/backend'):
+        #     setname = 'settings%s'% str(c)
+        #     if setname in filename and '_' not in filename:
+        #         _file = self.root_path + '/backend/' + setname + '.json'
+        #         os.rename(_file,self.root_path+'/backend/settings.json')
+        #         from utils.settings import Settings
+        #         Settings.update()
+        #         from bot.game import Game
+        #         self._game = Game()
+        #         self._game.start_farming_mode()
+        #         os.remove(self.root_path+'/backend/settings.json')
+        #         c += 1
+        #     elif setname in filename and '_'  in filename:
+        #         sleeptime = int(setname.split('_')[1])
+        #         time.sleep(sleeptime)
+        #         c += 1
+        from bot.game import Game
+        self._game = Game(self.set_path)
+        self._game.start_farming_mode(self.set_path)
         return None
 
     def start_bot(self):
@@ -57,9 +61,12 @@ class MainDriver:
             None
         """
         # Create a new Process whose target is the MainDriver's run_bot() method.
+        from utils.settings import Settings
+        Settings.update(self.set_path)
         self._bot_process = multiprocessing.Process(target = self._run_bot)
 
         MessageLog.print_message("[STATUS] Starting bot process on a new thread now...")
+
 
         # Now start the new Process on a new Thread.
         self._bot_process.start()
@@ -82,7 +89,9 @@ class MainDriver:
 
 if __name__ == "__main__":
     # Start the bot.
-    bot_object = MainDriver()
+    set_file = sys.argv[1]
+    print(set_file)
+    bot_object = MainDriver(set_file)
     bot_object.start_bot()
     while True:
         if bot_object.is_running() is False:

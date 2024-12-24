@@ -4,6 +4,7 @@
 Turn 1:
 	attack
 	reload
+	enableFullAuto
 end
 
 Turn 2:

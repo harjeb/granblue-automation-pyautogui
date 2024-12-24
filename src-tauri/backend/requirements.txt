@@ -17,3 +17,4 @@ discord.py==2.0.1
 dictor~=0.1.10
 async_lru~=1.0.3
 websockets
+pywin32

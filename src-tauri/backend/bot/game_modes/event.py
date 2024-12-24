@@ -102,8 +102,11 @@ class Event:
                 MessageLog.print_message("\n[ERROR]Failed to find the Event banner.Go back Home...")
                 return None
                 #raise EventException("Failed to find the Event banner.")
-        MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
 
+        if Settings.first_event:
+            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+        else:
+            MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
         Game.wait(3.0)
 
         # Check and click away the "Daily Missions" popup.
@@ -258,7 +261,7 @@ class Event:
             if ImageUtils.confirm_location("special"):
                 # Check to see if the user already has a Nightmare available.
                 nightmare_is_available = 0
-                if ImageUtils.find_button("event_nightmare") is not None:
+                if ImageUtils.find_button("event_nightmare") is not None or ImageUtils.find_button("special_grade") is not None:
                     nightmare_is_available = 1
 
                 # Find all the "Select" buttons.
@@ -287,7 +290,7 @@ class Event:
                 round_play_button_locations = ImageUtils.find_all("play_round_button")
 
                 # If Extreme+ was selected and only 3 locations were found for the play_round_button, that means Extreme+ is not available.
-                if len(round_play_button_locations) == 3 and difficulty == "Extreme+":
+                if len(round_play_button_locations) <= 3 and difficulty == "Extreme+":
                     MessageLog.print_message(f"[EVENT] Extreme+ was selected but it seems it is not available. Defaulting to Extreme difficulty...")
                     difficulty = "Extreme"
 
@@ -353,15 +356,26 @@ class Event:
 
         # Check if the bot is at the Summon Selection screen.
         if ImageUtils.confirm_location("select_a_summon", tries = 30):
-            summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
-            if summon_check:
-                # Select the Party.
-                Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
-                # Now start Combat Mode and detect any item drops.
-                if CombatMode.start_combat_mode():
-                    Game.collect_loot(is_completed = True)
-        else:
-            # DO NOT EXIT
-            MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
+            if Settings.summon_default:
+                summon_check = Game.select_default_summon()
+                if summon_check:
+                    if Game.check_for_captcha():
+                        Game.select_default_summon()
+                    Game.quick_start_mission()
+                    if CombatMode.start_combat_mode():
+                        Game.collect_loot(is_completed = True)
+            else:
+                summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
+                if summon_check:
+                    if Game.check_for_captcha():
+                        Game.select_default_summon()
+                    # Select the Party.
+                    Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
+                    # Now start Combat Mode and detect any item drops.
+                    if CombatMode.start_combat_mode():
+                        Game.collect_loot(is_completed = True)
+                else:
+                    # DO NOT EXIT
+                    MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
 
         return None

@@ -5,6 +5,7 @@ from utils.mouse_utils import MouseUtils
 from bot.combat_mode import CombatMode
 import re
 import pyautogui
+import cv2
 
 class RaidException(Exception):
     def __init__(self, message):
@@ -22,19 +23,17 @@ class Raid:
     @staticmethod
     def go_to_finder():
         from bot.game import Game
-        # press alt + 1
+        # raid
         pyautogui.keyDown('alt')
-        pyautogui.press('1')
+        pyautogui.press('2')
         pyautogui.keyUp('alt')
-
-
-            
+           
         
     @staticmethod
     def go_to_pending():
-        # press alt + 2
+        # pending
         pyautogui.keyDown('alt')
-        pyautogui.press('2')
+        pyautogui.press('3')
         pyautogui.keyUp('alt')
 
     @staticmethod
@@ -90,19 +89,22 @@ class Raid:
         """
         from bot.game import Game
 
-        recovery_time = 15
+        recovery_time = 1.5
 
-        Game.wait(2.0)
+        #Game.wait(2.0)
+        if not ImageUtils.find_button("pending_battle_sidebar", tries = 5):
+            return False
+
         # Now click on the first Room.
         room_locations = ImageUtils.find_all("pending_battle_sidebar")
         c = 0
-        while len(room_locations) == 0:
+        while len(room_locations) < 4:
             c += 1
-            MouseUtils.scroll_screen_from_home_button(-500)
+            MouseUtils.scroll_screen_from_home_button(-480)
             Game.wait(1.0)
             room_locations = ImageUtils.find_all("pending_battle_sidebar")
             if len(room_locations) == 0:
-                MouseUtils.scroll_screen_from_home_button(500)
+                MouseUtils.scroll_screen_from_home_button(480)
                 Game.wait(2.0)
                 Game.find_and_click_button("reload_room")
                 Game.wait(2.0)
@@ -111,22 +113,39 @@ class Raid:
                 break
         
         Game.wait(1.0)
+        hp_list = ImageUtils.find_all("hp")
+        # 步骤 1: 偏移坐标
+        offset_points = [(x + 86, y) for (x, y) in hp_list]
 
-        MouseUtils.move_and_click_point(room_locations[0][0], room_locations[0][1], "pending_battle_sidebar")
-        Game.wait(2.0)
+        # 步骤 2: 获取 RGB 颜色值
+        def get_rgb_value(x, y):
+            # 在这里定义如何根据坐标返回 RGB 颜色值
+            rgb_value = pyautogui.pixel(x, y)
+            return rgb_value
+
+        find = False
+        # 输出偏移后的坐标及其 RGB 颜色值
+        for point in offset_points:
+            rgb = get_rgb_value(point[0], point[1])
+            MessageLog.print_message(f"Offset Point: {point}, RGB Color: {rgb}")
+            if rgb[0] > 100:
+                # hp > 50%
+                MouseUtils.move_and_click_point(point[0], point[1], "pending_battle_sidebar")
+                find = True
+                break
+        if not find:
+            return False
+        
+        #MouseUtils.move_and_click_point(room_locations[0][0], room_locations[0][1], "pending_battle_sidebar")
+        #Game.wait(1)
 
         # If the room code is valid and the raid is able to be joined, break out and head to the Summon Selection screen.
-        if Game.find_and_click_button("ok", suppress_error = True) is False:
-            return ImageUtils.confirm_location("select_a_summon", tries = 30)
-        elif Game.check_for_pending() is False:
+        #Game.find_and_click_button("ok", suppress_error = True)
+        if Game.check_for_pending() is False:
             MessageLog.print_message(f"[WARNING] already ended or invalid.")
-        else:
-            # Move from the Home screen back to the Backup Requests screen after clearing out all the Pending Battles.
-            Game.find_and_click_button("quest")
-            Game.find_and_click_button("raid")
-            #Game.find_and_click_button("finder")
 
-        Game.wait(recovery_time)
+        #Game.wait(recovery_time)
+        return True
 
     @staticmethod
     def find_the_best() -> int:
@@ -177,14 +196,17 @@ class Raid:
         #Game.wait(3.0)
         # Now navigate to the Raid screen.
         #Game.find_and_click_button("raid")
-        Game.find_and_click_button("home")
-        MessageLog.print_message(f"\n[RAID] Now moving to the \"home\" screen.")
+        #Game.find_and_click_button("home")
+        #MessageLog.print_message(f"\n[RAID] Now moving to the \"home\" screen.")
         #Raid._clear_joined_raids()
         Raid.go_to_finder()
-        # Click on the "Enter ID" button and then start the process to join a raid.
-
-        MessageLog.print_message(f"\n[RAID] Now moving to the \"Finder\" screen.")
-        Raid._join_raid()
+        for i in range(10):
+            success = Raid._join_raid()  # 调用 _join_raid 方法并获取返回值
+            if success:
+                break  # 如果成功加入，退出循环
+            else:
+                pyautogui.press('f5')
+                Game.wait(2)
 
 
     @staticmethod
@@ -210,30 +232,18 @@ class Raid:
         # Game.check_for_ep()
 
         # Check if the bot is at the Summon Selection screen.
-        if ImageUtils.confirm_location("select_a_summon", tries = 30):
-            if Settings.summon_default:
-                summon_check = Game.select_default_summon()
-            else:
-                summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
-            if summon_check:
-                if Game.check_for_captcha():
-                    Game.select_default_summon()
-                # Select the Party.
-                if Game.quick_start_mission():
+        if Game.check_for_captcha():
+            return None
+        # Select the Party.
+        if Game.quick_start_mission():
                     # Handle the rare case where joining the Raid after selecting the Summon and Party led the bot to the Quest Results screen with no loot to collect.
-                    if ImageUtils.confirm_location("no_loot", disable_adjustment = True):
-                        MessageLog.print_message("\n[RAID] Seems that the Raid just ended. Moving back to the Home screen and joining another Raid...")
-                    elif CombatMode.start_combat_mode():
-                        Game.collect_loot(is_completed = True, direct_battle=True)
-                        Settings.amount_of_runs_finished += 1
+            if ImageUtils.confirm_location("no_loot", disable_adjustment = True):
+                MessageLog.print_message("\n[RAID] Seems that the Raid just ended. Moving back to the Home screen and joining another Raid...")
+            elif CombatMode.start_combat_mode():
+                Game.collect_loot(is_completed = True, direct_battle=True)
+                Settings.amount_of_runs_finished += 1
                         # go back to the Home screen.
                         #Game.find_and_click_button("home")
                         # Close the Skyscope mission popup.
                         #Game.check_for_skyscope()
-                else:
-                    MessageLog.print_message("\n[RAID] Seems that the Raid ended before the bot was able to join. Now looking for another Raid to join...")
-        else:
-            # DO NOT EXIT
-            MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
-
         return None

@@ -41,6 +41,10 @@ class Fate:
                 Game.find_and_click_button("resume")
                 Game.wait(5)
                 # Now start Combat Mode and detect any item drops.
+                if not ImageUtils.find_button("skip"):
+                    if CombatMode.start_combat_mode(["enablefullauto"]):
+                        Game.collect_loot(is_completed = True)
+                # Now start Combat Mode and detect any item drops.
                 Game.find_and_click_button("skip")
                 Game.find_and_click_button("skip_btn")
                 Game.wait(3)

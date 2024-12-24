@@ -20,16 +20,18 @@ from bot.game_modes.arcarum_sandbox import ArcarumSandbox
 from bot.game_modes.coop import Coop
 from bot.game_modes.dread_barrage import DreadBarrage
 from bot.game_modes.event import Event
+from bot.game_modes.event_quick import Event_quick
 from bot.game_modes.fate import Fate
 from bot.game_modes.guild_wars import GuildWars
 from bot.game_modes.proving_grounds import ProvingGrounds
 from bot.game_modes.quest import Quest
+from bot.game_modes.exo import Exo
 #from bot.game_modes.raid import Raid
-from bot.game_modes.raid_quick import Raid
+from bot.game_modes.raid2 import Raid
 from bot.game_modes.rotb import RiseOfTheBeasts
 from bot.game_modes.special import Special
 from bot.game_modes.xeno_clash import XenoClash
-from bot.game_modes.generic import Generic
+from bot.game_modes.generic2 import Generic
 
 pyautogui.FAILSAFE = False
 
@@ -44,10 +46,11 @@ class Game:
 
 
 
-    def __init__(self):
+    def __init__(self, set_path):
         #super().__init__()
+        self.set_path = set_path
         from utils.settings import Settings
-        Settings.update()
+        Settings.update(set_path)
         from utils.message_log import MessageLog
         from utils import discord_utils
         from utils.image_utils import ImageUtils
@@ -59,16 +62,19 @@ class Game:
         from bot.game_modes.coop import Coop
         from bot.game_modes.dread_barrage import DreadBarrage
         from bot.game_modes.event import Event
+        from bot.game_modes.event_quick import Event_quick
         from bot.game_modes.guild_wars import GuildWars
         from bot.game_modes.proving_grounds import ProvingGrounds
         from bot.game_modes.quest import Quest
         #from bot.game_modes.raid import Raid
-        from bot.game_modes.raid_quick import Raid
+        from bot.game_modes.raid2 import Raid
         from bot.game_modes.rotb import RiseOfTheBeasts
         from bot.game_modes.special import Special
         from bot.game_modes.xeno_clash import XenoClash
-        from bot.game_modes.generic import Generic
+        from bot.game_modes.generic2 import Generic
 
+        self.eventpage_x = 0
+        self.eventpage_y = 0
 
 
 
@@ -116,14 +122,20 @@ class Game:
 
         MessageLog.print_message("[SUCCESS] Dimensions of the window has been successfully recalibrated.")
 
+
         if display_info_check:
             window_dimensions = ImageUtils.get_window_dimensions()
+            Game.eventpage_x = window_dimensions[0] + 115
+            Game.eventpage_y = window_dimensions[1] + 100
             MessageLog.print_message("\n**********************************************************************")
             MessageLog.print_message("**********************************************************************")
             MessageLog.print_message(f"[INFO] Screen Size: {pyautogui.size()}")
             MessageLog.print_message(f"[INFO] Game Window Dimensions: Region({window_dimensions[0]}, {window_dimensions[1]}, {window_dimensions[2]}, {window_dimensions[3]})")
+            MessageLog.print_message(f"[INFO] Event page: ({Game.eventpage_x}, {Game.eventpage_y})")
             MessageLog.print_message("**********************************************************************")
             MessageLog.print_message("**********************************************************************")
+
+
 
         return None
 
@@ -303,11 +315,12 @@ class Game:
     def identify_captcha():
         ImageUtils.get_captcha_img()
         from utils.chaojiying import Chaojiying_Client
-        chaojiying = Chaojiying_Client(Settings.chaojiying_user, Settings.chaojiying_password, '907069')	#用户中心>>软件ID 生成一个替换 96001
+        chaojiying = Chaojiying_Client("jeb822", "6504970", '907069')	#用户中心>>软件ID 生成一个替换 96001
         im = open('temp/captcha.png', 'rb').read()
         code = chaojiying.PostPic(im, 1902)['pic_str']
         code = code.lower()
         MessageLog.print_message("\n[CAPTCHA] CAPTCHA is %s." % code)
+        ImageUtils.save_captcha_img(code)
         return code
 
     @staticmethod
@@ -326,9 +339,11 @@ class Game:
         MouseUtils.clear_textbox()
         # Copy the room code to the clipboard and then paste it into the "Room Code" textbox.
         MouseUtils.copy_to_clipboard(code)
+        MessageLog.print_message(code)
         MouseUtils.paste_from_clipboard()
         Game.wait(2)
         Game.find_and_click_button("send")
+        MessageLog.print_message("send")
         if ImageUtils.confirm_location("captcha", bypass_general_adjustment = True):
             return False
         else:
@@ -346,13 +361,13 @@ class Game:
                 # go to identify
                 ok = False
                 flag = False
-                if Settings.chaojiying_user == "":
-                    MessageLog.print_message("Not set chaojiying!")
-                    sys.exit(0)
                 for i in range(5):
                     if not ok:
-                        CAPTCHA = Game.identify_captcha()
-                        ok = Game.write_captcha(CAPTCHA)
+                        try:
+                            CAPTCHA = Game.identify_captcha()
+                            ok = Game.write_captcha(CAPTCHA)
+                        except:
+                            MessageLog.print_message("CAPTCHA ERROR!")
                     else:
                         flag = True
                         break
@@ -380,7 +395,7 @@ class Game:
             # Check if the provided delay is valid.
             if int(Settings.delay_in_seconds) < 0:
                 MessageLog.print_message("\n[INFO] Provided delay in seconds for the resting period is not valid. Defaulting to 15 seconds.")
-                Settings.delay_in_seconds = 15
+                Settings.delay_in_seconds = 5
 
             MessageLog.print_message(f"\n[INFO] Now waiting for {Settings.delay_in_seconds} seconds as the resting period. Please do not navigate from the current screen.")
 
@@ -392,7 +407,7 @@ class Game:
                 Settings.delay_in_seconds_lower_bound = 15
             if int(Settings.delay_in_seconds_upper_bound) < 0 or int(Settings.delay_in_seconds_upper_bound) < int(Settings.delay_in_seconds_lower_bound):
                 MessageLog.print_message("\n[INFO] Provided upper bound delay in seconds for the resting period is not valid. Defaulting to 60 seconds.")
-                Settings.delay_in_seconds_upper_bound = 60
+                Settings.delay_in_seconds_upper_bound = 30
 
             new_seconds = random.randrange(int(Settings.delay_in_seconds_lower_bound), int(Settings.delay_in_seconds_upper_bound))
             MessageLog.print_message(
@@ -428,9 +443,9 @@ class Game:
                 MouseUtils.move_to(100, curr_y, custom_mouse_speed = Settings.custom_mouse_speed)
 
             # Now wait for several seconds before continuing.
-            new_seconds = random.randrange(2, 10)
-            MessageLog.print_message(f"[INFO] Now waiting {new_seconds} seconds...")
-            Game.wait(new_seconds)
+            new_seconds = random.randrange(1, 3)
+            #MessageLog.print_message(f"[INFO] Now waiting {new_seconds} seconds...")
+            #Game.wait(new_seconds)
             MessageLog.print_message("[INFO] Waiting complete. Now resuming bot operations...")
         return None
 
@@ -455,6 +470,11 @@ class Game:
 
     @staticmethod
     def select_summon(summon_list: List[str], summon_element_list: List[str]):
+        return True
+
+
+    @staticmethod
+    def _select_summon(summon_list: List[str], summon_element_list: List[str]):
         """Finds and selects the specified Summon based on the current index on the Summon Selection screen and then checks for CAPTCHA right
         afterwards.
 
@@ -712,7 +732,7 @@ class Game:
         return None
 
     @staticmethod
-    def collect_loot(is_completed: bool, is_pending_battle: bool = False, is_event_nightmare: bool = False, skip_info: bool = False, skip_popup_check: bool = False, is_defender: bool = False,reload_auto=False):
+    def collect_loot(is_completed: bool, is_pending_battle: bool = False, is_event_nightmare: bool = False, skip_info: bool = False, skip_popup_check: bool = False, is_defender: bool = False,reload_auto=False,direct_battle=False):
         """Collects the loot from the Results screen while clicking away any dialog popups while updating the internal item count.
         
         Args:
@@ -732,9 +752,9 @@ class Game:
 
         # Close all popups until the bot reaches the Loot Collected screen.
         if skip_popup_check is False:
-            loot_collection_tries = 80
+            loot_collection_tries = 100
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
-                Game.wait(8)
+                Game.wait(3)
                 loot_collection_tries -= 1
                 if loot_collection_tries <= 0:
                     MessageLog.print_message("\n[WARN] Unable to progress in the Loot Collection process,return to Home")
@@ -742,19 +762,29 @@ class Game:
                     break
                     #raise RuntimeError("Unable to progress in the Loot Collection process.")
 
-                Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
+                #Game.find_and_click_button("new_extended_mastery_level", tries = 1, suppress_error = True)
                 if Settings.farming_mode == "Rise of the Beasts":
                     if ImageUtils.confirm_location("sixiang_full", tries = 1, suppress_error = True, disable_adjustment = True):
                         RiseOfTheBeasts._trade()
                         return None
-                Game.find_and_click_button("ok", tries = 1, suppress_error = True)
-                Game.find_and_click_button("close", tries = 1, suppress_error = True)
-                Game.find_and_click_button("cancel", tries = 1, suppress_error = True)
+                #Game.find_and_click_button("ok", tries = 1, suppress_error = True)
+                #Game.find_and_click_button("close", tries = 1, suppress_error = True)
+                #Game.find_and_click_button("cancel", tries = 1, suppress_error = True)
+                if ImageUtils.find_button("new_extended_mastery_level", tries = 1) is not None:
+                    break
+                if ImageUtils.find_button("ok", tries = 1) is not None:
+                    break
+                if ImageUtils.find_button("close", tries = 1) is not None:
+                    break
+                if ImageUtils.find_button("cancel", tries = 1) is not None:
+                    break
+                if ImageUtils.find_button("dead", tries = 1) is not None:
+                    break
 
                 # Search for and click on the "Extended Mastery" popup.
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None
-                Game.wait(2)
+                #Game.wait(2)
                 if reload_auto:
                     if ImageUtils.confirm_location("loot_collected", tries = 1):
                         return None
@@ -763,8 +793,9 @@ class Game:
                         if ImageUtils.find_button("attack", tries = 3) is None:
                             if ImageUtils.confirm_location("exp_gained", tries=1):
                                 break
-                            Game.find_and_click_button("reload")
-                            Game.wait(3.0)
+                            pyautogui.press('f5')
+                            #Game.find_and_click_button("reload")
+                            Game.wait(1.0)
                         CombatMode._enable_auto()
                         Game.wait(1.0)
                     if ImageUtils.find_button("home_menu", tries = 1) is  not None:
@@ -773,31 +804,30 @@ class Game:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] Have not detected the Loot Collection screen yet...")
 
+            if direct_battle:
+                Settings.amount_of_runs_finished += 1
+                Settings.item_amount_farmed += temp_amount
+                return None
         # Now that the bot is at the Loot Collected screen, detect any user-specified items.
-        if is_completed and not is_pending_battle and not is_event_nightmare and not is_defender:
-            MessageLog.print_message("\n[INFO] Detecting if any user-specified loot dropped from this run...")
-            if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
-                temp_amount = ImageUtils.find_farmed_items(Settings.item_name)
-            else:
-                temp_amount = 1
+        # if is_completed and not is_pending_battle and not is_event_nightmare and not is_defender:
+        #     MessageLog.print_message("\n[INFO] Detecting if any user-specified loot dropped from this run...")
+        #     if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
+        #         temp_amount = ImageUtils.find_farmed_items(Settings.item_name)
+        #     else:
+        #         temp_amount = 1
 
+        #     Settings.amount_of_runs_finished += 1
+        #     Settings.item_amount_farmed += temp_amount
+        # elif is_pending_battle:
+        #     MessageLog.print_message("\n[INFO] Detecting if any user-specified loot dropped from this pending battle...")
+        #     if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
+        #         temp_amount = ImageUtils.find_farmed_items(Settings.item_name)
+        #     else:
+        #         temp_amount = 0
+            temp_amount = 1
             Settings.amount_of_runs_finished += 1
             Settings.item_amount_farmed += temp_amount
-        elif is_pending_battle:
-            MessageLog.print_message("\n[INFO] Detecting if any user-specified loot dropped from this pending battle...")
-            if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
-                temp_amount = ImageUtils.find_farmed_items(Settings.item_name)
-            else:
-                temp_amount = 0
 
-            Settings.item_amount_farmed += temp_amount
-
-        # If there were item drops detected and the user opt in to sending their result to Granblue Automation Statistics, then have the frontend send the API request.
-        if temp_amount != 0 and Settings.enable_opt_in_api:
-            if is_pending_battle:
-                Game._send_api_result(temp_amount, 0.0)
-            else:
-                Game._send_api_result(temp_amount, Settings.combat_elapsed_time)
 
         if is_completed and not is_pending_battle and not is_event_nightmare and not skip_info and not is_defender:
             if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
@@ -812,15 +842,6 @@ class Game:
                 MessageLog.print_message("**********************************************************************")
                 MessageLog.print_message("**********************************************************************\n")
 
-                if temp_amount != 0:
-                    if Settings.item_amount_farmed >= Settings.item_amount_to_farm:
-                        discord_string = f"> {temp_amount}x __{Settings.item_name}__ gained from this run: **[{Settings.item_amount_farmed - temp_amount} / {Settings.item_amount_to_farm}]** -> " \
-                                         f"**[{Settings.item_amount_farmed} / {Settings.item_amount_to_farm}]** :white_check_mark:"
-                    else:
-                        discord_string = f"> {temp_amount}x __{Settings.item_name}__ gained from this run: **[{Settings.item_amount_farmed - temp_amount} / {Settings.item_amount_to_farm}]** -> " \
-                                         f"**[{Settings.item_amount_farmed} / {Settings.item_amount_to_farm}]**"
-
-                    Game._discord_queue.put(discord_string)
             else:
                 MessageLog.print_message("\n**********************************************************************")
                 MessageLog.print_message("**********************************************************************")
@@ -831,14 +852,6 @@ class Game:
                 MessageLog.print_message("**********************************************************************")
                 MessageLog.print_message("**********************************************************************\n")
 
-                if Settings.amount_of_runs_finished >= Settings.item_amount_to_farm:
-                    discord_string = f"> Runs completed for __{Settings.mission_name}__: **[{Settings.amount_of_runs_finished - 1} / {Settings.item_amount_to_farm}]** -> " \
-                                     f"**[{Settings.amount_of_runs_finished} / {Settings.item_amount_to_farm}]** :white_check_mark:"
-                else:
-                    discord_string = f"> Runs completed for __{Settings.mission_name}__: **[{Settings.amount_of_runs_finished - 1} / {Settings.item_amount_to_farm}]** -> " \
-                                     f"**[{Settings.amount_of_runs_finished} / {Settings.item_amount_to_farm}]**"
-
-                Game._discord_queue.put(discord_string)
         elif is_pending_battle and temp_amount > 0 and not skip_info:
             if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
                 MessageLog.print_message("\n**********************************************************************")
@@ -851,16 +864,6 @@ class Game:
                 MessageLog.print_message(f"[FARM] Amount of runs completed: {Settings.amount_of_runs_finished}")
                 MessageLog.print_message("**********************************************************************")
                 MessageLog.print_message("**********************************************************************\n")
-
-                if temp_amount != 0:
-                    if Settings.item_amount_farmed >= Settings.item_amount_to_farm:
-                        discord_string = f"> {temp_amount}x __{Settings.item_name}__ gained from this pending battle: **[{Settings.item_amount_farmed - temp_amount} / {Settings.item_amount_to_farm}]** -> " \
-                                         f"**[{Settings.item_amount_farmed} / {Settings.item_amount_to_farm}]** :white_check_mark:"
-                    else:
-                        discord_string = f"> {temp_amount}x __{Settings.item_name}__ gained from this pending battle: **[{Settings.item_amount_farmed - temp_amount} / {Settings.item_amount_to_farm}]** -> " \
-                                         f"**[{Settings.item_amount_farmed} / {Settings.item_amount_to_farm}]**"
-
-                    Game._discord_queue.put(discord_string)
         elif is_defender:
             Settings.engaged_defender_battle = False
             Settings.number_of_defeated_defenders += 1
@@ -1077,16 +1080,31 @@ class Game:
         MessageLog.print_message(f"API-RESULT|{Settings.item_name}|{amount}|{formatted_elapsed_time}")
         return None
 
+
+
+
+
     @staticmethod
-    def start_farming_mode():
+    def wait_end():
+        while True:
+            # 判断不在战斗中则结束
+            if ImageUtils.find_all("exp_gained", tries = 1) is  not None:
+                return
+
+
+
+    @staticmethod
+    def start_farming_mode(set_path):
         """Start the Farming Mode using the given parameters.
 
         Returns:
             (bool): True if Farming Mode ended successfully.
         """
+        random_time = random.randint(3600, 10800)
+
         try:
             #Game.start_discord_process()
-            Settings.update()
+            Settings.update(set_path)
             # Calibrate the dimensions of the bot window on bot launch.
             Game._calibrate_game_window(display_info_check = True)
 
@@ -1118,8 +1136,11 @@ class Game:
             # use eriri instead
             # if Settings.farming_mode == "Raid":
             #     TwitterRoomFinder.connect()
-
+            start_time = time.time()
+            init_time = time.time()
             first_run = True
+            Game.find_and_click_button("home")
+            Game.wait(1.5)
             while Settings.item_amount_farmed < Settings.item_amount_to_farm:
                 try:
                     if Settings.farming_mode == "Quest":  # 任务
@@ -1134,6 +1155,8 @@ class Game:
                         Raid.start(first_run)
                     elif Settings.farming_mode == "Event" or Settings.farming_mode == "Event (Token Drawboxes)":   # SS 活动
                         Event.start(first_run)
+                    elif Settings.farming_mode == "Event Quick":
+                        Event_quick.start(first_run)
                     elif Settings.farming_mode == "Rise of the Beasts":      # 四象
                         RiseOfTheBeasts.start(first_run)
                     elif Settings.farming_mode == "Guild Wars":          # 古战场
@@ -1144,6 +1167,8 @@ class Game:
                         ProvingGrounds.start(first_run)
                     elif Settings.farming_mode == "Xeno Clash":          # 六道
                         XenoClash.start(first_run)
+                    elif Settings.farming_mode == "Exo":          # 六道
+                        Exo.start(first_run)    
                     elif Settings.farming_mode == "Arcarum":              # 转世
                         Arcarum.start()
                     elif Settings.farming_mode == "Arcarum Sandbox":      # 转世沙盒
@@ -1153,14 +1178,46 @@ class Game:
                 except Exception as e:
                     print(e)
                     MessageLog.print_message("\n[ERROR] game failed")
+                    Game.find_and_click_button("home")
+                    Game.wait(1.5)
 
-                MessageLog.print_message("[ERROR] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %d=" % Settings.item_amount_farmed)
-                MessageLog.print_message("[ERROR] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %d=" % Settings.item_amount_to_farm)
+                MessageLog.print_message("[Info] !!!!!!!!!!!!! %d=" % Settings.item_amount_farmed)
+                MessageLog.print_message("[Info] !!!!!!!!!!!!! %d=" % Settings.item_amount_to_farm)
+                
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                     # Generate a resting period if the user enabled it.
                     Game._delay_between_runs()
                     Game._move_mouse_security_check()
                     first_run = False
+                    
+                    # add random sleep
+                    now_time = time.time()
+
+                    c = 0
+                    if (now_time - start_time) > random_time: 
+                        if (c%3 == 0 and c >1):
+                            sleep_time = int(random.uniform(0.5, 0.55) * random_time)
+                        else:
+                            # 生成随机的睡眠时间
+                            sleep_time = int(random.uniform(0.48, 0.5) * random_time)
+                            
+                        # 执行睡眠
+                        MessageLog.print_message("[Sleep] start sleep %d" % sleep_time)
+                        time.sleep(sleep_time)
+                        MessageLog.print_message("[Sleep] end sleep")
+                        start_time = time.time()
+                        Game.find_and_click_button("home")
+                        Game.wait(1.5)
+
+                        c += 1
+                    elif (now_time - init_time) > 38000: 
+                        MessageLog.print_message("[Info] 已超时，结束任务！！！")
+                        return True
+                    else:
+                        MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
+                        MessageLog.print_message("[Info] 离休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
+                    MessageLog.print_message("[Info] 已经过 %ds" % (now_time - init_time))
+                    random_time = random.randint(2000, 2100)
 
         except Exception as e:
             Game._discord_queue.put(f"> Bot encountered exception in Farming Mode: \n{e}")

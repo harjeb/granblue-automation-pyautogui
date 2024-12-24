@@ -16,6 +16,7 @@ def check_sleep(_settings_dict):
         global sleep_time
         sleep_time = 60*mins
         print("=====开始休息=====")
+        time.sleep(sleep_time)
         return True
     else:
         return False
@@ -43,17 +44,18 @@ for i in _list:
                     _settings = open(_file,encoding='utf-8')
                     if not check_sleep(json.load(_settings)):
                         _settings.close()
-                        os.rename(_file,newdir+'settings%s.json' % count)
+                        #os.rename(_file,newdir+'settings%s.json' % count)
+                        os.system('python backend/main.py %s' % _file)
                     else:
                         _settings.close()
-                        os.rename(_file,newdir+'settings%s_%s.json' % (count,sleep_time))
+                        #os.rename(_file,newdir+'settings%s_%s.json' % (count,sleep_time))
                 except Exception as e:
                     print("没找到正确任务配置")
                     print(e)
                     print("================")
                     break
                 count += 1
-os.system('python backend/main.py')
-os.system('taskkill /f /im %s' % 'python.exe')
+# os.system('python backend/main.py')
+# os.system('taskkill /f /im %s' % 'python.exe')
 
 

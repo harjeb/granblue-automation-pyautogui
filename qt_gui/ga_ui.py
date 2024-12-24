@@ -177,7 +177,7 @@ class Ui_Form(object):
         self.doubleSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
         self.doubleSpinBox.setDecimals(1)
         self.doubleSpinBox.setSingleStep(0.1)
-        self.doubleSpinBox.setProperty("value", 0.2)
+        self.doubleSpinBox.setProperty("value", 1.5)
         self.doubleSpinBox.setObjectName("doubleSpinBox")
         self.horizontalLayout_6.addWidget(self.doubleSpinBox)
         self.checkBox_3 = QtWidgets.QCheckBox(self.verticalLayoutWidget)

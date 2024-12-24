@@ -1711,6 +1711,14 @@
             ]
         }
     },
+    "快速活动": {
+        "Quest": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        }
+    },
     "战货活动": {
         "EX Event Quest": {
             "map": "Event Quest",
@@ -1904,6 +1912,26 @@
         },
         "Xeno Clash Raid": {
             "map": "Event Raid",
+            "items": [
+                "Repeated Runs"
+            ]
+        }
+    },
+    "神灭战": {
+        "Extreme": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "Solo": {
+            "map": "Event Quest",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "Solo Next": {
+            "map": "Event Quest",
             "items": [
                 "Repeated Runs"
             ]
