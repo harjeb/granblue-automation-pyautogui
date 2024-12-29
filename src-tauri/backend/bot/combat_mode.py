@@ -244,7 +244,8 @@ class CombatMode:
 
             if CombatMode._check_for_battle_end() == "Nothing":
                 MessageLog.print_message("[COMBAT] Reloading now.")
-                Game.find_and_click_button("reload")
+                pyautogui.press('f5')
+                #Game.find_and_click_button("reload")
 
                 if Settings.enable_combat_mode_adjustment:
                     Game.wait(Settings.adjust_waiting_for_reload)
@@ -315,7 +316,7 @@ class CombatMode:
             elif reload_check and CombatMode._semi_auto:
                 CombatMode._enable_semi_auto()
 
-        CombatMode._wait_for_attack()
+        #CombatMode._wait_for_attack()
 
         MessageLog.print_message(f"[COMBAT] Turn {CombatMode._turn_number} has ended.")
 
@@ -1004,7 +1005,8 @@ class CombatMode:
     def _force_reload():
         from bot.game import Game
         MessageLog.print_message("[COMBAT] Bot will now attempt to force reload...")
-        Game.find_and_click_button("reload")
+        pyautogui.press('f5')
+        #Game.find_and_click_button("reload")
         Game.wait(3.0)
         return None
 
@@ -1022,11 +1024,13 @@ class CombatMode:
         # Press the "Attack" button in order to show the "Cancel" button. Once that disappears, manually reload the page.
         if Game.find_and_click_button("attack"):
             if ImageUtils.wait_vanish("combat_cancel", timeout = 10):
-                Game.find_and_click_button("reload")
+                pyautogui.press('f5')
+                #Game.find_and_click_button("reload")
                 Game.wait(3.0)
             else:
                 # If the "Cancel" button fails to disappear after 10 tries, reload anyways.
-                Game.find_and_click_button("reload")
+                pyautogui.press('f5')
+                #Game.find_and_click_button("reload")
                 Game.wait(3.0)
 
         return None
@@ -1216,7 +1220,8 @@ class CombatMode:
         CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 50, bypass_general_adjustment = True)
         if "one_punch" in Settings.combat_script_name:
             Game.find_and_click_button("attack")
-            Game.find_and_click_button("reload")
+            pyautogui.press('f5')
+            #Game.find_and_click_button("reload")
             MessageLog.print_message("One punch !!!")
 
         if CombatMode._attack_button_location is None:
