@@ -961,8 +961,10 @@ class CombatMode:
             None
         """
         from bot.game import Game
-        Game.wait(1)
+        #Game.wait(1)
         if Game.find_and_click_button("attack", tries = 30):
+            pyautogui.press('f5')
+            Game.wait(1)
             if ImageUtils.wait_vanish("combat_cancel", timeout = 10):
                 MessageLog.print_message("[COMBAT] Successful executed a manual attack.")
             else:
