@@ -151,17 +151,17 @@ class Game:
         Returns:
             None
         """
-        if Game.find_and_click_button("alert_ok"):
-            MessageLog.print_message("\n[INFO] Chrome alert pops...")
-            Game.find_and_click_button("alert_ok")
-            Game.find_and_click_button("home")
-            Game.wait(5)
+        # if Game.find_and_click_button("alert_ok"):
+        #     MessageLog.print_message("\n[INFO] Chrome alert pops...")
+        #     Game.find_and_click_button("alert_ok")
+        #     Game.find_and_click_button("home")
+        #     Game.wait(5)
 
-        if Game.find_and_click_button("alert_ok_cn"):
-            MessageLog.print_message("\n[INFO] Chrome alert pops2...")
-            Game.find_and_click_button("alert_ok_cn")
-            Game.find_and_click_button("home")
-            Game.wait(5)
+        # if Game.find_and_click_button("alert_ok_cn"):
+        #     MessageLog.print_message("\n[INFO] Chrome alert pops2...")
+        #     Game.find_and_click_button("alert_ok_cn")
+        #     Game.find_and_click_button("home")
+        #     Game.wait(5)
 
         if Game.find_and_click_button("ok"):
             MessageLog.print_message("\n[INFO] ok btn pops...")
@@ -754,7 +754,7 @@ class Game:
         if skip_popup_check is False:
             loot_collection_tries = 100
             while not ImageUtils.confirm_location("loot_collected", tries = 1, disable_adjustment = True):
-                Game.wait(3)
+                #Game.wait(3)
                 loot_collection_tries -= 1
                 if loot_collection_tries <= 0:
                     MessageLog.print_message("\n[WARN] Unable to progress in the Loot Collection process,return to Home")
@@ -928,28 +928,13 @@ class Game:
         Returns:
             (bool): Return True if a Pending Battle was successfully processed. Otherwise, return False.
         """
-        if Game.find_and_click_button("tap_here_to_see_rewards", tries = 10):
+        while Game.find_and_click_button("tap_here_to_see_rewards", tries = 10):
             MessageLog.print_message(f"[INFO] Clearing this Pending Battle...")
             Game.wait(1)
 
-            # If there is loot available, start loot detection.
-            if ImageUtils.confirm_location("no_loot", disable_adjustment = True):
-                MessageLog.print_message(f"[INFO] No loot can be collected.")
-
-                # Navigate back to the Quests screen.
-                Game.find_and_click_button("quests")
-
-                return True
-            else:
-                if Settings.farming_mode == "Raid":
-                    Game.collect_loot(is_completed = True)
-                else:
-                    Game.collect_loot(is_completed = False, is_pending_battle = True)
-
-                Game.find_and_click_button("close", suppress_error = True)
-                Game.find_and_click_button("ok", suppress_error = True)
-
-                return True
+            Raid.go_to_pending()
+            Game.wait(2)
+            
         else:
             MessageLog.print_message(f"[INFO] No more Pending Battles left to claim.")
 
@@ -1010,13 +995,14 @@ class Game:
                         Game.wait(1)
 
                         # Close the Skyscope mission popup.
-                        Game.check_for_skyscope()
+                        #Game.check_for_skyscope()
+
                     else:
                         # When there are no more Pending Battles, go back to the Home screen.
-                        Game.find_and_click_button("home")
+                        #Game.find_and_click_button("home")
 
                         # Close the Skyscope mission popup.
-                        Game.check_for_skyscope()
+                        #Game.check_for_skyscope()
                         break
 
             MessageLog.print_message(f"[INFO] Pending battles have been cleared.")

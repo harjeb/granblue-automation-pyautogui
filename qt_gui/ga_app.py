@@ -171,7 +171,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         #configuration.enableRefreshDuringCombat
         self.checkBox_7.setChecked(True)
         #configuration.enableAutoQuickSummon
-        self.checkBox_8.setChecked(False)
+        self.checkBox_8.setChecked(True)
         #configuration.enableBypassResetSummon
         self.checkBox.setChecked(True)
         #configuration.staticWindow

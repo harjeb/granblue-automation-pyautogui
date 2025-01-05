@@ -59,8 +59,8 @@ class Fate:
                 # Scroll the screen down to make way for smaller screens.
                 MouseUtils.scroll_screen_from_home_button(-1500)
 
-                # Go to the Special screen.
-                Game.find_and_click_button("fate_episode")
+            # Go to the Special screen.
+            Game.find_and_click_button("fate_episode")
         else:
             Game.find_and_click_button("fate_episodes")
             Game.wait(1)

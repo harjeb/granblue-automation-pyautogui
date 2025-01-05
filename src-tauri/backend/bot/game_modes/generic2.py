@@ -41,6 +41,10 @@ class Generic:
         # 抬起 Alt 键
         pyautogui.keyUp('alt')
 
+
+        if Game.check_for_captcha():
+            return None
+
         if Game.find_and_click_button("party_selection_ok", tries = 30):
             # Now start Combat Mode and detect any item drops.
             if CombatMode.start_combat_mode():

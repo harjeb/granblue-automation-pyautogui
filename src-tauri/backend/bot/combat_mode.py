@@ -127,6 +127,7 @@ class CombatMode:
         """
         from bot.game import Game
 
+        Game.find_and_click_button("next", tries = 3, suppress_error = True)
         # Check if the Battle has ended.
         if Settings.farming_mode == "Raid" and Settings.enable_auto_exit_raid and time.time() - CombatMode._start_time >= Settings.time_allowed_until_auto_exit_raid:
             MessageLog.print_message("\n######################################################################")
@@ -239,7 +240,8 @@ class CombatMode:
             (bool): True if the bot reloaded the page. False otherwise.
         """
         # If the "Cancel" button vanishes, that means the attack is in-progress. Now reload the page and wait for either the attack to finish or Battle ended.
-        if Settings.enable_refresh_during_combat and (CombatMode._check_raid() or override or (Settings.farming_mode == "Generic" and Settings.enable_force_reload)):
+        #if Settings.enable_refresh_during_combat and (CombatMode._check_raid() or override or (Settings.farming_mode == "Generic" and Settings.enable_force_reload)):
+        if Settings.enable_refresh_during_combat:
             from bot.game import Game
 
             if CombatMode._check_for_battle_end() == "Nothing":
@@ -387,6 +389,8 @@ class CombatMode:
         """
         from bot.game import Game
 
+        MessageLog.print_message(f"Settings.enable_refresh_during_combat {Settings.enable_refresh_during_combat}" )
+        MessageLog.print_message(f"Settings.enable_auto_quick_summon {Settings.enable_auto_quick_summon}")
         if Settings.enable_refresh_during_combat and Settings.enable_auto_quick_summon:
             MessageLog.print_message(f"[COMBAT] Automatically attempting to use Quick Summon...")
             CombatMode._quick_summon()
@@ -461,7 +465,7 @@ class CombatMode:
             while ImageUtils.find_button("attack") is not None:
                 Game.wait(1.0)
         else:
-            Game.find_and_click_button("attack", tries = 10)
+            #Game.find_and_click_button("attack", tries = 10)
 
             # Wait until the "Cancel" button vanishes from the screen.
             if ImageUtils.find_button("combat_cancel", tries = 10) is not None:
@@ -473,8 +477,7 @@ class CombatMode:
         # Check for exit conditions.
         CombatMode._check_for_battle_end()
 
-        if Game.find_and_click_button("next", tries = 3, suppress_error = True):
-            Game.wait(3)
+        #Game.find_and_click_button("next", tries = 5, suppress_error = True)
 
         return None
 
@@ -867,6 +870,7 @@ class CombatMode:
         if ImageUtils.find_button("quick_summon_not_ready", bypass_general_adjustment = True) is None and \
                 (Game.find_and_click_button("quick_summon1", bypass_general_adjustment = True) or Game.find_and_click_button("quick_summon2", bypass_general_adjustment = True)):
             MessageLog.print_message("[COMBAT] Successfully quick summoned!")
+            pyautogui.press('f5')
 
             if "wait" in command:
                 split_command = command.split(".")
@@ -918,7 +922,8 @@ class CombatMode:
         from bot.game import Game
 
         MessageLog.print_message("[COMBAT] Bot will now attempt to enable Full Auto...")
-        CombatMode._full_auto = Game.find_and_click_button("full_auto")
+        Game.wait(2)
+        CombatMode._full_auto = Game.find_and_click_button("full_auto",tries=5)
 
         # If the bot failed to find and click the "Full Auto" button, fallback to the "Semi Auto" button.
         if not CombatMode._full_auto:
@@ -963,8 +968,9 @@ class CombatMode:
         from bot.game import Game
         #Game.wait(1)
         if Game.find_and_click_button("attack", tries = 30):
+            print('f5')
             pyautogui.press('f5')
-            Game.wait(1)
+            Game.wait(2)
             if ImageUtils.wait_vanish("combat_cancel", timeout = 10):
                 MessageLog.print_message("[COMBAT] Successful executed a manual attack.")
             else:
@@ -1081,11 +1087,11 @@ class CombatMode:
                 break
 
             # 检查是否还在战斗界面
-            if ImageUtils.find_button("ok", tries = 5, suppress_error = True) is None:
-                # 不在战斗界面
-                MessageLog.print_message("[COMBAT] combat out of time.")
-                Game.find_and_click_button("ok", tries = 1, suppress_error = True)
-                break
+            # if ImageUtils.find_button("ok", tries = 5, suppress_error = True) is None:
+            #     # 不在战斗界面
+            #     MessageLog.print_message("[COMBAT] combat out of time.")
+            #     Game.find_and_click_button("ok", tries = 1, suppress_error = True)
+            #     break
                 
             if Game.find_and_click_button("next", tries = 1, suppress_error = True):
                 Game.wait(3)
@@ -1330,7 +1336,7 @@ class CombatMode:
                         MessageLog.print_message("[COMBAT] Ending Combat Mode.")
                         MessageLog.print_message("######################################################################")
                         MessageLog.print_message("######################################################################")
-                        Game.go_back_home(confirm_location_check = True)
+                        #Game.go_back_home(confirm_location_check = True)
                         return False
 
                 ######################################################################

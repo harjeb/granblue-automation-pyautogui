@@ -72,7 +72,7 @@ class Ui_Form(object):
         self.spinBox = QtWidgets.QSpinBox(self.tab)
         self.spinBox.setMaximumSize(QtCore.QSize(60, 16777215))
         self.spinBox.setMinimum(1)
-        self.spinBox.setMaximum(999)
+        self.spinBox.setMaximum(9999)
         self.spinBox.setObjectName("spinBox")
         self.horizontalLayout_2.addWidget(self.spinBox)
         self.pushButton_2 = QtWidgets.QPushButton(self.tab)

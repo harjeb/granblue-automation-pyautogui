@@ -83,6 +83,13 @@ class ArcarumSandbox:
             # If there is Defender,the mission should be latest
             MouseUtils.move_and_click_point(action_locations[-1][0], action_locations[-1][1], "arcarum_sandbox_action")
 
+
+        Game.find_and_click_button("play", tries = 2)
+
+        if Game.check_for_captcha():
+            return None
+        
+        
         return None
 
     @staticmethod
