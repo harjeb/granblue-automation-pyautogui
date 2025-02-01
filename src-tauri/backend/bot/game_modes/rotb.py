@@ -95,11 +95,11 @@ class RiseOfTheBeasts:
             banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
             if len(banner_locations) == 0:
                 MessageLog.print_message("Failed to find the Event banner.")
-
-        if Settings.first_event:
-            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
-        else:
-            MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
+        if len(banner_locations)>0:
+            if Settings.first_event:
+                MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
+            else:
+                MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
         Game.wait(3.0)
 
         # Check for resume.
@@ -111,17 +111,10 @@ class RiseOfTheBeasts:
                 Game.collect_loot(is_completed = True)        
         Game.find_and_click_button("loot")
         Game.wait(1.0)
-        if ImageUtils.find_button("gold"):
-            Game.find_and_click_button("trade")
-        else:
-            MouseUtils.scroll_screen_from_home_button(-1500)
-            Game.wait(1.0)
-            Game.find_and_click_button("secondpage")
-            Game.wait(1.0)
-            MouseUtils.scroll_screen_from_home_button(1500)
-            Game.wait(3.0)
-            Game.find_and_click_button("trade")
-            MessageLog.print_message(f"\n00000...")
+
+        trade_locations = ImageUtils.find_all("trade")
+        if len(trade_locations) > 0:
+            MouseUtils.move_and_click_point(trade_locations[0][0], trade_locations[0][1], "trade")
         if ImageUtils.find_button("trade_for"):
             MessageLog.print_message(f"\n999...")
             Game.find_and_click_button("trade_for")
@@ -152,22 +145,14 @@ class RiseOfTheBeasts:
         # Go to the Home screen.
         Game.go_back_home(confirm_location_check = True)
 
-        MessageLog.print_message(f"\n[ROTB] Now navigating to Rise of the Beasts...")
+        # 按下 Alt 键
+        pyautogui.keyDown('alt')
+        # 按下 1 键
+        pyautogui.press('1')
+        # 抬起 Alt 键
+        pyautogui.keyUp('alt')
 
-        # Go to the Event by clicking on the "Menu" button and then click the very first banner.
-        Game.find_and_click_button("home_menu")
-        Game.wait(1.0)
-        banner_locations = ImageUtils.find_all("event_banner", custom_confidence = 0.7)
-        if len(banner_locations) == 0:
-            banner_locations = ImageUtils.find_all("event_banner_blue", custom_confidence = 0.7)
-            if len(banner_locations) == 0:
-                MessageLog.print_message("Failed to find the Event banner.")
-
-        if Settings.first_event:
-            MouseUtils.move_and_click_point(banner_locations[0][0], banner_locations[0][1], "event_banner")
-        else:
-            MouseUtils.move_and_click_point(banner_locations[1][0], banner_locations[1][1], "event_banner")
-        Game.wait(3.0)
+        Game.wait(1.5)
 
         # Check for resume.
         if ImageUtils.confirm_location("resume_quests", tries = 5):
@@ -178,28 +163,30 @@ class RiseOfTheBeasts:
                 Game.collect_loot(is_completed = True)
 
         if ImageUtils.confirm_location("rotb"):
-            # Scroll the screen down to make way for smaller screens.
-            MouseUtils.scroll_screen_from_home_button(-400)
             # Remove the difficulty prefix from the mission name.
-            difficulty = ""
             temp_mission_name = ""
-            if ImageUtils.find_button("extreme_p"):
+            if Settings.mission_name == "EX+":
                 difficulty = "Extreme+"
-            elif Settings.mission_name.find("VH ") == 0:
-                difficulty = "Very Hard"
-                temp_mission_name = Settings.mission_name[3:]
-            elif Settings.mission_name.find("EX") == 0:
+            else:
                 difficulty = "Extreme"
                 if ImageUtils.find_button("zhuque"):
+                    Game.find_and_click_button("zhuque")
                     temp_mission_name = "Zhuque"
                 elif ImageUtils.find_button("baihu"):
+                    Game.find_and_click_button("baihu")
                     temp_mission_name = "Baihu"
                 elif ImageUtils.find_button("qinglong"):
+                    Game.find_and_click_button("qinglong")
                     temp_mission_name = "Qinglong"
                 elif ImageUtils.find_button("sixiang_all"):
+                    Game.find_and_click_button("sixiang_all")
                     temp_mission_name = "Qinglong"
                 elif ImageUtils.find_button("xuanwu"):
+                    Game.find_and_click_button("xuanwu")
                     temp_mission_name = "Xuanwu"
+                elif ImageUtils.find_button("rotb_extreme"):
+                    Game.find_and_click_button("rotb_extreme")
+                    temp_mission_name = "Qinglong"
                 else:
                     MessageLog.print_message("Failed to find any EX beasts.")
 
@@ -207,7 +194,6 @@ class RiseOfTheBeasts:
             if difficulty == "Extreme":
                 # Click on the Raid banner.
                 MessageLog.print_message(f"[ROTB] Now hosting {temp_mission_name} Raid...")
-                Game.find_and_click_button("rotb_extreme")
 
                 if ImageUtils.confirm_location("rotb_battle_the_beasts", tries = 30):
                     if temp_mission_name == "Zhuque":
@@ -225,52 +211,11 @@ class RiseOfTheBeasts:
                 else:
                     MessageLog.print_message("Failed to open the ROTB Battle the Beasts popup.")
 
-            elif Settings.mission_name == "Lvl 100 Shenxian":
-                # Click on Shenxian to host.
-                MessageLog.print_message(f"[ROTB] Now hosting Shenxian Raid...")
-                Game.find_and_click_button("rotb_shenxian_host")
-
-                if ImageUtils.wait_vanish("rotb_shenxian_host", timeout = 10) is False:
-                    MessageLog.print_message(f"[ROTB] There are no more Shenxian hosts left. Alerting user...")
-                    raise RiseOfTheBeastsException("There are no more Shenxian hosts left.")
-
-            elif difficulty == "Extreme+":
-                MessageLog.print_message("[ROTB] Now hosting EX+ Quest...")
-                Game.find_and_click_button("extreme_p")
-                if Game.find_and_click_button("rotb_qinglong_p"):
-                    MessageLog.print_message(f"[ROTB] Now starting EX+ qinglong Raid...")
             else:
                 MessageLog.print_message(f"[ROTB] Now hosting {temp_mission_name} Quest...")
-
-                # Scroll the screen down to make way for smaller screens.
-                #MouseUtils.scroll_screen_from_home_button(-400)
-
+                Game.find_and_click_button("extreme_p")
                 # Find all instances of the "Select" button on the screen and click on the first instance.
-                select_button_locations = ImageUtils.find_all("select")
-                MouseUtils.move_and_click_point(select_button_locations[0][0], select_button_locations[0][1], "select")
-
-                if ImageUtils.confirm_location("rotb_rising_beasts_showdown", tries = 30):
-                    # Find all the round "Play" buttons.
-                    round_play_button_locations = ImageUtils.find_all("play_round_button")
-
-                    if temp_mission_name == "Zhuque":
-                        MouseUtils.move_and_click_point(round_play_button_locations[0][0], round_play_button_locations[0][1], "play_round_button")
-                    elif temp_mission_name == "Xuanwu":
-                        MouseUtils.move_and_click_point(round_play_button_locations[1][0], round_play_button_locations[1][1], "play_round_button")
-                    elif temp_mission_name == "Baihu":
-                        MouseUtils.move_and_click_point(round_play_button_locations[2][0], round_play_button_locations[2][1], "play_round_button")
-                    elif temp_mission_name == "Qinglong":
-                        MouseUtils.move_and_click_point(round_play_button_locations[3][0], round_play_button_locations[3][1], "play_round_button")
-
-                    Game.wait(2.0)
-
-                    # Find all the round "Play" buttons again.
-                    round_play_button_locations = ImageUtils.find_all("play_round_button")
-
-                    # Only Very Hard difficulty will be supported for farming efficiency
-                    MouseUtils.move_and_click_point(round_play_button_locations[2][0], round_play_button_locations[2][1], "play_round_button")
-                else:
-                    raise(RiseOfTheBeastsException("Failed to open the ROTB Rising Beasts Showdown popup."))
+                
         else:
             MessageLog.print_message("Failed to arrive at the ROTB page.")
 
@@ -289,51 +234,48 @@ class RiseOfTheBeasts:
         from bot.game import Game
         is_loot = 1
         if not first_run:
-            if Settings.mission_name != "Lvl 100 Shenxian":
-                is_loot = Settings.item_amount_farmed % 40
+            if Settings.mission_name != "EX+":
+                is_loot = Settings.item_amount_farmed % 100
             else:
-                is_loot = Settings.item_amount_farmed % 7
+                is_loot = Settings.item_amount_farmed % 18
 
+        Game.find_and_click_button("ok")
         # Start the navigation process.
         if first_run:
+          print(1)
           RiseOfTheBeasts._trade()
           RiseOfTheBeasts._navigate()
-        elif is_loot == 1:
+        elif is_loot == 0:
+            print(2)
             MessageLog.print_message("Go to trade.")
             RiseOfTheBeasts._trade()
             RiseOfTheBeasts._navigate()
         elif Game.find_and_click_button("play_again"):
-            is_exp = Settings.item_amount_farmed % 8
-            if Game.check_for_popups():
-                RiseOfTheBeasts._navigate()
-            elif is_exp == 0:
-                RiseOfTheBeasts._navigate()
+            print(3)
+            Game.find_and_click_button("cancel")
+            Game.find_and_click_button("close")
+            # is_exp = Settings.item_amount_farmed % 8
+            # if Game.check_for_popups():
+            #     RiseOfTheBeasts._navigate()
+            # elif is_exp == 0:
+            #     RiseOfTheBeasts._navigate()
         else:
+            print(4)
             # If the bot cannot find the "Play Again" button, check for Pending Battles and then perform navigation again.
             Game.check_for_pending()
             RiseOfTheBeasts._navigate()
 
         # Check for AP.
         #Game.check_for_ap()
+        if Game.check_for_captcha():
+            return None
 
         # Check if the bot is at the Summon Selection screen.
-        if ImageUtils.confirm_location("select_a_summon", tries = 30):
-            if Settings.mission_name != "Lvl 100 Shenxian":
-                summon_check = Game.select_default_summon()
-                if summon_check:
-                    # Find and click the "OK" button to start the mission.
-                    Game.find_and_click_button("ok")
-                    # Now start Combat Mode and detect any item drops.
-                    if CombatMode.start_combat_mode():
-                        Game.collect_loot(is_completed = True)
-            else:
-                summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
-                if summon_check:
-                    # Find and click the "OK" button to start the mission.
-                    Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
-                    # Now start Combat Mode and detect any item drops.
-                    if CombatMode.start_combat_mode():
-                        Game.collect_loot(is_completed = True)
+        if Game.find_and_click_button("party_selection_ok", tries = 30):
+            # Now start Combat Mode and detect any item drops.
+            if CombatMode.start_combat_mode():
+                Game.collect_loot(is_completed = True)
+                Game.find_and_click_button("ok")
         else:
             MessageLog.print_message("Failed to arrive at the Summon Selection screen.")
 

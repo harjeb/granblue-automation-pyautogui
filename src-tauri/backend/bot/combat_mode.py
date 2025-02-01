@@ -923,7 +923,7 @@ class CombatMode:
 
         MessageLog.print_message("[COMBAT] Bot will now attempt to enable Full Auto...")
         Game.wait(2)
-        CombatMode._full_auto = Game.find_and_click_button("full_auto",tries=5)
+        CombatMode._full_auto = Game.find_and_click_button("full_auto",tries=10)
 
         # If the bot failed to find and click the "Full Auto" button, fallback to the "Semi Auto" button.
         if not CombatMode._full_auto:
@@ -1174,7 +1174,7 @@ class CombatMode:
     ######################################################################
 
     @staticmethod
-    def start_combat_mode(script_commands: List[str] = None, is_nightmare: bool = False, is_defender: bool = False):
+    def start_combat_mode(script_commands: List[str] = None, is_nightmare: bool = False, is_defender: bool = False,is_ss:bool=False):
         """Start Combat Mode with the given script file path. Start reading through the text file line by line and have the bot proceed with the commands accordingly.
 
         Args:

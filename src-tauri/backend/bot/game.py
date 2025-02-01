@@ -28,6 +28,7 @@ from bot.game_modes.quest import Quest
 from bot.game_modes.exo import Exo
 #from bot.game_modes.raid import Raid
 from bot.game_modes.raid2 import Raid
+from bot.game_modes.sidestory import SideStory
 from bot.game_modes.rotb import RiseOfTheBeasts
 from bot.game_modes.special import Special
 from bot.game_modes.xeno_clash import XenoClash
@@ -66,6 +67,7 @@ class Game:
         from bot.game_modes.guild_wars import GuildWars
         from bot.game_modes.proving_grounds import ProvingGrounds
         from bot.game_modes.quest import Quest
+        from bot.game_modes.sidestory import SideStory
         #from bot.game_modes.raid import Raid
         from bot.game_modes.raid2 import Raid
         from bot.game_modes.rotb import RiseOfTheBeasts
@@ -770,8 +772,6 @@ class Game:
                 #Game.find_and_click_button("ok", tries = 1, suppress_error = True)
                 #Game.find_and_click_button("close", tries = 1, suppress_error = True)
                 #Game.find_and_click_button("cancel", tries = 1, suppress_error = True)
-                if ImageUtils.find_button("new_extended_mastery_level", tries = 1) is not None:
-                    break
                 if ImageUtils.find_button("ok", tries = 1) is not None:
                     break
                 if ImageUtils.find_button("close", tries = 1) is not None:
@@ -779,6 +779,9 @@ class Game:
                 if ImageUtils.find_button("cancel", tries = 1) is not None:
                     break
                 if ImageUtils.find_button("dead", tries = 1) is not None:
+                    break
+                if ImageUtils.find_button("new_extended_mastery_level", tries = 1) is not None:
+                    Game.find_and_click_button("new_extended_mastery_level")
                     break
 
                 # Search for and click on the "Extended Mastery" popup.
@@ -1149,6 +1152,8 @@ class Game:
                         GuildWars.start(first_run)
                     elif Settings.farming_mode == "Dread Barrage":       # 公会战
                         DreadBarrage.start(first_run)
+                    elif Settings.farming_mode == "Side Story":       # 公会战
+                        SideStory.start()
                     elif Settings.farming_mode == "Proving Grounds":     #连战
                         ProvingGrounds.start(first_run)
                     elif Settings.farming_mode == "Xeno Clash":          # 六道
@@ -1182,10 +1187,10 @@ class Game:
                     c = 0
                     if (now_time - start_time) > random_time: 
                         if (c%3 == 0 and c >1):
-                            sleep_time = int(random.uniform(0.5, 0.55) * random_time)
+                            sleep_time = random.randint(900, 1000)
                         else:
                             # 生成随机的睡眠时间
-                            sleep_time = int(random.uniform(0.48, 0.5) * random_time)
+                            sleep_time = random.randint(900, 1000)
                             
                         # 执行睡眠
                         MessageLog.print_message("[Sleep] start sleep %d" % sleep_time)
@@ -1203,7 +1208,7 @@ class Game:
                         MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
                         MessageLog.print_message("[Info] 离休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
                     MessageLog.print_message("[Info] 已经过 %ds" % (now_time - init_time))
-                    random_time = random.randint(2000, 2100)
+                    random_time = random.randint(2700, 2800)
 
         except Exception as e:
             Game._discord_queue.put(f"> Bot encountered exception in Farming Mode: \n{e}")

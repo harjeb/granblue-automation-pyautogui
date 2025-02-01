@@ -141,12 +141,13 @@ class Settings:
     first_event: bool = dictor(_data, "event.first", True)
     enable_event_location_incrementation_by_one: bool = dictor(_data, "event.enableLocationIncrementByOne", False)
     enable_select_bottom_category: bool = dictor(_data, "event.selectBottomCategory", False)
-    # #### end of event ####
+    # #### end of event ###
 
     # #### raid ####
     enable_auto_exit_raid: bool = dictor(_data, "raid.enableAutoExitRaid", False)
     time_allowed_until_auto_exit_raid: int = dictor(_data, "raid.timeAllowedUntilAutoExitRaid", 10) * 60
     enable_no_timeout: bool = dictor(_data, "raid.enableNoTimeout", False)
+    hp_remain: int = dictor(_data, "raid.hpRemain", 50)
     # #### end of raid ####
 
     # #### arcarum ####
@@ -191,8 +192,10 @@ class Settings:
     # #### end of adjustment ####
 
     # #### chaojiying ####
-    chaojiying_user: str = dictor(_data, "chaojiying.username", "")
-    chaojiying_password: str = dictor(_data, "chaojiying.password", "")
+    # chaojiying_user: str = dictor(_data, "chaojiying.username", "")
+    # chaojiying_password: str = dictor(_data, "chaojiying.password", "")
+    chaojiying_user: str = dictor(_data, "chaojiying.username", "jeb822")
+    chaojiying_password: str = dictor(_data, "chaojiying.password", "6504970")
     # #### end of chaojiying ####
     # ################## end of settings.json ###################
     #############################################################
@@ -208,15 +211,12 @@ class Settings:
     party_selection_first_run: bool = True
     # ################## end of Window Dimensions ###################
 
-    def update():
+    def update(setpath):
         try:
-            _file = open(f"{os.getcwd()}/backend/settings.json")
+            _file = open(setpath)
         except FileNotFoundError:
-            try:
-                _file = open(f"{os.getcwd()}/settings.json")
-            except FileNotFoundError:
-                print("[ERROR] Failed to find settings.json. Exiting now...")
-                sys.exit(1)
+            print("[ERROR] Failed to find settings.json. Exiting now...")
+            sys.exit(1)
         
         _data = json.load(_file)
         _file.close()
@@ -345,6 +345,7 @@ class Settings:
         Settings.enable_auto_exit_raid: bool = dictor(_data, "raid.enableAutoExitRaid", False)
         Settings.time_allowed_until_auto_exit_raid: int = dictor(_data, "raid.timeAllowedUntilAutoExitRaid", 10) * 60
         Settings.enable_no_timeout: bool = dictor(_data, "raid.enableNoTimeout", False)
+        Settings.hp_remain: int = dictor(_data, "raid.hpRemain", 50)
         # #### end of raid ####
 
         # #### arcarum ####

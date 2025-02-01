@@ -192,7 +192,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         self.checkBox_14.clicked.connect(self.onStateChanged)
         self.lineEdit_4.setEnabled(False)
         self.spinBox_9.setEnabled(False)
-        self.spinBox_10.setEnabled(False)
+        self.spinBox_10.setEnabled(True)
         self.comboBox_5.setEnabled(False)
         #game.debugMode
         self.checkBox_13.setChecked(False)
@@ -392,12 +392,13 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["nightmare"]["nightmareSummons"] = self.translate(self.comboBox_5.currentData())
         setting_dict["nightmare"]["nightmareSummonElements"] = self.getElement(self.comboBox_5.currentData())
         setting_dict["nightmare"]["nightmareGroupNumber"] = self.spinBox_9.value()
-        setting_dict["nightmare"]["nightmarePartyNumber"] = self.spinBox_10.value()
+        setting_dict["nightmare"]["nightmarePartyNumber"] = 1
         setting_dict["event"]["enableLocationIncrementByOne"] = self.checkBox_19.isChecked()
         setting_dict["event"]["selectBottomCategory"] = self.checkBox_20.isChecked()
         setting_dict["raid"]["enableAutoExitRaid"] = self.checkBox_5.isChecked()
         setting_dict["raid"]["timeAllowedUntilAutoExitRaid"] = self.spinBox_8.value()
         setting_dict["raid"]["enableNoTimeout"] = self.checkBox_6.isChecked()
+        setting_dict["raid"]["hpRemain"] = self.spinBox_10.value()
         setting_dict["arcarum"]["enableStopOnArcarumBoss"] = True
         setting_dict["generic"]["enableForceReload"] = False
         setting_dict["xenoClash"]["selectTopOption"] = self.checkBox_16.isChecked()
@@ -556,7 +557,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         else:
             self.lineEdit_4.setEnabled(False)
             self.spinBox_9.setEnabled(False)
-            self.spinBox_10.setEnabled(False)
+            self.spinBox_10.setEnabled(True)
             self.comboBox_5.setEnabled(False)
         if self.checkBox_18.isChecked():
             self.spinBox_5.setEnabled(True)

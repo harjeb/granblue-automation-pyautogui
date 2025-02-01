@@ -222,6 +222,9 @@
     "Fate":{
         "Fate_Episode":{"map":"fate episodes","items":["Repeated Runs"]}
     },
+    "Side Story": {
+        "Side Story":{"map":"side story","items":["Repeated Runs"]}
+    },
     "特殊": {
         "N Fire Trial": {
             "map": "Uncap Treasure Quests",
@@ -1771,6 +1774,12 @@
             ]
         },
         "EX": {
+            "map": "Event Raid",
+            "items": [
+                "Repeated Runs"
+            ]
+        },
+        "EX+": {
             "map": "Event Raid",
             "items": [
                 "Repeated Runs"

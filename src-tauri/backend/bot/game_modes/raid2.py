@@ -27,6 +27,7 @@ class Raid:
         pyautogui.keyDown('alt')
         pyautogui.press('2')
         pyautogui.keyUp('alt')
+
            
         
     @staticmethod
@@ -98,7 +99,7 @@ class Raid:
         # Now click on the first Room.
         room_locations = ImageUtils.find_all("pending_battle_sidebar")
         c = 0
-        while len(room_locations) < 4:
+        if len(room_locations) < 4:
             c += 1
             MouseUtils.scroll_screen_from_home_button(-480)
             Game.wait(1.0)
@@ -109,13 +110,19 @@ class Raid:
                 Game.find_and_click_button("reload_room")
                 Game.wait(2.0)
                 room_locations = ImageUtils.find_all("pending_battle_sidebar")
-            if c > 5:
-                break
+
         
         Game.wait(1.0)
         hp_list = ImageUtils.find_all("hp")
         # 步骤 1: 偏移坐标
-        offset_points = [(x + 86, y) for (x, y) in hp_list]
+        #  50   50% hp
+        #  85   90 %
+        #  30   30%
+        # min 20
+        # max  89
+        print(Settings.hp_remain)
+        offset_points = [(x + Settings.hp_remain, y) for (x, y) in hp_list]
+        print(offset_points)
 
         # 步骤 2: 获取 RGB 颜色值
         def get_rgb_value(x, y):
@@ -130,6 +137,7 @@ class Raid:
             MessageLog.print_message(f"Offset Point: {point}, RGB Color: {rgb}")
             if rgb[0] > 100:
                 # hp > 50%
+                MessageLog.print_message(f"found hp ok")
                 MouseUtils.move_and_click_point(point[0], point[1], "pending_battle_sidebar")
                 find = True
                 break
