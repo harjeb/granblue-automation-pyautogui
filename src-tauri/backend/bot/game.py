@@ -571,12 +571,12 @@ class Game:
         """Skip Group and Party selection
         """
         # Find and click the "OK" button to start the mission.
-        Game.find_and_click_button("ok")
+        Game.find_and_click_button("party_selection_ok")
 
         # If a popup appears and says "This raid battle has already ended. The Home screen will now appear.", return False.
         if Settings.farming_mode.lower() == "raid" and ImageUtils.confirm_location("raids"):
             MessageLog.print_message("\n[WARNING] Raid unfortunately just ended. Backing out now...")
-            Game.find_and_click_button("ok")
+            Game.find_and_click_button("party_selection_ok")
             Game.wait(3.0)
             return False
 
@@ -749,7 +749,7 @@ class Game:
             None
         """
         temp_amount = 0
-        if 'reload_auto' in Settings.combat_script_name:
+        if 'auto' in Settings.combat_script_name:
             reload_auto = True
 
         # Close all popups until the bot reaches the Loot Collected screen.
@@ -783,7 +783,6 @@ class Game:
                 if ImageUtils.find_button("new_extended_mastery_level", tries = 1) is not None:
                     Game.find_and_click_button("new_extended_mastery_level")
                     break
-
                 # Search for and click on the "Extended Mastery" popup.
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None

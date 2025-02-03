@@ -399,8 +399,21 @@ class CombatMode:
 
         # If the bot failed to find and click the "Full Auto" button, fallback to the "Semi Auto" button.
         if enable_auto is False:
+            while ImageUtils.find_button("dialog_point", tries = 5):
+                Game.find_and_click_button("dialog_point")
+                Game.wait(1)
+                if ImageUtils.find_button("attack"):
+                    break
+
             MessageLog.print_message(f"[COMBAT] Failed to find the \"Full Auto\" button. Falling back to Semi Auto.")
             MessageLog.print_message(f"[COMBAT] Double checking to see if Semi Auto is enabled.")
+            # 开启fa
+            if not ImageUtils.find_button("full_auto", tries = 5) and not ImageUtils.find_button("full_auto_enabled"):
+                Game.find_and_click_button("menu")
+                if ImageUtils.find_button("close", tries = 5):
+                    Game.find_and_click_button("set_full")
+                    Game.find_and_click_button("set_on")
+                    Game.find_and_click_button("close")
 
             enabled_semi_auto_button_location = ImageUtils.find_button("semi_button_enabled")
             if enabled_semi_auto_button_location is None:
@@ -413,7 +426,25 @@ class CombatMode:
                 if enable_auto:
                     MessageLog.print_message("[COMBAT] Semi Auto is now enabled.")
         else:
+            while ImageUtils.find_button("dialog_point", tries = 5):
+                Game.find_and_click_button("dialog_point")
+                Game.wait(1)
+                if ImageUtils.find_button("attack"):
+                    break
             MessageLog.print_message(f"[COMBAT] Enabled Full Auto.")
+            # 可能不在战斗,尝试点击ok
+            Game.find_and_click_button("ok")
+            
+            # 开启fa
+            if ImageUtils.find_button("full_auto", tries = 5):
+                pass
+            else:
+                MessageLog.print_message(f"[COMBAT] 找不到fa")
+                Game.find_and_click_button("menu")
+                if ImageUtils.find_button("close", tries = 5):
+                    Game.find_and_click_button("set_full")
+                    Game.find_and_click_button("set_on")
+                    Game.find_and_click_button("close")
 
         return enable_auto
 
@@ -871,6 +902,7 @@ class CombatMode:
                 (Game.find_and_click_button("quick_summon1", bypass_general_adjustment = True) or Game.find_and_click_button("quick_summon2", bypass_general_adjustment = True)):
             MessageLog.print_message("[COMBAT] Successfully quick summoned!")
             pyautogui.press('f5')
+            Game.wait(2)
 
             if "wait" in command:
                 split_command = command.split(".")

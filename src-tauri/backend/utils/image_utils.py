@@ -277,7 +277,7 @@ class ImageUtils:
             return 0
 
     @staticmethod
-    def find_button(image_name: str, custom_confidence: float = 0.8, tries: int = 5, suppress_error: bool = False, disable_adjustment: bool = False, bypass_general_adjustment: bool = False):
+    def find_button(image_name: str, custom_confidence: float = 0.85, tries: int = 5, suppress_error: bool = False, disable_adjustment: bool = False, bypass_general_adjustment: bool = False):
         """Find the location of the specified button.
 
         Args:
