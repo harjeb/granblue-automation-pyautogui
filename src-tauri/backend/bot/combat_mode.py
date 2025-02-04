@@ -381,7 +381,7 @@ class CombatMode:
         
 
     @staticmethod
-    def _enable_auto() -> bool:
+    def _enable_auto(is_ss:bool=False) -> bool:
         """Enable Full/Semi auto for this battle.
 
         Returns:
@@ -394,6 +394,11 @@ class CombatMode:
         if Settings.enable_refresh_during_combat and Settings.enable_auto_quick_summon:
             MessageLog.print_message(f"[COMBAT] Automatically attempting to use Quick Summon...")
             CombatMode._quick_summon()
+
+        if is_ss:
+            MessageLog.print_message(f"f5")
+            pyautogui.press('f5')
+            Game.wait(3)
 
         enable_auto = Game.find_and_click_button("full_auto") or ImageUtils.find_button("full_auto_enabled")
 
@@ -434,10 +439,11 @@ class CombatMode:
             MessageLog.print_message(f"[COMBAT] Enabled Full Auto.")
             # 可能不在战斗,尝试点击ok
             Game.find_and_click_button("ok")
+            Game.find_and_click_button("party_selection_ok")
             
             # 开启fa
             if ImageUtils.find_button("full_auto", tries = 5):
-                pass
+                Game.find_and_click_button("full_auto")
             else:
                 MessageLog.print_message(f"[COMBAT] 找不到fa")
                 Game.find_and_click_button("menu")
@@ -446,6 +452,11 @@ class CombatMode:
                     Game.find_and_click_button("set_on")
                     Game.find_and_click_button("close")
 
+        if ImageUtils.find_button("skip"):
+            Game.find_and_click_button("skip")
+            Game.find_and_click_button("skip_btn")
+            Game.wait(3)
+            Game.find_and_click_button("ok")
         return enable_auto
 
     ######################################################################
@@ -1099,7 +1110,7 @@ class CombatMode:
     #####################################################################fv#
 
     @staticmethod
-    def _loop_auto():
+    def _loop_auto(is_ss:bool=False):
         """Main workflow loop for both Semi Auto and Full Auto. The bot will progress the Quest/Raid until it ends or the Party wipes.
 
         Returns:
@@ -1137,7 +1148,7 @@ class CombatMode:
 
                     # Check for exit conditions and restart auto.
                     if CombatMode._check_for_battle_end() == "Nothing":
-                        CombatMode._enable_auto()
+                        CombatMode._enable_auto(is_ss)
                 elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None and \
                         CombatMode._check_for_battle_end() == "Nothing":
                     Game.wait(1.0)
@@ -1150,12 +1161,12 @@ class CombatMode:
                         if Settings.debug_mode:
                             MessageLog.print_message("[DEBUG] Clicked the Next button to move to the next wave. Attempting to restart Full/Semi Auto...")
 
-                        CombatMode._enable_auto()
+                        CombatMode._enable_auto(is_ss)
                 else:
                     MessageLog.print_message("[DEBUG] here3...")
                     # Check for exit conditions and restart auto.
                     if CombatMode._check_for_battle_end() == "Nothing":
-                        CombatMode._enable_auto()
+                        CombatMode._enable_auto(is_ss)
             elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] Attack and Next buttons have vanished. Determining if bot should reload...")
@@ -1170,7 +1181,7 @@ class CombatMode:
                 MessageLog.print_message("[DEBUG] here4...")
                 # Check for exit conditions and restart auto.
                 if CombatMode._check_for_battle_end() == "Nothing":
-                    CombatMode._enable_auto()
+                    CombatMode._enable_auto(is_ss)
 
         return None
 
@@ -1409,7 +1420,7 @@ class CombatMode:
                     CombatMode._check_for_battle_end()
 
                 # Main workflow loop for both Semi Auto and Full Auto. The bot will progress the Quest/Raid until it ends or the Party wipes.
-                CombatMode._loop_auto()
+                CombatMode._loop_auto(is_ss)
             else:
                 # Main workflow loop for manually pressing the Attack button and reloading until combat ends.
                 CombatMode._loop_manual()

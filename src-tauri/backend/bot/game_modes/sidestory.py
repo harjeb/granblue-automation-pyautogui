@@ -187,16 +187,16 @@ class SideStory:
                     if Game.check_for_captcha():
                         return None
                     
-                    if Game.find_and_click_button("party_selection_ok", tries = 30):
+                    if Game.find_and_click_button("party_selection_ok", tries = 5):
                         # Now start Combat Mode and detect any item drops.
-                        if CombatMode.start_combat_mode():
+                        if CombatMode.start_combat_mode(is_ss=True):
                             Game.collect_loot(is_completed = True)
 
                     Game.find_and_click_button("cancel")
 
                     if ImageUtils.find_button("attack", tries = 5):
                         MessageLog.print_message(f"[GENERIC] Bot is at the Combat screen. Starting Combat Mode now...")
-                        if CombatMode.start_combat_mode():
+                        if CombatMode.start_combat_mode(is_ss=True):
                             Game.collect_loot(is_completed = True)
 
                 return None
