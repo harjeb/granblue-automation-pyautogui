@@ -245,8 +245,9 @@ class CombatMode:
             from bot.game import Game
 
             if CombatMode._check_for_battle_end() == "Nothing":
-                MessageLog.print_message("[COMBAT] Reloading now.")
-                pyautogui.press('f5')
+                if Settings.farming_mode == "Raid":
+                    MessageLog.print_message("[COMBAT] Reloading now.")
+                    pyautogui.press('f5')
                 #Game.find_and_click_button("reload")
 
                 if Settings.enable_combat_mode_adjustment:
@@ -398,7 +399,7 @@ class CombatMode:
         if is_ss:
             MessageLog.print_message(f"f5")
             pyautogui.press('f5')
-            Game.wait(3)
+            Game.wait(6)
 
         enable_auto = Game.find_and_click_button("full_auto") or ImageUtils.find_button("full_auto_enabled")
 
@@ -444,7 +445,7 @@ class CombatMode:
             # 开启fa
             if ImageUtils.find_button("full_auto", tries = 5):
                 Game.find_and_click_button("full_auto")
-            else:
+            elif is_ss:
                 MessageLog.print_message(f"[COMBAT] 找不到fa")
                 Game.find_and_click_button("menu")
                 if ImageUtils.find_button("close", tries = 5):
@@ -912,7 +913,8 @@ class CombatMode:
         if ImageUtils.find_button("quick_summon_not_ready", bypass_general_adjustment = True) is None and \
                 (Game.find_and_click_button("quick_summon1", bypass_general_adjustment = True) or Game.find_and_click_button("quick_summon2", bypass_general_adjustment = True)):
             MessageLog.print_message("[COMBAT] Successfully quick summoned!")
-            pyautogui.press('f5')
+            if Settings.farming_mode == "Raid":
+                pyautogui.press('f5')
             Game.wait(2)
 
             if "wait" in command:
@@ -1011,8 +1013,8 @@ class CombatMode:
         from bot.game import Game
         #Game.wait(1)
         if Game.find_and_click_button("attack", tries = 30):
-            print('f5')
-            pyautogui.press('f5')
+            if Settings.farming_mode == "Raid":
+                pyautogui.press('f5')
             Game.wait(2)
             if ImageUtils.wait_vanish("combat_cancel", timeout = 10):
                 MessageLog.print_message("[COMBAT] Successful executed a manual attack.")
@@ -1118,8 +1120,10 @@ class CombatMode:
         """
         from bot.game import Game
 
+        # 避免ss 刷新太多
+        t = 0
         while not CombatMode._retreat_check and (CombatMode._full_auto or CombatMode._semi_auto):
-
+            t += 1
             # Check for exit conditions.
             CombatMode._check_for_battle_end()
 
@@ -1148,7 +1152,10 @@ class CombatMode:
 
                     # Check for exit conditions and restart auto.
                     if CombatMode._check_for_battle_end() == "Nothing":
-                        CombatMode._enable_auto(is_ss)
+                        if not is_ss:
+                            CombatMode._enable_auto(is_ss)
+                        elif t % 5 == 0:
+                            CombatMode._enable_auto(is_ss)
                 elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None and \
                         CombatMode._check_for_battle_end() == "Nothing":
                     Game.wait(1.0)
@@ -1160,13 +1167,18 @@ class CombatMode:
                     if CombatMode._check_for_battle_end() == "Nothing":
                         if Settings.debug_mode:
                             MessageLog.print_message("[DEBUG] Clicked the Next button to move to the next wave. Attempting to restart Full/Semi Auto...")
-
-                        CombatMode._enable_auto(is_ss)
+                        if not is_ss:
+                            CombatMode._enable_auto(is_ss)
+                        elif t % 5 == 0:
+                            CombatMode._enable_auto(is_ss)
                 else:
                     MessageLog.print_message("[DEBUG] here3...")
                     # Check for exit conditions and restart auto.
                     if CombatMode._check_for_battle_end() == "Nothing":
-                        CombatMode._enable_auto(is_ss)
+                        if not is_ss:
+                            CombatMode._enable_auto(is_ss)
+                        elif t % 5 == 0:
+                            CombatMode._enable_auto(is_ss)
             elif ImageUtils.find_button("attack", tries = 1, suppress_error = True) is None and ImageUtils.find_button("next", tries = 1, suppress_error = True) is None:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] Attack and Next buttons have vanished. Determining if bot should reload...")
@@ -1181,7 +1193,10 @@ class CombatMode:
                 MessageLog.print_message("[DEBUG] here4...")
                 # Check for exit conditions and restart auto.
                 if CombatMode._check_for_battle_end() == "Nothing":
-                    CombatMode._enable_auto(is_ss)
+                    if not is_ss:
+                        CombatMode._enable_auto(is_ss)
+                    elif t % 5 == 0:
+                        CombatMode._enable_auto(is_ss)
 
         return None
 
@@ -1267,8 +1282,9 @@ class CombatMode:
         if Settings.farming_mode == "Arcarum":
             Game.find_and_click_button("arcarum_stage_effect_active", tries = 10, bypass_general_adjustment = True)
 
+        Game.wait(2)
         # Save the positions of the "Attack" and "Back" button.
-        CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 50, bypass_general_adjustment = True)
+        CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 800, bypass_general_adjustment = True)
         if "one_punch" in Settings.combat_script_name:
             Game.find_and_click_button("attack")
             pyautogui.press('f5')

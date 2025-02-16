@@ -264,7 +264,7 @@ class ArcarumSandbox:
         #ArcarumSandbox._play_zone_boss()
         #ArcarumSandbox._refill_aap()
 
-        if Game.find_and_click_button("ok", tries = 30):
+        if Game.find_and_click_button("party_selection_ok", tries = 30):
             if CombatMode.start_combat_mode():
                 Game.collect_loot(is_completed = True)
 

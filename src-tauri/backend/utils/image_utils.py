@@ -78,8 +78,11 @@ class ImageUtils:
         date_tag = strftime('%H_%M',localtime())
         header_center_post = ImageUtils.find_button("captcha_header")
         #copyfile("temp/match.png", "temp/match_%s.png" % date_tag)
-        top_left = (header_center_post[0]-96-Settings.window_left,header_center_post[1]+175-Settings.window_top)
-        bottom_right = (header_center_post[0]+100-Settings.window_left,header_center_post[1]+250-Settings.window_top)
+        MessageLog.print_message(f"{header_center_post[0]}   {header_center_post[1]}")
+        top_left = (header_center_post[0]-65-Settings.window_left,header_center_post[1]+118-Settings.window_top)
+        bottom_right = (header_center_post[0]+64-Settings.window_left,header_center_post[1]+167-Settings.window_top)
+        print(top_left)
+        print(bottom_right)
         captcha_img = cv2.imread("temp/source.png")
         #copyfile("temp/source.png", "temp/source_%s.png" % date_tag)
         cropped = captcha_img[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]]

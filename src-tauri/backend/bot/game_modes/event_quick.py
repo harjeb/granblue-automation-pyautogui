@@ -40,58 +40,30 @@ class Event_quick:
         return None
 
     @staticmethod
-    def start(first_run: bool):
-        """Starts the process to complete a run for Event or Event (Token Drawboxes) Farming Mode and returns the number of items detected.
-
-        Args:
-            first_run (bool): Flag that determines whether or not to run the navigation process again. Should be False if the Farming Mode supports the "Play Again" feature for repeated runs.
+    def start():
+        """Starts the process of completing a generic setup that supports the 'Play Again' logic.
 
         Returns:
             None
         """
         from bot.game import Game
+    
+        MessageLog.print_message(f"\n[GENERIC] GO to bookmark...")
+        
+        # 按下 Alt 键
+        pyautogui.keyDown('alt')
+        # 按下 1 键
+        pyautogui.press('1')
+        # 抬起 Alt 键
+        pyautogui.keyUp('alt')
 
-        # Start the navigation process.
-        if first_run:
-            Event_quick._navigate()
-        else:
-            # If the bot cannot find the "Play Again" button, check for Pending Battles and then perform navigation again.
-            Game.check_for_pending()
-            Event_quick._navigate()
 
+        if Game.check_for_captcha():
+            return None
 
-        # Check if the bot is at the Summon Selection screen.
-        if ImageUtils.confirm_location("select_a_summon", tries = 30):
-            if Settings.summon_default:
-                summon_check = Game.select_default_summon()
-                if summon_check:
-                    if Game.check_for_captcha():
-                        Game.select_default_summon()
-                    Game.quick_start_mission()
-                    if CombatMode.start_combat_mode():
-                        Game.collect_loot(is_completed = True)
-            else:
-                summon_check = Game.select_summon(Settings.summon_list, Settings.summon_element_list)
-                if summon_check:
-                    if Game.check_for_captcha():
-                        Game.select_default_summon()
-                    # Select the Party.
-                    Game.find_party_and_start_mission(Settings.group_number, Settings.party_number)
-                    # Now start Combat Mode and detect any item drops.
-                    if CombatMode.start_combat_mode():
-                        Game.collect_loot(is_completed = True)
-                else:
-                    # DO NOT EXIT
-                    MessageLog.print_message("\n[ERROR] Failed to arrive at the Summon Selection screen.")
-        elif ImageUtils.find_button("ok", tries = 10):
-            Game.quick_start_mission()
-            if CombatMode.start_combat_mode():
-                Game.collect_loot(is_completed = True)
-        # Check for battle.
-        elif ImageUtils.find_button("attack", tries = 10):
-            Game.wait(2)
-            # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)
-
+        if Game.find_and_click_button("party_selection_ok", tries = 10):
+            if Game.find_and_click_button("attack", tries = 25):
+                MessageLog.print_message(f"[GENERIC] refresh")
+                pyautogui.press('f5')
+                
         return None

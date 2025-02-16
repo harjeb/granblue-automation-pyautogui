@@ -787,11 +787,11 @@ class Game:
                 if ImageUtils.confirm_location("no_loot", tries = 1, suppress_error = True, disable_adjustment = True):
                     return None
                 #Game.wait(2)
-                if reload_auto:
+                if True:
                     if ImageUtils.confirm_location("loot_collected", tries = 1):
                         return None
                     # FA时刷新战斗
-                    for i in range(5):
+                    for i in range(1):
                         if ImageUtils.find_button("attack", tries = 3) is None:
                             if ImageUtils.confirm_location("exp_gained", tries=1):
                                 break
@@ -829,7 +829,6 @@ class Game:
             temp_amount = 1
             Settings.amount_of_runs_finished += 1
             Settings.item_amount_farmed += temp_amount
-
 
         if is_completed and not is_pending_battle and not is_event_nightmare and not skip_info and not is_defender:
             if Settings.item_name != "EXP" and Settings.item_name != "Angel Halo Weapons" and Settings.item_name != "Repeated Runs":
@@ -1144,7 +1143,7 @@ class Game:
                     elif Settings.farming_mode == "Event" or Settings.farming_mode == "Event (Token Drawboxes)":   # SS 活动
                         Event.start(first_run)
                     elif Settings.farming_mode == "Event Quick":
-                        Event_quick.start(first_run)
+                        Event_quick.start()
                     elif Settings.farming_mode == "Rise of the Beasts":      # 四象
                         RiseOfTheBeasts.start(first_run)
                     elif Settings.farming_mode == "Guild Wars":          # 古战场
@@ -1184,9 +1183,12 @@ class Game:
                     now_time = time.time()
 
                     c = 0
-                    if (now_time - start_time) > random_time: 
+                    if Settings.item_amount_farmed % 300 == 0 and Settings.item_amount_farmed > 1:
+                        sleep_time = random.randint(2000, 2100)
+                        time.sleep(sleep_time)
+                    elif (now_time - start_time) > random_time: 
                         if (c%3 == 0 and c >1):
-                            sleep_time = random.randint(900, 1000)
+                            sleep_time = random.randint(1000, 1200)
                         else:
                             # 生成随机的睡眠时间
                             sleep_time = random.randint(900, 1000)
@@ -1207,7 +1209,7 @@ class Game:
                         MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
                         MessageLog.print_message("[Info] 离休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
                     MessageLog.print_message("[Info] 已经过 %ds" % (now_time - init_time))
-                    random_time = random.randint(2700, 2800)
+                    random_time = random.randint(2600, 2700)
 
         except Exception as e:
             Game._discord_queue.put(f"> Bot encountered exception in Farming Mode: \n{e}")
