@@ -86,6 +86,25 @@ class MainDriver:
 
         return None
 
+    # 添加新方法支持远程控制
+    def update_settings(self, new_settings):
+        """更新运行参数"""
+        # 停止当前进程
+        self.stop_bot()
+        # 更新 settings.json
+        with open('settings.json', 'w') as f:
+            json.dump(new_settings, f)
+        # 重启进程
+        self.start_bot()
+    
+    def get_status(self):
+        """获取当前状态"""
+        return {
+            'running': self.is_running(),
+            'settings': self.current_settings,
+            # 其他状态信息
+        }
+
 
 if __name__ == "__main__":
     # Start the bot.
