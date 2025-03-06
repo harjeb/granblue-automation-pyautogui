@@ -360,6 +360,7 @@ class Game:
         """
         try:
             if ImageUtils.confirm_location("captcha", bypass_general_adjustment = True):
+                ImageUtils._play_captcha_sound()
                 # go to identify
                 ok = False
                 flag = False
@@ -1170,6 +1171,24 @@ class Game:
                     Game.find_and_click_button("home")
                     Game.wait(1.5)
 
+                # 初始化变量用于存储前一个值和不变次数
+                previous_item_amount_farmed = Settings.item_amount_farmed
+                unchanged_count = 0
+
+                # 在这个代码块之前的地方
+                if Settings.item_amount_farmed == previous_item_amount_farmed:
+                    unchanged_count += 1
+                else:
+                    unchanged_count = 0  # 如果值有所变化，重置计数器
+
+                # 检查计数器是否达到了3次
+                if unchanged_count >= 3:
+                    Game.find_and_click_button("home")
+                    unchanged_count = 0  # 可选：重置计数器
+
+                # 更新前一个值
+                previous_item_amount_farmed = Settings.item_amount_farmed
+
                 MessageLog.print_message("[Info] !!!!!!!!!!!!! %d=" % Settings.item_amount_farmed)
                 MessageLog.print_message("[Info] !!!!!!!!!!!!! %d=" % Settings.item_amount_to_farm)
                 
@@ -1183,15 +1202,19 @@ class Game:
                     now_time = time.time()
 
                     c = 0
-                    if Settings.item_amount_farmed % 300 == 0 and Settings.item_amount_farmed > 1:
-                        sleep_time = random.randint(2000, 2100)
-                        time.sleep(sleep_time)
-                    elif (now_time - start_time) > random_time: 
+                    if (now_time - start_time) > random_time: 
+                        sleep_time = 0
                         if (c%3 == 0 and c >1):
-                            sleep_time = random.randint(1000, 1200)
+                            if Settings.farming_mode == "Event Quick":
+                                sleep_time = random.randint(1800, 1900)
+                            else:
+                                sleep_time = random.randint(900, 1000)
                         else:
                             # 生成随机的睡眠时间
-                            sleep_time = random.randint(900, 1000)
+                            if Settings.farming_mode == "Event Quick":
+                                sleep_time = random.randint(1000, 1100)
+                            else:
+                                sleep_time = random.randint(900, 1000)
                             
                         # 执行睡眠
                         MessageLog.print_message("[Sleep] start sleep %d" % sleep_time)
@@ -1209,7 +1232,9 @@ class Game:
                         MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
                         MessageLog.print_message("[Info] 离休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
                     MessageLog.print_message("[Info] 已经过 %ds" % (now_time - init_time))
-                    random_time = random.randint(2600, 2700)
+
+                    random_time = random.randint(2000, 2100)
+
 
         except Exception as e:
             Game._discord_queue.put(f"> Bot encountered exception in Farming Mode: \n{e}")

@@ -261,7 +261,7 @@ class ArcarumSandbox:
             Game.wait(3.0)
 
         # Refill AAP if needed.
-        #ArcarumSandbox._play_zone_boss()
+        ArcarumSandbox._play_zone_boss()
         #ArcarumSandbox._refill_aap()
 
         if Game.find_and_click_button("party_selection_ok", tries = 30):

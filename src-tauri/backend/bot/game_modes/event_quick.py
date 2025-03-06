@@ -61,9 +61,33 @@ class Event_quick:
         if Game.check_for_captcha():
             return None
 
+
         if Game.find_and_click_button("party_selection_ok", tries = 10):
-            if Game.find_and_click_button("attack", tries = 25):
+            Game.wait(2)
+
+            if 'summon' in Settings.combat_script_name:
+                Game.wait(2)
+                if ImageUtils.find_button("attack", tries = 25):
+                    if ImageUtils.find_button("quick_summon_not_ready", bypass_general_adjustment = True) is None and \
+                        (Game.find_and_click_button("quick_summon1", bypass_general_adjustment = True) or Game.find_and_click_button("quick_summon2", bypass_general_adjustment = True)):
+                        MessageLog.print_message(f"[GENERIC] refresh")
+                        pyautogui.press('f5')
+                        Settings.item_amount_farmed += 1
+            elif 'fa' in Settings.combat_script_name:
+                MessageLog.print_message(f"fa")
+                Game.wait(2)
+                if ImageUtils.find_button("attack", tries = 25):
+                    CombatMode._enable_full_auto()
+            elif Game.find_and_click_button("attack", tries = 25):
                 MessageLog.print_message(f"[GENERIC] refresh")
                 pyautogui.press('f5')
+                Settings.item_amount_farmed += 1
+        else:
+            Game.find_and_click_button("attack", tries = 30)
+            MessageLog.print_message(f"[GENERIC] refresh")
+            pyautogui.press('f5')
+            Settings.item_amount_farmed += 1
+    
+        Game.wait(2)
                 
         return None
