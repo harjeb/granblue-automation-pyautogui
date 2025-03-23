@@ -211,18 +211,18 @@ class CombatMode:
             None
         """
         if character_number == 1:
-            x = CombatMode._attack_button_location[0] - 317
+            x = CombatMode._attack_button_location[0] - 213
         elif character_number == 2:
-            x = CombatMode._attack_button_location[0] - 240
+            x = CombatMode._attack_button_location[0] - 160
         elif character_number == 3:
-            x = CombatMode._attack_button_location[0] - 158
+            x = CombatMode._attack_button_location[0] - 105
         elif character_number == 4:
-            x = CombatMode._attack_button_location[0] - 76
+            x = CombatMode._attack_button_location[0] - 54
         else:
             MessageLog.print_message(f"[WARNING] Invalid command received for selecting a Character. User wanted to select Character #{character_number}.")
             return
 
-        y = CombatMode._attack_button_location[1] + 123
+        y = CombatMode._attack_button_location[1] + 80
 
         # Double-clicking the character portrait to avoid any non-invasive popups from other Raid participants.
         MouseUtils.move_and_click_point(x, y, "template_character", mouse_clicks = 2)
@@ -774,22 +774,22 @@ class CombatMode:
 
                 if skill == "useskill(1)":
                     MessageLog.print_message(f"[COMBAT] Character {character_selected} uses Skill 1.")
-                    x = CombatMode._attack_button_location[0] - 213
+                    x = CombatMode._attack_button_location[0] - 143
                 elif skill == "useskill(2)":
                     MessageLog.print_message(f"[COMBAT] Character {character_selected} uses Skill 2.")
-                    x = CombatMode._attack_button_location[0] - 132
+                    x = CombatMode._attack_button_location[0] - 88
                 elif skill == "useskill(3)":
                     MessageLog.print_message(f"[COMBAT] Character {character_selected} uses Skill 3.")
-                    x = CombatMode._attack_button_location[0] - 51
+                    x = CombatMode._attack_button_location[0] - 32
                 elif skill == "useskill(4)":
                     MessageLog.print_message(f"[COMBAT] Character {character_selected} uses Skill 4.")
-                    x = CombatMode._attack_button_location[0] + 39
+                    x = CombatMode._attack_button_location[0] + 22
                 else:
                     MessageLog.print_message(f"[WARNING] Invalid command received for using the Character's Skill. User wanted: {skill}.")
                     Game.find_and_click_button("back")
                     return False
 
-                y = CombatMode._attack_button_location[1] + 171
+                y = CombatMode._attack_button_location[1] + 120
 
                 MouseUtils.move_and_click_point(x, y, "template_skill")
 
@@ -1284,10 +1284,11 @@ class CombatMode:
 
         Game.wait(2)
         # Save the positions of the "Attack" and "Back" button.
-        CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 800, bypass_general_adjustment = True)
+        CombatMode._attack_button_location = ImageUtils.find_button("attack", tries = 50, bypass_general_adjustment = True)
         if "one_punch" in Settings.combat_script_name:
             Game.find_and_click_button("attack")
             pyautogui.press('f5')
+            Game.wait(2)
             #Game.find_and_click_button("reload")
             MessageLog.print_message("One punch !!!")
 
