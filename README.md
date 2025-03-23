@@ -47,7 +47,29 @@ exit
 ## 汉化后的qt界面
 ![Gbf Automation ExReborn](https://github.com/harjeb/granblue-automation-pyautogui/blob/custom_dev/qt_gui/image/gbf_auto.png)
 
+## 使用说明
+
+1. pip install -r .\src-tauri\backend\requirements.txt
+2. 如需源码编译，可下载pyqt5后自行编译qt_gui/ga_app.py。拷贝ga_app.exe,qt_gui/data,src-tauri/images,src-tauri/controller.py,src-tauri/backend,src-tauri/script到同一目录
+3. 浏览器安装autocontrol插件
+4. (重要) 按以下快捷键配置autocontrol插件的打开书签功能
+    ```
+    alt+1    周回本的队伍选择界面书签
+    alt+2    多人界面书签（农之前手动设定好哪个河道）
+    alt+3    pending battles界面书签 (未确认战斗界面)
+    alt+4    沙盒界面书签（只建议在六分仪boss使用）
+    alt+8    sidestory快捷兑换界面书签（挖单抽用）
+    ```
+5. 打开游戏，设置最小画面（底部 单个的点），语言设置英文，不能开汉化。
+6. 选择游戏模式和战斗脚本，点击添加后按开始。单个任务最长运行10.5小时。任何模式都会运行35分钟后休息15分钟，这种运行方式 99%概率不会出验证码。
+
+
+
 ## Changelog
+
+
+2025/3/7 Beta v3 新P的部分游戏优化使很多功能都不再需要，精简原gui程序，优化大量运行逻辑
+
 2023/4/13 Beta v2.7更新：更新舔表新api，优化四象自动交易，修复游戏更新导致的小问题
 
 2023/3/16 Beta v2.5更新：更新新六道Farm流程，优化FA时刷新，修复其他小问题

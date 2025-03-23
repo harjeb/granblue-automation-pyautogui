@@ -1189,8 +1189,8 @@ class Game:
                 # 更新前一个值
                 previous_item_amount_farmed = Settings.item_amount_farmed
 
-                MessageLog.print_message("[Info] !!!!!!!!!!!!! %d=" % Settings.item_amount_farmed)
-                MessageLog.print_message("[Info] !!!!!!!!!!!!! %d=" % Settings.item_amount_to_farm)
+                MessageLog.print_message("[Info] 目标 %d次" % Settings.item_amount_to_farm)
+                MessageLog.print_message("[Info] 已完成 %d" % Settings.item_amount_farmed)
                 
                 if Settings.item_amount_farmed < Settings.item_amount_to_farm:
                     # Generate a resting period if the user enabled it.
