@@ -243,11 +243,10 @@ class CombatMode:
         #if Settings.enable_refresh_during_combat and (CombatMode._check_raid() or override or (Settings.farming_mode == "Generic" and Settings.enable_force_reload)):
         if Settings.enable_refresh_during_combat:
             from bot.game import Game
-
+            print('Settings.enable_refresh_during_combat')
             if CombatMode._check_for_battle_end() == "Nothing":
-                if Settings.farming_mode == "Raid":
-                    MessageLog.print_message("[COMBAT] Reloading now.")
-                    pyautogui.press('f5')
+                MessageLog.print_message("[COMBAT] Reloading now.")
+                pyautogui.press('f5')
                 #Game.find_and_click_button("reload")
 
                 if Settings.enable_combat_mode_adjustment:
@@ -293,10 +292,12 @@ class CombatMode:
                     break
                 count += 1
 
+        #CombatMode._reload_for_attack()
         reload_check = False
 
         # If the next Turn is the current Turn block, turn off auto.
         if CombatMode._turn_number + 1 == CombatMode._command_turn_number:
+            print('reload?')
             reload_check = CombatMode._reload_for_attack()
             if reload_check is False:
                 if CombatMode._full_auto:
