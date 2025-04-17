@@ -1198,42 +1198,101 @@ class Game:
                     Game._move_mouse_security_check()
                     first_run = False
                     
-                    # add random sleep
+                    # 获取当前时间
                     now_time = time.time()
 
-                    c = 0
-                    if (now_time - start_time) > random_time: 
-                        sleep_time = 0
-                        if (c%3 == 0 and c >1):
-                            if Settings.farming_mode == "Event Quick":
-                                sleep_time = random.randint(1800, 1900)
-                            else:
-                                sleep_time = random.randint(900, 1000)
+                    # 初始化运行时间和休息时间的追踪
+                    if not hasattr(Settings, 'total_run_time'):
+                        Settings.total_run_time = 0
+                    if not hasattr(Settings, 'total_rest_time'):
+                        Settings.total_rest_time = 0
+                    if not hasattr(Settings, 'last_status_time'):
+                        Settings.last_status_time = init_time
+                        Settings.is_resting = False
+
+                    # 更新运行/休息时间统计
+                    time_elapsed = now_time - Settings.last_status_time
+                    if Settings.is_resting:
+                        Settings.total_rest_time += time_elapsed
+                    else:
+                        Settings.total_run_time += time_elapsed
+                    Settings.last_status_time = now_time
+
+                    # 如果是首次运行，先运行2分钟然后休息
+                    if first_run:
+                        if (now_time - init_time) < 120:  # 2分钟
+                            MessageLog.print_message("[Info] 首次运行中，将运行2分钟...")
+                            continue
                         else:
-                            # 生成随机的睡眠时间
-                            if Settings.farming_mode == "Event Quick":
-                                sleep_time = random.randint(1000, 1100)
-                            else:
-                                sleep_time = random.randint(900, 1000)
+                            first_run = False
+                            initial_rest = random.randint(1800, 7200)  # 30分钟到2小时的随机休息
+                            MessageLog.print_message("[Sleep] 首次运行结束，开始休息 %d 秒" % initial_rest)
+                            Settings.is_resting = True
+                            time.sleep(initial_rest)
+                            Settings.is_resting = False
+                            start_time = time.time()
+                            Game.find_and_click_button("home")
+                            Game.wait(1.5)
+                            continue
+
+                    # 计算剩余时间和需要的运行时间
+                    total_time_left = 54000 - (now_time - init_time)  # 15小时总限制
+                    required_run_time = 36000 - Settings.total_run_time  # 需要确保10小时运行时间
+                    current_ratio = Settings.total_run_time / (now_time - init_time) if (now_time - init_time) > 0 else 0
+
+                    c = 0
+                    # 检查是否需要小休息（保持原有逻辑）
+                    if (now_time - start_time) > random_time: 
+                        # 根据运行时间比例动态调整休息时间
+                        if current_ratio > 0.67:  # 如果运行时间比例超过目标（10/15）
+                            sleep_time = random.randint(900, 1800)  # 可以休息更久
+                        else:  # 如果运行时间不足，减少休息时间
+                            sleep_time = random.randint(900, 1000)
                             
                         # 执行睡眠
-                        MessageLog.print_message("[Sleep] start sleep %d" % sleep_time)
+                        MessageLog.print_message("[Sleep] 开始小休息 %d 秒" % sleep_time)
+                        MessageLog.print_message("[Info] 当前运行时间比例: %.2f%%" % (current_ratio * 100))
+                        Settings.is_resting = True
                         time.sleep(sleep_time)
-                        MessageLog.print_message("[Sleep] end sleep")
+                        Settings.is_resting = False
+                        MessageLog.print_message("[Sleep] 小休息结束")
                         start_time = time.time()
                         Game.find_and_click_button("home")
                         Game.wait(1.5)
 
-                        c += 1
-                    elif (now_time - init_time) > 38000: 
-                        MessageLog.print_message("[Info] 已超时，结束任务！！！")
+                    # 检查是否需要大休息（每3-4小时一次）
+                    work_period = random.randint(10800, 14400)  # 3-4小时的工作时间
+                    if (now_time - start_time) > work_period:
+                        # 根据运行时间比例动态调整大休息时间
+                        if current_ratio > 0.67:  # 如果运行时间充足
+                            long_rest = random.randint(3600, 7200)  # 1-2小时的大休息
+                        else:  # 如果运行时间不足
+                            long_rest = random.randint(1800, 3600)  # 30分钟-1小时的休息
+                        
+                        MessageLog.print_message("[Sleep] 开始大休息 %d 秒" % long_rest)
+                        MessageLog.print_message("[Info] 当前运行时间比例: %.2f%%" % (current_ratio * 100))
+                        Settings.is_resting = True
+                        time.sleep(long_rest)
+                        Settings.is_resting = False
+                        MessageLog.print_message("[Sleep] 大休息结束")
+                        start_time = time.time()
+                        Game.find_and_click_button("home")
+                        Game.wait(1.5)
+                    
+                    # 检查总运行时间是否超过15小时
+                    elif (now_time - init_time) > 54000:  # 15小时 = 54000秒
+                        MessageLog.print_message("[Info] 已运行15小时，结束任务！")
+                        MessageLog.print_message("[Info] 总运行时间: %.2f 小时" % (Settings.total_run_time / 3600))
                         return True
                     else:
                         MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
-                        MessageLog.print_message("[Info] 离休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
-                    MessageLog.print_message("[Info] 已经过 %ds" % (now_time - init_time))
+                        MessageLog.print_message("[Info] 离下次休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
+                        MessageLog.print_message("[Info] 当前运行时间比例: %.2f%%" % (current_ratio * 100))
+                    
+                    MessageLog.print_message("[Info] 总计已运行 %.2f 小时" % (Settings.total_run_time / 3600))
+                    MessageLog.print_message("[Info] 总计已休息 %.2f 小时" % (Settings.total_rest_time / 3600))
 
-                    random_time = random.randint(2000, 2100)
+                    random_time = random.randint(2000, 2100)  # 保持原有的小休息间隔
 
 
         except Exception as e:
