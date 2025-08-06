@@ -244,6 +244,8 @@ class Raid:
             return None
         # Select the Party.
         if Game.quick_start_mission():
+            MessageLog.print_message("\n[RAID] raid 次数+1")
+            Settings.item_amount_farmed += 1
                     # Handle the rare case where joining the Raid after selecting the Summon and Party led the bot to the Quest Results screen with no loot to collect.
             if ImageUtils.confirm_location("no_loot", disable_adjustment = True):
                 MessageLog.print_message("\n[RAID] Seems that the Raid just ended. Moving back to the Home screen and joining another Raid...")

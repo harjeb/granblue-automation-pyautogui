@@ -1125,10 +1125,14 @@ class Game:
             # if Settings.farming_mode == "Raid":
             #     TwitterRoomFinder.connect()
             start_time = time.time()
+            start_time_big = start_time
             init_time = time.time()
             first_run = True
             Game.find_and_click_button("home")
             Game.wait(1.5)
+
+            # 检查是否需要大休息（每3-4小时一次）
+            work_period = random.randint(10800, 14400)  # 3-4小时的工作时间
             while Settings.item_amount_farmed < Settings.item_amount_to_farm:
                 try:
                     if Settings.farming_mode == "Quest":  # 任务
@@ -1196,7 +1200,6 @@ class Game:
                     # Generate a resting period if the user enabled it.
                     Game._delay_between_runs()
                     Game._move_mouse_security_check()
-                    first_run = False
                     
                     # 获取当前时间
                     now_time = time.time()
@@ -1219,13 +1222,9 @@ class Game:
                     Settings.last_status_time = now_time
 
                     # 如果是首次运行，先运行2分钟然后休息
-                    if first_run:
-                        if (now_time - init_time) < 120:  # 2分钟
-                            MessageLog.print_message("[Info] 首次运行中，将运行2分钟...")
-                            continue
-                        else:
-                            first_run = False
-                            initial_rest = random.randint(1800, 7200)  # 30分钟到2小时的随机休息
+
+                    if Settings.enable_opt_in_api:
+                            initial_rest = random.randint(1000, 7200)  # 30分钟到2小时的随机休息
                             MessageLog.print_message("[Sleep] 首次运行结束，开始休息 %d 秒" % initial_rest)
                             Settings.is_resting = True
                             time.sleep(initial_rest)
@@ -1233,19 +1232,22 @@ class Game:
                             start_time = time.time()
                             Game.find_and_click_button("home")
                             Game.wait(1.5)
+                            Settings.enable_opt_in_api = False
                             continue
+                            
+                    first_run = False
 
                     # 计算剩余时间和需要的运行时间
                     total_time_left = 54000 - (now_time - init_time)  # 15小时总限制
-                    required_run_time = 36000 - Settings.total_run_time  # 需要确保10小时运行时间
-                    current_ratio = Settings.total_run_time / (now_time - init_time) if (now_time - init_time) > 0 else 0
+                    required_run_time = 36000  # 需要确保10小时运行时间
+                    current_ratio = 0
 
                     c = 0
                     # 检查是否需要小休息（保持原有逻辑）
                     if (now_time - start_time) > random_time: 
                         # 根据运行时间比例动态调整休息时间
                         if current_ratio > 0.67:  # 如果运行时间比例超过目标（10/15）
-                            sleep_time = random.randint(900, 1800)  # 可以休息更久
+                            sleep_time = random.randint(1000, 1500)  # 可以休息更久
                         else:  # 如果运行时间不足，减少休息时间
                             sleep_time = random.randint(900, 1000)
                             
@@ -1260,9 +1262,8 @@ class Game:
                         Game.find_and_click_button("home")
                         Game.wait(1.5)
 
-                    # 检查是否需要大休息（每3-4小时一次）
-                    work_period = random.randint(10800, 14400)  # 3-4小时的工作时间
-                    if (now_time - start_time) > work_period:
+
+                    if (now_time - start_time_big) > work_period:
                         # 根据运行时间比例动态调整大休息时间
                         if current_ratio > 0.67:  # 如果运行时间充足
                             long_rest = random.randint(3600, 7200)  # 1-2小时的大休息
@@ -1275,9 +1276,10 @@ class Game:
                         time.sleep(long_rest)
                         Settings.is_resting = False
                         MessageLog.print_message("[Sleep] 大休息结束")
-                        start_time = time.time()
+                        start_time_big = time.time()
                         Game.find_and_click_button("home")
                         Game.wait(1.5)
+                        work_period = random.randint(10800, 14400)
                     
                     # 检查总运行时间是否超过15小时
                     elif (now_time - init_time) > 54000:  # 15小时 = 54000秒

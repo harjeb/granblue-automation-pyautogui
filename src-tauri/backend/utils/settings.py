@@ -20,7 +20,7 @@ class Settings:
         except FileNotFoundError:
             print("[ERROR] Failed to find settings.json. Exiting now...")
             sys.exit(1)
-    
+
     _data = json.load(_file)
     _file.close()
 
@@ -162,6 +162,11 @@ class Settings:
     xeno_clash_select_top_option: bool = dictor(_data, "xenoClash.selectTopOption", False)
     # #### end of xeno clash ####
 
+    # #### rotb ####
+    rotb_first: int = dictor(_data, "rotb.first", 1)
+    rotb_method: int = dictor(_data, "rotb.method", 1)
+    # #### end of rotb ####
+
     # #### adjustment ####
     enable_calibration_adjustment: bool = dictor(_data, "adjustment.enableCalibrationAdjustment", False)
     adjust_calibration: int = dictor(_data, "adjustment.adjustCalibration", 5)
@@ -217,7 +222,7 @@ class Settings:
         except FileNotFoundError:
             print("[ERROR] Failed to find settings.json. Exiting now...")
             sys.exit(1)
-        
+
         _data = json.load(_file)
         _file.close()
         print(_data['game'])
@@ -359,6 +364,11 @@ class Settings:
         # #### xeno clash ####
         Settings.xeno_clash_select_top_option: bool = dictor(_data, "xenoClash.selectTopOption", False)
         # #### end of xeno clash ####
+
+        # #### rotb ####
+        Settings.rotb_first: int = dictor(_data, "rotb.first", 1)
+        Settings.rotb_method: int = dictor(_data, "rotb.method", 1)
+        # #### end of rotb ####
 
         # #### adjustment ####
         Settings.enable_calibration_adjustment: bool = dictor(_data, "adjustment.enableCalibrationAdjustment", False)

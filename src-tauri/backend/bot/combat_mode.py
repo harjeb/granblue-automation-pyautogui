@@ -280,7 +280,7 @@ class CombatMode:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] While waiting for the incorrect turn to process, the \"Cancel\" button has not vanished from the screen yet.")
                 Game.wait(1.0)
-                if count >= 60:
+                if count >= 80:
                     break
                 count += 1
         else:
@@ -288,7 +288,7 @@ class CombatMode:
                 if Settings.debug_mode:
                     MessageLog.print_message("[DEBUG] While waiting for the incorrect turn to process, the \"Attack\" button has not vanished from the screen yet.")
                 Game.wait(1.0)
-                if count >= 60:
+                if count >= 80:
                     break
                 count += 1
 

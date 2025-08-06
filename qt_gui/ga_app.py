@@ -139,7 +139,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
 
         self.comboBox.addItems(list(self.gamemode_dict.keys()))
         #self.comboBox.activated[str].connect(self.onActivatedText)
-        
+
         # 战斗脚本内容
         self.mainscript = []
         self.mainscript_name = ''
@@ -257,9 +257,10 @@ class GBF_AutoTool(QWidget, Ui_Form):
                         "xenoClash":{},
                         "adjustment":{},
                         "sandbox":{},
-                        "chaojiying":{}}
-        setting_dict["game"]["combatScriptName"] = self.mainscript_name
-        setting_dict["game"]["combatScript"] = self.mainscript
+                        "chaojiying":{},
+                        "rotb":{}}
+        setting_dict["game"]["combatScriptName"] = self.defenderscript_name
+        setting_dict["game"]["combatScript"] = self.defenderscript
         setting_dict["game"]["farmingMode"] = self.translate(self.comboBox.currentText())
         setting_dict["game"]["item"] = ""
         setting_dict["game"]["mission"] = ""
@@ -280,7 +281,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["discord"]["enableDiscordNotifications"] = False
         setting_dict["discord"]["discordToken"] = ''
         setting_dict["discord"]["discordUserID"] = ''
-        setting_dict["api"]["enableOptInAPI"] = False
+        setting_dict["api"]["enableOptInAPI"] = self.checkBox_rest.isChecked()
         setting_dict["api"]["username"] = ''
         setting_dict["api"]["password"] = ''
         setting_dict["configuration"]["enableBezierCurveMouseMovement"] = self.checkBox_2.isChecked()
@@ -295,7 +296,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["configuration"]["enableBypassResetSummon"] = self.checkBox.isChecked()
         setting_dict["configuration"]["staticWindow"] = self.checkBox_9.isChecked()
         setting_dict["configuration"]["enableMouseSecurityAttemptBypass"] = self.checkBox_10.isChecked()
-        setting_dict["misc"]["guiLowPerformanceMode"] = True
+        setting_dict["misc"]["guiLowPerformanceMode"] = self.checkBox_rest.isChecked()
         setting_dict["misc"]["alternativeCombatScriptSelector"] = self.checkBox_11.isChecked()
         setting_dict["nightmare"]["enableNightmare"] = False
         setting_dict["nightmare"]["enableCustomNightmareSettings"] = True
@@ -310,7 +311,7 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["raid"]["enableAutoExitRaid"] = self.checkBox_5.isChecked()
         setting_dict["raid"]["timeAllowedUntilAutoExitRaid"] = self.spinBox_8.value()
         setting_dict["raid"]["enableNoTimeout"] = self.checkBox_6.isChecked()
-        setting_dict["raid"]["hpRemain"] = 0
+        setting_dict["raid"]["hpRemain"] = self.spinBox_hp.value()
         setting_dict["arcarum"]["enableStopOnArcarumBoss"] = True
         setting_dict["generic"]["enableForceReload"] = False
         setting_dict["xenoClash"]["selectTopOption"] = True
@@ -351,6 +352,8 @@ class GBF_AutoTool(QWidget, Ui_Form):
         setting_dict["chaojiying"]["username"] = ""
         setting_dict["chaojiying"]["password"] = ""
         setting_dict["event"]["first"] = True
+        setting_dict["rotb"]["first"] = int(self.comboBox_rotb_first.currentText())
+        setting_dict["rotb"]["method"] = int(self.comboBox_rotb_method.currentText())
 
         json_str = json.dumps(setting_dict, indent=4)
         with open(save_path+'/%s.json' % setname, 'w') as json_file:

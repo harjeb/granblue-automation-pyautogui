@@ -108,7 +108,7 @@ class RiseOfTheBeasts:
             Game.wait(5)
             # Now start Combat Mode and detect any item drops.
             if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)        
+                Game.collect_loot(is_completed = True)
         Game.find_and_click_button("loot")
         Game.wait(1.0)
 
@@ -141,83 +141,295 @@ class RiseOfTheBeasts:
             None
         """
         from bot.game import Game
+        import datetime
 
         # Go to the Home screen.
         Game.go_back_home(confirm_location_check = True)
 
-        # 按下 Alt 键
-        pyautogui.keyDown('alt')
-        # 按下 1 键
-        pyautogui.press('1')
-        # 抬起 Alt 键
-        pyautogui.keyUp('alt')
+        # Get current hour to determine which shortcut to use
+        current_hour = datetime.datetime.now().hour
+
+        # Determine which navigation method to use based on Settings.rotb_method
+        if Settings.rotb_method == 1:
+            # Method 1: Alt+Shift+1-4 (original method)
+            shortcut_key = '1'  # Default value
+
+            # Logic for determining the shortcut key based on time and rotb_first setting
+            if 23 <= current_hour or current_hour < 1:
+                # 23:00-1:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '4'
+            elif 1 <= current_hour < 3:
+                # 1:00-3:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '1'
+            elif 3 <= current_hour < 5:
+                # 3:00-5:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '2'
+            elif 5 <= current_hour < 7:
+                # 5:00-7:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '3'
+            elif 7 <= current_hour < 9:
+                # 7:00-9:00 time slot - cycle back to the first pattern
+                if Settings.rotb_first == 1:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '4'
+            elif 9 <= current_hour < 11:
+                # 9:00-11:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '1'
+            elif 11 <= current_hour < 13:
+                # 11:00-13:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '2'
+            elif 13 <= current_hour < 15:
+                # 13:00-15:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '3'
+            elif 15 <= current_hour < 17:
+                # 15:00-17:00 time slot - cycle back to the first pattern
+                if Settings.rotb_first == 1:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '4'
+            elif 17 <= current_hour < 19:
+                # 17:00-19:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '1'
+            elif 19 <= current_hour < 21:
+                # 19:00-21:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '3'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '2'
+            elif 21 <= current_hour < 23:
+                # 21:00-23:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '4'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '1'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '2'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '3'
+
+            MessageLog.print_message(f"[ROTB] Method 1: Current time: {current_hour}:00, using shortcut Alt+Shift+{shortcut_key} based on rotb_first={Settings.rotb_first}")
+
+            # Press Alt+Shift+key shortcut
+            pyautogui.keyDown('alt')
+            pyautogui.keyDown('shift')
+            pyautogui.press(shortcut_key)
+            pyautogui.keyUp('shift')
+            pyautogui.keyUp('alt')
+
+        elif Settings.rotb_method == 2:
+            # Method 2: Alt+Shift+5-8
+            shortcut_key = '5'  # Default value
+
+            # Logic for determining the shortcut key based on time and rotb_first setting
+            if 23 <= current_hour or current_hour < 1:
+                # 23:00-1:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '8'
+            elif 1 <= current_hour < 3:
+                # 1:00-3:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '5'
+            elif 3 <= current_hour < 5:
+                # 3:00-5:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '6'
+            elif 5 <= current_hour < 7:
+                # 5:00-7:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '7'
+            elif 7 <= current_hour < 9:
+                # 7:00-9:00 time slot - cycle back to the first pattern
+                if Settings.rotb_first == 1:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '8'
+            elif 9 <= current_hour < 11:
+                # 9:00-11:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '5'
+            elif 11 <= current_hour < 13:
+                # 11:00-13:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '6'
+            elif 13 <= current_hour < 15:
+                # 13:00-15:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '7'
+            elif 15 <= current_hour < 17:
+                # 15:00-17:00 time slot - cycle back to the first pattern
+                if Settings.rotb_first == 1:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '8'
+            elif 17 <= current_hour < 19:
+                # 17:00-19:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '5'
+            elif 19 <= current_hour < 21:
+                # 19:00-21:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '7'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '6'
+            elif 21 <= current_hour < 23:
+                # 21:00-23:00 time slot
+                if Settings.rotb_first == 1:
+                    shortcut_key = '8'
+                elif Settings.rotb_first == 2:
+                    shortcut_key = '5'
+                elif Settings.rotb_first == 3:
+                    shortcut_key = '6'
+                elif Settings.rotb_first == 4:
+                    shortcut_key = '7'
+
+            MessageLog.print_message(f"[ROTB] Method 2: Current time: {current_hour}:00, using shortcut Alt+Shift+{shortcut_key} based on rotb_first={Settings.rotb_first}")
+
+            # Press Alt+Shift+key shortcut
+            pyautogui.keyDown('alt')
+            pyautogui.keyDown('shift')
+            pyautogui.press(shortcut_key)
+            pyautogui.keyUp('shift')
+            pyautogui.keyUp('alt')
+
+        elif Settings.rotb_method == 3:
+            # Method 3: Alt+!
+            MessageLog.print_message(f"[ROTB] Method 3: Using Alt+1 shortcut")
+
+            # Press Alt+! shortcut
+            pyautogui.keyDown('alt')
+            pyautogui.press('1')
+            pyautogui.keyUp('alt')
 
         Game.wait(1.5)
-
-        # Check for resume.
-        if ImageUtils.confirm_location("resume_quests", tries = 5):
-            Game.find_and_click_button("resume")
-            Game.wait(5)
-            # Now start Combat Mode and detect any item drops.
-            if CombatMode.start_combat_mode(["enablefullauto"]):
-                Game.collect_loot(is_completed = True)
-
-        if ImageUtils.confirm_location("rotb"):
-            # Remove the difficulty prefix from the mission name.
-            temp_mission_name = ""
-            if Settings.mission_name == "EX+":
-                difficulty = "Extreme+"
-            else:
-                difficulty = "Extreme"
-                if ImageUtils.find_button("zhuque"):
-                    Game.find_and_click_button("zhuque")
-                    temp_mission_name = "Zhuque"
-                elif ImageUtils.find_button("baihu"):
-                    Game.find_and_click_button("baihu")
-                    temp_mission_name = "Baihu"
-                elif ImageUtils.find_button("qinglong"):
-                    Game.find_and_click_button("qinglong")
-                    temp_mission_name = "Qinglong"
-                elif ImageUtils.find_button("sixiang_all"):
-                    Game.find_and_click_button("sixiang_all")
-                    temp_mission_name = "Qinglong"
-                elif ImageUtils.find_button("xuanwu"):
-                    Game.find_and_click_button("xuanwu")
-                    temp_mission_name = "Xuanwu"
-                elif ImageUtils.find_button("rotb_extreme"):
-                    Game.find_and_click_button("rotb_extreme")
-                    temp_mission_name = "Qinglong"
-                else:
-                    MessageLog.print_message("Failed to find any EX beasts.")
-
-            # Only Raids are marked with Extreme difficulty.
-            if difficulty == "Extreme":
-                # Click on the Raid banner.
-                MessageLog.print_message(f"[ROTB] Now hosting {temp_mission_name} Raid...")
-
-                if ImageUtils.confirm_location("rotb_battle_the_beasts", tries = 30):
-                    if temp_mission_name == "Zhuque":
-                        MessageLog.print_message(f"[ROTB] Now starting EX Zhuque Raid...")
-                        Game.find_and_click_button("rotb_raid_zhuque")
-                    elif temp_mission_name == "Xuanwu":
-                        MessageLog.print_message(f"[ROTB] Now starting EX Xuanwu Raid...")
-                        Game.find_and_click_button("rotb_raid_xuanwu")
-                    elif temp_mission_name == "Baihu":
-                        MessageLog.print_message(f"[ROTB] Now starting EX Baihu Raid...")
-                        Game.find_and_click_button("rotb_raid_baihu")
-                    elif temp_mission_name == "Qinglong":
-                        MessageLog.print_message(f"[ROTB] Now starting EX Qinglong Raid...")
-                        Game.find_and_click_button("rotb_raid_qinglong")
-                else:
-                    MessageLog.print_message("Failed to open the ROTB Battle the Beasts popup.")
-
-            else:
-                MessageLog.print_message(f"[ROTB] Now hosting {temp_mission_name} Quest...")
-                Game.find_and_click_button("extreme_p")
-                # Find all instances of the "Select" button on the screen and click on the first instance.
-                
-        else:
-            MessageLog.print_message("Failed to arrive at the ROTB page.")
 
         return None
 
@@ -234,35 +446,31 @@ class RiseOfTheBeasts:
         from bot.game import Game
         is_loot = 1
         if not first_run:
-            if Settings.mission_name != "EX+":
-                is_loot = Settings.item_amount_farmed % 100
+            if Settings.rotb_method == 1:
+                is_loot = Settings.item_amount_farmed % 400
+            elif Settings.rotb_method == 2:
+                is_loot = Settings.item_amount_farmed % 20
             else:
-                is_loot = Settings.item_amount_farmed % 18
+                is_loot = Settings.item_amount_farmed % 14
 
         Game.find_and_click_button("ok")
         # Start the navigation process.
         if first_run:
-          print(1)
+          print(111)
           RiseOfTheBeasts._trade()
           RiseOfTheBeasts._navigate()
         elif is_loot == 0:
-            print(2)
+            print(222)
             MessageLog.print_message("Go to trade.")
             RiseOfTheBeasts._trade()
             RiseOfTheBeasts._navigate()
-        elif Game.find_and_click_button("play_again"):
-            print(3)
-            Game.find_and_click_button("cancel")
-            Game.find_and_click_button("close")
             # is_exp = Settings.item_amount_farmed % 8
             # if Game.check_for_popups():
             #     RiseOfTheBeasts._navigate()
             # elif is_exp == 0:
             #     RiseOfTheBeasts._navigate()
         else:
-            print(4)
-            # If the bot cannot find the "Play Again" button, check for Pending Battles and then perform navigation again.
-            Game.check_for_pending()
+            print(444)
             RiseOfTheBeasts._navigate()
 
         # Check for AP.
