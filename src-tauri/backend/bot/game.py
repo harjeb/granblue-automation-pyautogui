@@ -1133,6 +1133,7 @@ class Game:
 
             # 检查是否需要大休息（每3-4小时一次）
             work_period = random.randint(10800, 14400)  # 3-4小时的工作时间
+            random_time = random.randint(1980, 2100)  # 小休息间隔：33-35分钟
             while Settings.item_amount_farmed < Settings.item_amount_to_farm:
                 try:
                     if Settings.farming_mode == "Quest":  # 任务
@@ -1224,7 +1225,7 @@ class Game:
                     # 如果是首次运行，先运行2分钟然后休息
 
                     if Settings.enable_opt_in_api:
-                            initial_rest = random.randint(1000, 7200)  # 30分钟到2小时的随机休息
+                            initial_rest = random.randint(900, 1020)  # 首次休息：15-17分钟
                             MessageLog.print_message("[Sleep] 首次运行结束，开始休息 %d 秒" % initial_rest)
                             Settings.is_resting = True
                             time.sleep(initial_rest)
@@ -1237,64 +1238,48 @@ class Game:
                             
                     first_run = False
 
-                    # 计算剩余时间和需要的运行时间
-                    total_time_left = 54000 - (now_time - init_time)  # 15小时总限制
-                    required_run_time = 36000  # 需要确保10小时运行时间
-                    current_ratio = 0
-
-                    c = 0
-                    # 检查是否需要小休息（保持原有逻辑）
-                    if (now_time - start_time) > random_time: 
-                        # 根据运行时间比例动态调整休息时间
-                        if current_ratio > 0.67:  # 如果运行时间比例超过目标（10/15）
-                            sleep_time = random.randint(1000, 1500)  # 可以休息更久
-                        else:  # 如果运行时间不足，减少休息时间
-                            sleep_time = random.randint(900, 1000)
-                            
-                        # 执行睡眠
-                        MessageLog.print_message("[Sleep] 开始小休息 %d 秒" % sleep_time)
-                        MessageLog.print_message("[Info] 当前运行时间比例: %.2f%%" % (current_ratio * 100))
-                        Settings.is_resting = True
-                        time.sleep(sleep_time)
-                        Settings.is_resting = False
-                        MessageLog.print_message("[Sleep] 小休息结束")
-                        start_time = time.time()
-                        Game.find_and_click_button("home")
-                        Game.wait(1.5)
-
-
-                    if (now_time - start_time_big) > work_period:
-                        # 根据运行时间比例动态调整大休息时间
-                        if current_ratio > 0.67:  # 如果运行时间充足
-                            long_rest = random.randint(3600, 7200)  # 1-2小时的大休息
-                        else:  # 如果运行时间不足
-                            long_rest = random.randint(1800, 3600)  # 30分钟-1小时的休息
-                        
-                        MessageLog.print_message("[Sleep] 开始大休息 %d 秒" % long_rest)
-                        MessageLog.print_message("[Info] 当前运行时间比例: %.2f%%" % (current_ratio * 100))
-                        Settings.is_resting = True
-                        time.sleep(long_rest)
-                        Settings.is_resting = False
-                        MessageLog.print_message("[Sleep] 大休息结束")
-                        start_time_big = time.time()
-                        Game.find_and_click_button("home")
-                        Game.wait(1.5)
-                        work_period = random.randint(10800, 14400)
+                    # 检查是否需要休息
+                    if (now_time - start_time) > random_time:
+                        # 检查是否到了大休息时间（距离上次大休息超过3-4小时）
+                        if (now_time - start_time_big) > work_period:
+                            # 大休息：1-2小时
+                            long_rest = random.randint(3600, 7200)
+                            MessageLog.print_message("[Sleep] 开始大休息 %d 秒 (%.1f 分钟)" % (long_rest, long_rest/60))
+                            Settings.is_resting = True
+                            time.sleep(long_rest)
+                            Settings.is_resting = False
+                            MessageLog.print_message("[Sleep] 大休息结束")
+                            start_time = time.time()
+                            start_time_big = time.time()  # 重置大休息计时器
+                            work_period = random.randint(10800, 14400)  # 下次大休息间隔：3-4小时
+                            Game.find_and_click_button("home")
+                            Game.wait(1.5)
+                        else:
+                            # 小休息：15-17分钟
+                            sleep_time = random.randint(900, 1020)
+                            MessageLog.print_message("[Sleep] 开始小休息 %d 秒 (%.1f 分钟)" % (sleep_time, sleep_time/60))
+                            Settings.is_resting = True
+                            time.sleep(sleep_time)
+                            Settings.is_resting = False
+                            MessageLog.print_message("[Sleep] 小休息结束")
+                            start_time = time.time()
+                            Game.find_and_click_button("home")
+                            Game.wait(1.5)
                     
-                    # 检查总运行时间是否超过15小时
-                    elif (now_time - init_time) > 54000:  # 15小时 = 54000秒
-                        MessageLog.print_message("[Info] 已运行15小时，结束任务！")
+                    # 检查总运行时间是否超过40000秒（约11.1小时）
+                    if (now_time - init_time) > 40000:
+                        MessageLog.print_message("[Info] 已运行超过40000秒，结束任务！")
                         MessageLog.print_message("[Info] 总运行时间: %.2f 小时" % (Settings.total_run_time / 3600))
                         return True
-                    else:
-                        MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
-                        MessageLog.print_message("[Info] 离下次休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
-                        MessageLog.print_message("[Info] 当前运行时间比例: %.2f%%" % (current_ratio * 100))
                     
+                    # 显示运行信息
+                    MessageLog.print_message("[Info] 已执行 %d 分钟" % ((now_time - start_time)//60))
+                    MessageLog.print_message("[Info] 离下次小休息还有 %d 分钟" % ((random_time - now_time + start_time)//60))
+                    MessageLog.print_message("[Info] 离下次大休息还有 %d 分钟" % ((work_period - now_time + start_time_big)//60))
                     MessageLog.print_message("[Info] 总计已运行 %.2f 小时" % (Settings.total_run_time / 3600))
                     MessageLog.print_message("[Info] 总计已休息 %.2f 小时" % (Settings.total_rest_time / 3600))
 
-                    random_time = random.randint(2000, 2100)  # 保持原有的小休息间隔
+                    random_time = random.randint(1980, 2100)  # 小休息间隔：33-35分钟
 
 
         except Exception as e:
